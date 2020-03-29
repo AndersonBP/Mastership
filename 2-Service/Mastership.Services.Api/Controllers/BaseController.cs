@@ -10,7 +10,7 @@ using System.Net;
 namespace Mastership.Services.Api.Controllers
 {
 
-    [ApiExplorerSettings(GroupName = "backoffice")]
+    [ApiExplorerSettings(GroupName = "rhgestao")]
     public abstract class BaseController<TVM, TService> : ControllerBase where TVM : BaseViewModel, new() where TService : IApplication<TVM>
     {
         protected readonly TService Service;

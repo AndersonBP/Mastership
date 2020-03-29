@@ -3,31 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{4FD43A2B-2274-453E-9147-9C0541DA0C96}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Presentation", "1-Presentation", "{4FD43A2B-2274-453E-9147-9C0541DA0C96}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Domain", "4 - Domain", "{AFE71DBB-5A28-48D5-BFC7-0C6F9ADF2458}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Domain", "4-Domain", "{AFE71DBB-5A28-48D5-BFC7-0C6F9ADF2458}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Application", "3 - Application", "{C3E31AA8-49EB-41B8-904B-FF2D118C7C67}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Application", "3-Application", "{C3E31AA8-49EB-41B8-904B-FF2D118C7C67}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Infra", "5 - Infra", "{03878E20-009C-4343-8941-241ECBF3CC59}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Infra", "5-Infra", "{03878E20-009C-4343-8941-241ECBF3CC59}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Domain", "4 - Domain\Mastership.Domain\Mastership.Domain.csproj", "{26BFB65B-233F-4D3E-AF38-B930216E59AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Domain", "4-Domain\Mastership.Domain\Mastership.Domain.csproj", "{26BFB65B-233F-4D3E-AF38-B930216E59AF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Services", "2 - Services", "{9D6CFECF-667D-4E14-892C-895093126B99}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Services", "2-Services", "{9D6CFECF-667D-4E14-892C-895093126B99}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Services.Api", "2 - Service\Mastership.Services.Api\Mastership.Services.Api.csproj", "{899B1EC5-1A17-4CAB-A205-4121B9F7A917}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Services.Api", "2-Service\Mastership.Services.Api\Mastership.Services.Api.csproj", "{899B1EC5-1A17-4CAB-A205-4121B9F7A917}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Application", "3 - Application\Mastership.Application\Mastership.Application.csproj", "{D8362DE0-4922-433A-96FE-A40CDBEB3326}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Application", "3-Application\Mastership.Application\Mastership.Application.csproj", "{D8362DE0-4922-433A-96FE-A40CDBEB3326}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.1 - Data", "5.1 - Data", "{C32633D1-9A0D-420E-8D90-4EFFE26EAAFC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.1-Data", "5.1-Data", "{C32633D1-9A0D-420E-8D90-4EFFE26EAAFC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.2 - CrossCutting", "5.2 - CrossCutting", "{B2CA9A50-D831-4A09-BBCD-2597B72F31A6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.2-CrossCutting", "5.2-CrossCutting", "{B2CA9A50-D831-4A09-BBCD-2597B72F31A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Infra.CrossCutting.Identity", "5 - Infra\5.2 - CrossCutting\Mastership.Infra.CrossCutting.Identity\Mastership.Infra.CrossCutting.Identity.csproj", "{79AE07A0-6858-40BB-B828-B2020F3E35CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Infra.CrossCutting.Identity", "5-Infra\5.2-CrossCutting\Mastership.Infra.CrossCutting.Identity\Mastership.Infra.CrossCutting.Identity.csproj", "{79AE07A0-6858-40BB-B828-B2020F3E35CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Infra.CrossCutting.IoC", "5 - Infra\5.2 - CrossCutting\Mastership.Infra.CrossCutting.IoC\Mastership.Infra.CrossCutting.IoC.csproj", "{F717A0CD-E320-4979-B5B4-41CAB50F2708}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Infra.CrossCutting.IoC", "5-Infra\5.2-CrossCutting\Mastership.Infra.CrossCutting.IoC\Mastership.Infra.CrossCutting.IoC.csproj", "{F717A0CD-E320-4979-B5B4-41CAB50F2708}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mastership.Infra.Data", "5 - Infra\5.1 - Data\Mastership.Infra.Data\Mastership.Infra.Data.csproj", "{7D697A6D-D2ED-4434-ACCA-7B975A46D4AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Infra.Data", "5-Infra\5.1-Data\Mastership.Infra.Data\Mastership.Infra.Data.csproj", "{7D697A6D-D2ED-4434-ACCA-7B975A46D4AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\3 - Application\Mastership.Application\Mastership.Application.csproj" />
-    <ProjectReference Include="..\..\4 - Domain\Mastership.Domain\Mastership.Domain.csproj" />
+    <ProjectReference Include="..\..\3-Application\Mastership.Application\Mastership.Application.csproj" />
+    <ProjectReference Include="..\..\4-Domain\Mastership.Domain\Mastership.Domain.csproj" />
   </ItemGroup>
 
 

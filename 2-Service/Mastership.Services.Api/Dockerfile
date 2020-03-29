@@ -10,10 +10,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-nanoserver-1903 AS build
 WORKDIR /src
-COPY ["2 - Service/Mastership.Services.Api/Mastership.Services.Api.csproj", "2 - Service/Mastership.Services.Api/"]
-RUN dotnet restore "2 - Service/Mastership.Services.Api/Mastership.Services.Api.csproj"
+COPY ["2-Service/Mastership.Services.Api/Mastership.Services.Api.csproj", "2-Service/Mastership.Services.Api/"]
+RUN dotnet restore "2-Service/Mastership.Services.Api/Mastership.Services.Api.csproj"
 COPY . .
-WORKDIR "/src/2 - Service/Mastership.Services.Api"
+WORKDIR "/src/2-Service/Mastership.Services.Api"
 RUN dotnet build "Mastership.Services.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish

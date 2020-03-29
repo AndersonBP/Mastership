@@ -1,4 +1,4 @@
-﻿using Mastership.Application.ViewModels;
+﻿using Mastership.Domain.ViewModels;
 using Microsoft.AspNet.OData.Query;
 using System;
 using System.Collections.Generic;

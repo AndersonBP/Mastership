@@ -1,4 +1,4 @@
-﻿namespace Mastership.Application.ViewModels
+﻿namespace Mastership.Domain.ViewModels
 {
     public class EmployeeViewModel: BaseViewModel
     {

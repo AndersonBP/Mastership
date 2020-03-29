@@ -5,7 +5,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="AutoMapper\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\4-Domain\Mastership.Domain\Mastership.Domain.csproj" />
   </ItemGroup>
 
 </Project>

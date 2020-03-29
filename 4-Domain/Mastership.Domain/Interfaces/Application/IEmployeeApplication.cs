@@ -1,4 +1,5 @@
-﻿using Mastership.Application.ViewModels;
+﻿
+using Mastership.Domain.ViewModels;
 
 namespace Mastership.Domain.Interfaces.Application
 {

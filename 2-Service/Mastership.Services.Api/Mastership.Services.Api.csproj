@@ -7,20 +7,25 @@
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Projects\Gens Solution\RhGestao\Mastership\2-Service\Mastership.Services.Api\Mastership.Services.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions" Version="2.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNet.OData" Version="7.3.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.2.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Configurations\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\3-Application\Mastership.Application\Mastership.Application.csproj" />
     <ProjectReference Include="..\..\4-Domain\Mastership.Domain\Mastership.Domain.csproj" />
+    <ProjectReference Include="..\..\5-Infra\5.2-CrossCutting\Mastership.Infra.CrossCutting.IoC\Mastership.Infra.CrossCutting.IoC.csproj" />
   </ItemGroup>
 
 

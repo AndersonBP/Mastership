@@ -8,7 +8,6 @@ using Microsoft.AspNet.OData.Query;
 using Mastership.Domain.Entities;
 using Mastership.Domain.Interfaces.Repository;
 using Mastership.Domain.ViewModels;
-using Mastership.Domain.Repository;
 
 namespace Mastership.Application.Services
 {
@@ -19,16 +18,10 @@ namespace Mastership.Application.Services
     {
         protected readonly TRepository Repository;
         private readonly IMapper _mapper;
-        private ITesteRepository repository;
 
         public BaseApplication(TRepository repository, IMapper _mapper)
         {
             Repository = repository;
-        }
-
-        protected BaseApplication(ITesteRepository repository)
-        {
-            this.repository = repository;
         }
 
         protected virtual void Validar(TType obj) { }

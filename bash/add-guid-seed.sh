@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file=$path"./src/infra/Rv.Database/Seed/ModelSeed.cs"
+file=$path"./src/infra/Mastership.Database/Seed/ModelSeed.cs"
 
 uuid()
 {

@@ -5,6 +5,7 @@ using Mastership.Services.Api.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,12 +17,18 @@ namespace Mastership.Services.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IWebHostEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                     .SetBasePath(env.ContentRootPath)
+                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
+                     .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -33,35 +40,22 @@ namespace Mastership.Services.Api
             services.AddMvc(options =>
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
-                options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
+                options.UseCentralRoutePrefix(new RouteAttribute("api/v{version:apiVersion}/"));
             });
+
 
             services.AddAutoMapper(typeof(MappingProfile));
 
+            services.AddApiVersioning();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "RhGestão",
-                    Description = "RhGestão",
-                    //TermsOfService = new Uri("https://example.com/terms"),
-                    //Contact = new OpenApiContact
-                    //{
-                    //    Name = "Our Contact",
-                    //    Email = string.Empty,
-                    //    Url = new Uri("https://github.com"),
-                    //},
-                    //License = new OpenApiLicense
-                    //{
-                    //    Name = "Use under LICX",
-                    //    Url = new Uri("https://example.com/license"),
-                    //}
-                });
+                c.EnableAnnotations();
+
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RhGestão", Version = "v1" });
             });
 
             // Register all DI
-            RegisterServices(services);
+            NativeInjectorBootStrapper.RegisterServices(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +65,8 @@ namespace Mastership.Services.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
 
             app.UseCors(c =>
             {
@@ -85,7 +81,6 @@ namespace Mastership.Services.Api
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
@@ -94,18 +89,13 @@ namespace Mastership.Services.Api
             });
 
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
 
-        private static void RegisterServices(IServiceCollection services)
-        {
-            NativeInjectorBootStrapper.RegisterServices(services);
-        }
+      
     }
 }

@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "Update database"
 
-dotnet ef database update --context DataContext --project src/infra/Mastership.Database/Mastership.Database.csproj --startup-project src/presentation/Mastership.Api/Mastership.Api.csproj --verbose $1
+dotnet ef database update --context DataContext --project '../5-Infra/5.1-Data/Mastership.Infra.Data/Mastership.Infra.Data.csproj' --startup-project '../2-Service/Mastership.Services.Api/Mastership.Services.Api.csproj' --verbose $1

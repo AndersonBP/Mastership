@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "Remover Migration"
 
-dotnet ef migrations remove --context DataContext --project src/infra/Mastership.Database/Mastership.Database.csproj --startup-project src/presentation/Mastership.Api/Mastership.Api.csproj --verbose
+dotnet ef migrations remove --context DataContext --project '../5-Infra/5.1-Data/Mastership.Infra.Data/Mastership.Infra.Data.csproj' --startup-project '../2-Service/Mastership.Services.Api/Mastership.Services.Api.csproj' --verbose

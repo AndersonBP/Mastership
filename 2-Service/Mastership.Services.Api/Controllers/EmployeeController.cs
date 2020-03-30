@@ -1,5 +1,5 @@
-﻿using Mastership.Application.ViewModels;
-using Mastership.Domain.Interfaces.Application;
+﻿using Mastership.Domain.Interfaces.Application;
+using Mastership.Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mastership.Services.Api.Controllers

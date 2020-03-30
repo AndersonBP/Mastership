@@ -1,5 +1,5 @@
-﻿using Mastership.Application.ViewModels;
-using Mastership.Domain.Interfaces.Application;
+﻿using Mastership.Domain.Interfaces.Application;
+using Mastership.Domain.ViewModels;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Mvc;

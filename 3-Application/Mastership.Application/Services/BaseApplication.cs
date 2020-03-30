@@ -4,23 +4,31 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNet.OData.Query;
 using Mastership.Domain.Entities;
 using Mastership.Domain.Interfaces.Repository;
 using Mastership.Domain.ViewModels;
-using Microsoft.AspNet.OData.Query;
+using Mastership.Domain.Repository;
 
 namespace Mastership.Application.Services
 {
-    public abstract class BaseService<TVMType, TType, TRepository> 
+    public abstract class BaseApplication<TVMType, TType, TRepository>
         where TVMType : BaseViewModel, new()
         where TType : BaseEntity
         where TRepository : IRepository<TType>
     {
         protected readonly TRepository Repository;
+        private readonly IMapper _mapper;
+        private ITesteRepository repository;
 
-        public BaseService(TRepository repository)
+        public BaseApplication(TRepository repository, IMapper _mapper)
         {
             Repository = repository;
+        }
+
+        protected BaseApplication(ITesteRepository repository)
+        {
+            this.repository = repository;
         }
 
         protected virtual void Validar(TType obj) { }
@@ -32,21 +40,22 @@ namespace Mastership.Application.Services
         }
 
         protected TType MapFromDTO(TVMType obj)
-            => Mapper.Map<TType>(obj);
+            => _mapper.Map<TType>(obj);
 
         protected IList<TType> MapFromDTO(IList<TVMType> obj)
-            => obj.Select(x => Mapper.Map<TType>(x)).ToList();
+            => obj.Select(x => _mapper.Map<TType>(x)).ToList();
 
         protected TVMType MapToDTO(TType obj)
-            => Mapper.Map<TVMType>(obj);
+            => _mapper.Map<TVMType>(obj);
 
-        protected IList<TVMType> MapToDTO(IList<TType> obj)
-            => obj.Select(x => Mapper.Map<TVMType>(x)).ToList();
+        protected IList<TVMType> MapToDTO(IList<TType> list)
+            => list.Select(x => _mapper.Map<TVMType>(x)).ToList();
 
-        protected IList<TVMType> MapToDTO(IQueryable<TType> obj)
-            => obj.ProjectTo<TVMType>().ToList();
+        protected IList<TVMType> MapToDTO(IQueryable<TType> list)
+                       => list.Select(x => _mapper.Map<TVMType>(x)).ToList();
 
-        public virtual TVMType Adicionar(TType entity)
+
+        public virtual TVMType Add(TType entity)
         {
             Validar(entity);
 
@@ -55,7 +64,7 @@ namespace Mastership.Application.Services
             return MapToDTO(newEntity);
         }
 
-        public virtual TVMType[] Adicionar(TType[] entity)
+        public virtual TVMType[] Add(TType[] entity)
         {
             Validar(entity);
 
@@ -64,42 +73,42 @@ namespace Mastership.Application.Services
             return newEntity.Select(x => MapToDTO(x)).ToArray();
         }
 
-        public virtual TVMType Adicionar(TVMType obj)
+        public virtual TVMType Add(TVMType obj)
         {
             var entity = MapFromDTO(obj);
 
-            return Adicionar(entity);
+            return Add(entity);
         }
 
-        public virtual TVMType[] Adicionar(TVMType[] obj)
+        public virtual TVMType[] Add(TVMType[] obj)
         {
             var entityArray = obj.Select(x => MapFromDTO(x)).ToArray();
 
-            return Adicionar(entityArray);
+            return Add(entityArray);
         }
 
-        public virtual void AdicionarLote(TVMType[] obj)
+        public virtual void AddRange(TVMType[] obj)
         {
             var entityArray = obj.Select(x => MapFromDTO(x)).ToArray();
 
             Repository.InsertFast(entityArray);
         }
 
-        public void Desabilitar(TVMType[] dtos)
+        public void Disable(TVMType[] dtos)
         {
             foreach (var dto in dtos)
-                Desabilitar(dto.Id);
+                Disable(dto.Id);
         }
 
-        public void Desabilitar(Guid id) => Repository.Disable(id);
+        public void Disable(Guid id) => Repository.Disable(id);
 
-        public virtual void Atualizar(TVMType[] lista)
+        public virtual void Update(TVMType[] lista)
         {
             foreach (var obj in lista)
-                Atualizar(obj.Id, obj);
+                Update(obj.Id, obj);
         }
 
-        public virtual TVMType Atualizar(Guid id, TVMType obj)
+        public virtual TVMType Update(Guid id, TVMType obj)
         {
             if (id != obj.Id && obj.Id != Guid.Empty)
                 throw new Exception("Id não é do objeto enviado");
@@ -115,7 +124,7 @@ namespace Mastership.Application.Services
             return MapToDTO(newEntity);
         }
 
-        public TVMType Buscar(Guid id)
+        public TVMType Search(Guid id)
         {
             var entity = Repository.Get(id);
 
@@ -126,7 +135,7 @@ namespace Mastership.Application.Services
             => Repository.Exists(id);
 
         public IQueryable<TVMType> List()
-            => Repository.List().ProjectTo<TVMType>();
+            => Repository.List().Select(x => MapToDTO(x));
 
         protected virtual void PrepararReferencias(TVMType obj) { }
 
@@ -155,9 +164,9 @@ namespace Mastership.Application.Services
 
             var bdObject = BuscarEntidade(obj);
             if (bdObject == null)
-                return Adicionar(obj);
+                return Add(obj);
             else
-                return Atualizar(bdObject.Id, obj);
+                return Update(bdObject.Id, obj);
         }
 
         public IList<TVMType> Upsert(IList<TVMType> listObj)
@@ -172,7 +181,7 @@ namespace Mastership.Application.Services
 
         public int Count(ODataQueryOptions<TVMType> opts)
         {
-            var query = Repository.List().ProjectTo<TVMType>();
+            var query = Repository.List();
             var ignoreFlags = AllowedQueryOptions.Select | AllowedQueryOptions.Skip | AllowedQueryOptions.Top | AllowedQueryOptions.Expand | AllowedQueryOptions.OrderBy;
             var totalCount = (IQueryable<TVMType>)opts.ApplyTo(query, ignoreFlags);
 

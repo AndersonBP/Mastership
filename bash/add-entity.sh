@@ -37,11 +37,11 @@ using Mastership.Infra.Data.Configuration;
 
 namespace Mastership.Database.Configuration
 {
-    public class ${entity}Config : BaseConfig<${entity}>
+    public class ${entity}Config : BaseConfig<${entity}Entity>
     {
         public ${entity}Config() : base("${entity}") { }
 
-        public override void Configure(EntityTypeBuilder<${entity}> builder)
+        public override void Configure(EntityTypeBuilder<${entity}Entity> builder)
         {
             base.Configure(builder);
 
@@ -75,14 +75,14 @@ EOF
 ## Domain
 # Mastership.Domain.ViewModel
 
-file=$path"/3-Application/Mastership.Application/ViewModels/"$entity"ViewModel.cs"
+file=$path"/4-Domain/Mastership.Domain/ViewModels/"$entity"ViewModel.cs"
 
 echo $file
 
 tee $file > /dev/null << EOF
 using System;
 
-namespace Mastership.Application.ViewModels
+namespace Mastership.Domain.ViewModels
 {
     public class ${entity}ViewModel : BaseViewModel
     {
@@ -130,10 +130,14 @@ file=$path"/3-Application/Mastership.Application/Services/"$entity"Application.c
 echo $file
 
 tee $file > /dev/null << EOF
+using Mastership.Domain.Entities;
+using Mastership.Domain.Interfaces.Application;
+using Mastership.Domain.Repository;
+using Mastership.Domain.ViewModels;
 
 namespace Mastership.Application.Services
 {
-    public class ${entity}Application : BaseApplication<${entity}ViewModel, ${entity}, I${entity}Repository>, I${entity}Application
+    public class ${entity}Application : BaseApplication<${entity}ViewModel, ${entity}Entity, I${entity}Repository>, I${entity}Application
     {
         public ${entity}Application(I${entity}Repository repository) : base(repository) { }
 

@@ -2,7 +2,7 @@ using System;
 
 namespace Mastership.Domain.ViewModels
 {
-    public class EmployeeViewModel : BaseViewModel
+    public class PointTimeViewModel : BaseViewModel
     {
 
     }

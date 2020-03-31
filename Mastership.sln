@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Infra.CrossCutti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mastership.Infra.Data", "5-Infra\5.1-Data\Mastership.Infra.Data\Mastership.Infra.Data.csproj", "{7D697A6D-D2ED-4434-ACCA-7B975A46D4AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mastership.Infra.CrossCutting.Extensions", "5-Infra\5.2-CrossCutting\Mastership.Infra.CrossCutting.Extensions\Mastership.Infra.CrossCutting.Extensions.csproj", "{4B4A393B-F3B5-4583-82FD-90FE494237EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{7D697A6D-D2ED-4434-ACCA-7B975A46D4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D697A6D-D2ED-4434-ACCA-7B975A46D4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D697A6D-D2ED-4434-ACCA-7B975A46D4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B4A393B-F3B5-4583-82FD-90FE494237EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B4A393B-F3B5-4583-82FD-90FE494237EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B4A393B-F3B5-4583-82FD-90FE494237EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B4A393B-F3B5-4583-82FD-90FE494237EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{79AE07A0-6858-40BB-B828-B2020F3E35CE} = {B2CA9A50-D831-4A09-BBCD-2597B72F31A6}
 		{F717A0CD-E320-4979-B5B4-41CAB50F2708} = {B2CA9A50-D831-4A09-BBCD-2597B72F31A6}
 		{7D697A6D-D2ED-4434-ACCA-7B975A46D4AB} = {C32633D1-9A0D-420E-8D90-4EFFE26EAAFC}
+		{4B4A393B-F3B5-4583-82FD-90FE494237EB} = {B2CA9A50-D831-4A09-BBCD-2597B72F31A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB1322A5-5AC9-4401-ACD1-C8BA153D84F2}

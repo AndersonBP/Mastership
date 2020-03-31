@@ -19,9 +19,10 @@ namespace Mastership.Application.Services
         protected readonly TRepository Repository;
         private readonly IMapper _mapper;
 
-        public BaseApplication(TRepository repository, IMapper _mapper)
+        public BaseApplication(TRepository repository, IMapper mapper)
         {
             Repository = repository;
+            this._mapper = mapper;
         }
 
         protected virtual void Validar(TType obj) { }
@@ -38,7 +39,7 @@ namespace Mastership.Application.Services
         protected IList<TType> MapFromDTO(IList<TVMType> obj)
             => obj.Select(x => _mapper.Map<TType>(x)).ToList();
 
-        protected TVMType MapToDTO(TType obj)
+        protected TVMType MapToViewModel(TType obj)
             => _mapper.Map<TVMType>(obj);
 
         protected IList<TVMType> MapToDTO(IList<TType> list)
@@ -54,7 +55,7 @@ namespace Mastership.Application.Services
 
             var newEntity = Repository.Save(entity);
 
-            return MapToDTO(newEntity);
+            return MapToViewModel(newEntity);
         }
 
         public virtual TVMType[] Add(TType[] entity)
@@ -63,7 +64,7 @@ namespace Mastership.Application.Services
 
             var newEntity = Repository.Save(entity);
 
-            return newEntity.Select(x => MapToDTO(x)).ToArray();
+            return newEntity.Select(x => MapToViewModel(x)).ToArray();
         }
 
         public virtual TVMType Add(TVMType obj)
@@ -114,21 +115,21 @@ namespace Mastership.Application.Services
 
             var newEntity = Repository.Save(entity);
 
-            return MapToDTO(newEntity);
+            return MapToViewModel(newEntity);
         }
 
         public TVMType Search(Guid id)
         {
             var entity = Repository.Get(id);
 
-            return MapToDTO(entity);
+            return MapToViewModel(entity);
         }
 
         public bool Existe(Guid id)
             => Repository.Exists(id);
 
         public IQueryable<TVMType> List()
-            => Repository.List().Select(x => MapToDTO(x));
+            => Repository.List().Select(x => MapToViewModel(x));
 
         protected virtual void PrepararReferencias(TVMType obj) { }
 
@@ -147,7 +148,7 @@ namespace Mastership.Application.Services
 
             var updatedList = Repository.UpdateManyReturningObject(listEntity);
 
-            return updatedList.Select(x => MapToDTO(x));
+            return updatedList.Select(x => MapToViewModel(x));
 
         }
 

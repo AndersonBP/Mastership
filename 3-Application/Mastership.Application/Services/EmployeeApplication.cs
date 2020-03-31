@@ -10,5 +10,9 @@ namespace Mastership.Application.Services
     {
         public EmployeeApplication(IEmployeeRepository repository, IMapper mapper) : base(repository, mapper) { }
 
+        public EmployeeViewModel CheckRegistration(EmployeeViewModel vm, string companyName)
+        {
+            return this.MapToViewModel(this.Repository.GetByRegistration(vm.Registration));
+        }
     }
 }

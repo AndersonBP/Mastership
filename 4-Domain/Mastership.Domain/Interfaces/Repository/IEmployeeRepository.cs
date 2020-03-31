@@ -3,5 +3,7 @@ using Mastership.Domain.Interfaces.Repository;
 
 namespace Mastership.Domain.Repository
 {
-    public interface IEmployeeRepository : IRepository<EmployeeEntity> { }
+    public interface IEmployeeRepository : IRepository<EmployeeEntity> {
+        EmployeeEntity GetByRegistration(string registration);
+    }
 }

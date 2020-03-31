@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Linq;
 
 namespace Mastership.Services.Api
 {
@@ -26,6 +27,11 @@ namespace Mastership.Services.Api
                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
                      .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
 
             Configuration = builder.Build();
         }
@@ -50,9 +56,9 @@ namespace Mastership.Services.Api
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
-
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RhGestão", Version = "v1" });
-            });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
+                c.SwaggerDoc("rhgestao", new OpenApiInfo { Title = "RhGestão", Version = Configuration["Prefs:ApiVersion"] });
+            }); 
 
             // Register all DI
             NativeInjectorBootStrapper.RegisterServices(services, Configuration);
@@ -65,8 +71,6 @@ namespace Mastership.Services.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-
 
             app.UseCors(c =>
             {
@@ -85,7 +89,7 @@ namespace Mastership.Services.Api
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RhGestão API V1");
+                c.SwaggerEndpoint("/swagger/rhgestao/swagger.json", "RhGestão API V1");
             });
 
             app.UseRouting();

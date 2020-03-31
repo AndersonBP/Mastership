@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\3-Application\Mastership.Application\Mastership.Application.csproj" />
     <ProjectReference Include="..\..\5.1-Data\Mastership.Infra.Data\Mastership.Infra.Data.csproj" />
   </ItemGroup>
 

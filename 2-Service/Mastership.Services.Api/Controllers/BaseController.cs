@@ -18,24 +18,24 @@ namespace Mastership.Services.Api.Controllers
         public BaseController(TService service)
             => Service = service;
 
-        [HttpGet]
-        [Route("odata")]
-        [Produces("application/json")]
-        [Consumes("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter | AllowedQueryOptions.OrderBy | AllowedQueryOptions.OrderBy | AllowedQueryOptions.Expand | AllowedQueryOptions.Select | AllowedQueryOptions.Skip | AllowedQueryOptions.Top)]
-        public IActionResult Get(ODataQueryOptions<TVM> opts)
-        {
-            IQueryable<TVM> list = Service.List();
+        //[HttpGet]
+        //[Route("odata")]
+        //[Produces("application/json")]
+        //[Consumes("application/json")]
+        //[ProducesResponseType((int)HttpStatusCode.OK)]
+        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter | AllowedQueryOptions.OrderBy | AllowedQueryOptions.Expand | AllowedQueryOptions.Select | AllowedQueryOptions.Skip | AllowedQueryOptions.Top)]
+        //public IActionResult Get(ODataQueryOptions<TVM> opts)
+        //{
+        //    IQueryable<TVM> list = Service.List();
 
-            var count = Service.Count(opts);
+        //    var count = Service.Count(opts);
 
-            Response.Headers.Add("X-Count", $"{count}");
-            Response.Headers.Add("X-Now", $"{DateTime.Now:dd/MM/yyyy HH:mm:ss}");
+        //    Response.Headers.Add("X-Count", $"{count}");
+        //    Response.Headers.Add("X-Now", $"{DateTime.Now:dd/MM/yyyy HH:mm:ss}");
 
-            return Ok(list);
-        }
+        //    return Ok(list);
+        //}
 
         [HttpPost]
         [Route("")]
@@ -43,9 +43,9 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult Adicionar([FromBody]TVM objDto)
+        public IActionResult Adicionar([FromBody]TVM objVM)
         {
-            var obj = Service.Add(objDto);
+            var obj = Service.Add(objVM);
 
             return Ok(obj);
         }
@@ -82,9 +82,9 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult Editar(Guid id, [FromBody]TVM objDto)
+        public IActionResult Editar(Guid id, [FromBody]TVM objVM)
         {
-            var obj = Service.Update(id, objDto);
+            var obj = Service.Update(id, objVM);
 
             return Ok(obj);
         }

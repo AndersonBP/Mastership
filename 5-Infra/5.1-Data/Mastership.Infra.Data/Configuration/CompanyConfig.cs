@@ -13,7 +13,7 @@ namespace Mastership.Database.Configuration
             base.Configure(builder);
 
             builder.HasIndex(x => x.CNPJ).IsUnique();
-            builder.Property(x => x.CNPJ).HasMaxLength(14);
+            builder.Property(x => x.CNPJ).HasMaxLength(18);
             builder.HasMany(e => e.Employees)
                .WithOne(e => e.Company)
                .HasForeignKey(e => e.CompanyId);

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mastership.Services.Api.Controllers
 {
-    [Route("api/pointtime")]
+    [Route("pointtime")]
     [ApiController]
     public class PointTimeController 
     {

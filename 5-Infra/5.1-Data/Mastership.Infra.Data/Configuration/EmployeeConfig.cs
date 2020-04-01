@@ -14,7 +14,7 @@ namespace Mastership.Database.Configuration
             builder.HasIndex(x => x.CPF).IsUnique();
             builder.Property(x => x.CPF).HasMaxLength(9);
 
-            builder.HasIndex(x => new {x.CompanyId, x.Registration }).IsUnique();
+            builder.HasIndex(x => new {x.SubsidiaryId, x.Registration }).IsUnique();
 
             builder.HasMany(e => e.PointsTime)
                .WithOne(e => e.Employee)

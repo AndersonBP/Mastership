@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Linq;
 
-namespace Mastership.Infra.CrossCutting.Extensions.Http
+namespace Mastership.Infra.CrossCutting.Extensions
 {
     public static class HttpExtensions
     {

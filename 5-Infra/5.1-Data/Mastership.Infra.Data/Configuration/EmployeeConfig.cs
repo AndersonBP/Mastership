@@ -12,13 +12,17 @@ namespace Mastership.Database.Configuration
         {
             base.Configure(builder);
             builder.HasIndex(x => x.CPF).IsUnique();
-            builder.Property(x => x.CPF).HasMaxLength(9);
+            builder.Property(x => x.CPF).HasMaxLength(15);
 
-            builder.HasIndex(x => new {x.SubsidiaryId, x.Registration }).IsUnique();
+            builder.HasIndex(x => new { x.SubsidiaryId, x.Registration }).IsUnique();
 
             builder.HasMany(e => e.PointsTime)
                .WithOne(e => e.Employee)
                .HasForeignKey(e => e.EmployeeId);
+
+            builder.HasOne(a => a.User)
+              .WithOne(b => b.Employee)
+                .HasForeignKey<UserEntity>(e => e.EmployeeId);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Mastership.Application.Services
         protected TVMType MapToViewModel(TType obj)
             => _mapper.Map<TVMType>(obj);
 
-        protected IList<TVMType> MapToDTO(IList<TType> list)
+        protected IList<TVMType> MapToViewModel(IList<TType> list)
             => list.Select(x => _mapper.Map<TVMType>(x)).ToList();
 
         protected IList<TVMType> MapToDTO(IQueryable<TType> list)

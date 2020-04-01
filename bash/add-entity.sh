@@ -61,6 +61,9 @@ using Mastership.Domain.Entities;
 using Mastership.Domain.Repository;
 using Mastership.Infra.Data.Interfaces;
 using Mastership.Infra.Data.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mastership.Database.Repositories
 {
@@ -100,6 +103,9 @@ echo $file
 tee $file > /dev/null << EOF
 using Mastership.Domain.Entities;
 using Mastership.Domain.Interfaces.Repository;
+using System;
+using System.Linq;
+
 
 namespace Mastership.Domain.Repository
 {

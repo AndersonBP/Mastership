@@ -1,4 +1,6 @@
-﻿using Mastership.Application.Services;
+﻿using AutoMapper;
+using Mastership.Application.AutoMapper;
+using Mastership.Application.Services;
 using Mastership.Database.Repositories;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
@@ -12,10 +14,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Mastership.Infra.CrossCutting.IoC
 {
-    public class NativeInjectorBootStrapper
+    public class BootStrapper
     {
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+
             // ASPNET
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

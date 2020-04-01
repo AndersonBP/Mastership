@@ -16,6 +16,10 @@ namespace Mastership.Database.Configuration
            .WithOne(e => e.BillingCustomer)
            .HasForeignKey(e => e.BillingCustomerId);
 
+            builder.HasOne(a => a.User)
+            .WithOne(b => b.BillingCustomer)
+              .HasForeignKey<UserEntity>(e => e.BillingCustomerId);
+
         }
     }
 }

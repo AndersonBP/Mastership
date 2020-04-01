@@ -49,9 +49,6 @@ namespace Mastership.Services.Api
                 options.UseCentralRoutePrefix(new RouteAttribute("api/v{version:apiVersion}/"));
             });
 
-
-            services.AddAutoMapper(typeof(MappingProfile));
-
             services.AddApiVersioning();
             services.AddSwaggerGen(c =>
             {
@@ -61,7 +58,7 @@ namespace Mastership.Services.Api
             }); 
 
             // Register all DI
-            NativeInjectorBootStrapper.RegisterServices(services, Configuration);
+            BootStrapper.RegisterServices(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

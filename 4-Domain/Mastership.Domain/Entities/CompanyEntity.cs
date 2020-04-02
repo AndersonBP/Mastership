@@ -16,6 +16,8 @@ namespace Mastership.Domain.Entities
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        public string ForeignId { get; set; }
+        
         public Guid BillingCustomerId { get; set; }
         public virtual BillingCustomerEntity BillingCustomer { get; set; }
 

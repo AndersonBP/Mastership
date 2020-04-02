@@ -7,6 +7,9 @@ namespace Mastership.Domain.Entities
     {
         public string Name { get; set; }
 
+        public string ForeignId { get; set; }
+
+
         public Guid CompanyId { get; set; }
         public virtual CompanyEntity Company { get; set; }
 

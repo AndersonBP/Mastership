@@ -95,6 +95,9 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
+                    b.Property<string>("ForeignId")
+                        .HasColumnType("text");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("double precision");
 
@@ -171,6 +174,9 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
+                    b.Property<string>("ForeignId")
+                        .HasColumnType("text");
+
                     b.Property<string>("FullName")
                         .HasColumnType("text");
 
@@ -201,7 +207,7 @@ namespace Mastership.Infra.Data.Migrations
                         {
                             Id = new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
                             AdmissionDate = new DateTime(2020, 4, 1, 0, 0, 0, 0, DateTimeKind.Local),
-                            Birthday = new DateTime(2020, 4, 1, 11, 20, 10, 796, DateTimeKind.Local).AddTicks(858),
+                            Birthday = new DateTime(2020, 4, 1, 23, 1, 9, 905, DateTimeKind.Local).AddTicks(2133),
                             CPF = "062.898.123-60",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -291,6 +297,9 @@ namespace Mastership.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
+
+                    b.Property<string>("ForeignId")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");

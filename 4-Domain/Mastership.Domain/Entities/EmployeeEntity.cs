@@ -12,6 +12,9 @@ namespace Mastership.Domain.Entities
         public string PIS { get; set; }
         public DateTime AdmissionDate { get; set; }
         public DateTime Birthday { get; set; }
+        
+        public string ForeignId { get; set; }
+
         public Guid SubsidiaryId { get; set; }
         public virtual UserEntity User { get; set; }
         public virtual SubsidiaryEntity Subsidiary { get; set; }

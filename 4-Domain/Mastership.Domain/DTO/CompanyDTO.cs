@@ -1,8 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-namespace Mastership.Domain.ViewModels
+using System.Text;
+
+namespace Mastership.Domain.DTO
 {
-    public class CompanyViewModel : BaseViewModel
+    public class CompanyDTO: BaseDTO
     {
         public string Name { get; set; }
         public string RazaoSocial { get; set; }
@@ -18,8 +20,8 @@ namespace Mastership.Domain.ViewModels
         public string ForeignId { get; set; }
 
         public Guid BillingCustomerId { get; set; }
-        public virtual BillingCustomerViewModel BillingCustomer { get; set; }
+        public virtual BillingCustomerDTO BillingCustomer { get; set; }
 
-        public ICollection<SubsidiaryViewModel> Subsidiaries { get; set; }
+        public ICollection<SubsidiaryDTO> Subsidiaries { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.ViewModels;
-using Mastership.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
@@ -20,9 +19,9 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CheckRegistration([FromBody]EmployeeViewModel obj, [FromHeader(Name = "DomainName")][Required] string requiredHeader)
+        public IActionResult CheckRegistration([FromBody]EmployeeViewModel obj, [FromHeader(Name = "DomainName")][Required] string domainName)
         {
-            return Ok(this.Service.CheckRegistration(obj, Request.GetHeader("DomainName")));
+            return Ok(this.Service.CheckRegistration(obj, domainName));
         }
 
     }

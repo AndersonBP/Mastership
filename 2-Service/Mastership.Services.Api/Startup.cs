@@ -1,6 +1,7 @@
 using AutoMapper;
 using Mastership.Infra.CrossCutting.IoC;
 using Mastership.Services.Api.Configurations;
+using Mastership.Services.Api.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,7 @@ namespace Mastership.Services.Api
                 c.AllowAnyMethod();
                 c.AllowAnyOrigin();
             });
+            app.UseMiddleware<FriendlyExceptionResponseMiddleware>();
 
             app.UseStaticFiles();
 

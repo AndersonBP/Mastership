@@ -1,4 +1,5 @@
 using AutoMapper;
+using Mastership.Domain;
 using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
@@ -19,10 +20,10 @@ namespace Mastership.Application.Services
         public EmployeeViewModel CheckRegistration(EmployeeViewModel vm, string subName)
         {
             var employe = this.MapToViewModel(this.Repository.GetByRegistrationAndDomainName(vm.Registration, subName));
-            if (employe != null)
-            {
-                employe.PointsTime = this.pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employe.Id);
-            }
+            if (employe == null)
+                throw new NotFoundException("Employee not found!");
+
+            employe.PointsTime = this.pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employe.Id);
             return employe;
         }
     }

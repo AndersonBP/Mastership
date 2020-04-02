@@ -87,9 +87,6 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("DomainName")
-                        .HasColumnType("text");
-
                     b.Property<bool>("Enable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -132,7 +129,6 @@ namespace Mastership.Infra.Data.Migrations
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
-                            DomainName = "mconsult",
                             Enable = false,
                             Latitude = -3.7357805000000002,
                             Longitude = -38.490112000000003,
@@ -206,8 +202,8 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
-                            AdmissionDate = new DateTime(2020, 4, 1, 0, 0, 0, 0, DateTimeKind.Local),
-                            Birthday = new DateTime(2020, 4, 1, 23, 1, 9, 905, DateTimeKind.Local).AddTicks(2133),
+                            AdmissionDate = new DateTime(2020, 4, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            Birthday = new DateTime(2020, 4, 2, 11, 39, 6, 92, DateTimeKind.Local).AddTicks(9942),
                             CPF = "062.898.123-60",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -279,6 +275,12 @@ namespace Mastership.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Adress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CNPJ")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("ChangeDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -293,6 +295,9 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("DomainName")
+                        .HasColumnType("text");
+
                     b.Property<bool>("Enable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -301,7 +306,19 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<string>("ForeignId")
                         .HasColumnType("text");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RazaoSocial")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ZipCode")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -318,7 +335,10 @@ namespace Mastership.Infra.Data.Migrations
                             CompanyId = new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
+                            DomainName = "mconsult",
                             Enable = false,
+                            Latitude = 0.0,
+                            Longitude = 0.0,
                             Name = "MConsult"
                         });
                 });

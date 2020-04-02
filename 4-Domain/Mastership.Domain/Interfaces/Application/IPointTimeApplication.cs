@@ -7,5 +7,6 @@ namespace Mastership.Domain.Interfaces.Application
 {
     public interface IPointTimeApplication : IApplication<PointTimeViewModel> {
         ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId);
+        void Register();
     }
 }

@@ -16,11 +16,11 @@ namespace Mastership.Infra.Data
             );
 
             builder.Entity<CompanyEntity>().HasData(
-            new CompanyEntity { BillingCustomerId = Guid.Parse("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), Id = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Adress = "V. DOM LUIS, 1200, TORRE 1, 21 ANDAR, SALA 2104 - Meireles, Fortaleza - CE", ZipCode = "60160-830", CNPJ = "14.921.000/0001-39", DomainName = "mconsult", Name = "Mconsult", RazaoSocial = "M C Serviços de Tecnologia e Gestão LTDA", Latitude = -3.7357805, Longitude = -38.490112 }
+            new CompanyEntity { BillingCustomerId = Guid.Parse("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), Id = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Adress = "V. DOM LUIS, 1200, TORRE 1, 21 ANDAR, SALA 2104 - Meireles, Fortaleza - CE", ZipCode = "60160-830", CNPJ = "14.921.000/0001-39", Name = "Mconsult", RazaoSocial = "M C Serviços de Tecnologia e Gestão LTDA", Latitude = -3.7357805, Longitude = -38.490112 }
              );
 
             builder.Entity<SubsidiaryEntity>().HasData(
-              new SubsidiaryEntity() { CompanyId = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Id = Guid.Parse("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), Name = "MConsult" }
+              new SubsidiaryEntity() { CompanyId = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Id = Guid.Parse("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), Name = "MConsult", DomainName = "mconsult" }
             );
 
 

@@ -16,9 +16,9 @@ namespace Mastership.Application.Services
             this.pointTimeApplication = pointTimeApplication;
         }
 
-        public EmployeeViewModel CheckRegistration(EmployeeViewModel vm, string companyName)
+        public EmployeeViewModel CheckRegistration(EmployeeViewModel vm, string subName)
         {
-            var employe = this.MapToViewModel(this.Repository.GetByRegistration(vm.Registration));
+            var employe = this.MapToViewModel(this.Repository.GetByRegistrationAndDomainName(vm.Registration, subName));
             if (employe != null)
             {
                 employe.PointsTime = this.pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employe.Id);

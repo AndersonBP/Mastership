@@ -10,8 +10,9 @@ namespace Mastership.Services.Api.Controllers
     [ApiController]
     public class PointTimeController : ControllerBase
     {
-        public PointTimeController(IPointTimeApplication service) { 
-        
+        private readonly IPointTimeApplication service;
+        public PointTimeController(IPointTimeApplication service) {
+            this.service = service;
         }
 
         [HttpPost]
@@ -22,7 +23,8 @@ namespace Mastership.Services.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult CheckRegistration()
         {
-            return  Ok("");
+            this.service.Register();
+            return Ok(true);
         }
     }
 }

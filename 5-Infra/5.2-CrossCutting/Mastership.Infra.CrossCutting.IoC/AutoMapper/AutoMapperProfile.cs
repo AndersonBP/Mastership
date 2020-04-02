@@ -14,7 +14,7 @@ namespace Mastership.Infra.CrossCutting.IoC
             CreateMap<SubsidiaryViewModel, SubsidiaryDTO>().ReverseMap();
             CreateMap<EmployeeViewModel, EmployeeDTO>().ReverseMap();
             CreateMap<UserViewModel, UserDTO>().ReverseMap();
-            CreateMap<PointTimeViewModel, PointTimeDTO>().ReverseMap();
+            CreateMap<PointTimeViewModel, PointTimeDTO>().ForMember(x=>x.Employee, opt=> opt.Ignore()).ReverseMap();
 
             
             CreateMap<BillingCustomerDTO, BillingCustomerEntity>().ReverseMap();

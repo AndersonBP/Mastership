@@ -12,9 +12,9 @@ namespace Mastership.Database.Repositories
     {
         public EmployeeRepository(IDataUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
-        public EmployeeDTO GetByRegistration(string registration)
+        public EmployeeDTO GetByRegistrationAndDomainName(string registration, string domainName)
         {
-            return  this._mapper.Map<EmployeeDTO>(this.Query().Where(x => x.Registration.Equals(registration)).FirstOrDefault());
+            return  this._mapper.Map<EmployeeDTO>(this.Query().Where(x => x.Registration.Equals(registration) && x.Subsidiary.DomainName.Equals(domainName)).FirstOrDefault());
         }
     }
 }

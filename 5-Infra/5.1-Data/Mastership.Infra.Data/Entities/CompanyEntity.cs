@@ -8,7 +8,6 @@ namespace Mastership.Infra.Data.Entities
         public string Name { get; set; }
         public string RazaoSocial { get; set; }
 
-        public string DomainName { get; set; }
         public string CNPJ { get; set; }
 
         public string Adress { get; set; }

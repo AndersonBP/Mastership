@@ -4,6 +4,6 @@ using Mastership.Domain.Interfaces.Repository;
 namespace Mastership.Domain.Repository
 {
     public interface IEmployeeRepository : IRepository<EmployeeDTO> {
-        EmployeeDTO GetByRegistration(string registration);
+        EmployeeDTO GetByRegistrationAndDomainName(string registration, string domainName);
     }
 }

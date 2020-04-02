@@ -5,15 +5,15 @@ using System.Reflection;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNet.OData.Query;
-using Mastership.Domain.Entities;
 using Mastership.Domain.Interfaces.Repository;
 using Mastership.Domain.ViewModels;
+using Mastership.Domain.DTO;
 
 namespace Mastership.Application.Services
 {
     public abstract class BaseApplication<TVMType, TType, TRepository>
         where TVMType : BaseViewModel, new()
-        where TType : BaseEntity
+        where TType : BaseDTO
         where TRepository : IRepository<TType>
     {
         protected readonly TRepository Repository;

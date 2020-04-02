@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Mastership.Domain.DTO;
-using Mastership.Domain.Entities;
+using Mastership.Infra.Data.Entities;
 using Mastership.Domain.ViewModels;
 
-namespace Mastership.Application.AutoMapper
+namespace Mastership.Infra.CrossCutting.IoC
 {
     public class AutoMapperProfile : Profile
     {
@@ -17,12 +17,12 @@ namespace Mastership.Application.AutoMapper
             CreateMap<PointTimeViewModel, PointTimeDTO>().ReverseMap();
 
             
-            CreateMap<BillingCustomerViewModel, BillingCustomerEntity>().ReverseMap();
-            CreateMap<CompanyViewModel, CompanyEntity>().ReverseMap();
-            CreateMap<SubsidiaryViewModel, SubsidiaryEntity>().ReverseMap();
-            CreateMap<EmployeeViewModel, EmployeeEntity>().ReverseMap();
-            CreateMap<UserViewModel, UserEntity>().ReverseMap();
-            CreateMap<PointTimeViewModel, PointTimeEntity>().ReverseMap();
+            CreateMap<BillingCustomerDTO, BillingCustomerEntity>().ReverseMap();
+            CreateMap<CompanyDTO, CompanyEntity>().ReverseMap();
+            CreateMap<SubsidiaryDTO, SubsidiaryEntity>().ReverseMap();
+            CreateMap<EmployeeDTO, EmployeeEntity>().ReverseMap();
+            CreateMap<UserDTO, UserEntity>().ReverseMap();
+            CreateMap<PointTimeDTO, PointTimeEntity>().ReverseMap();
 
         }
     }

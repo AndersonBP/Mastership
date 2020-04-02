@@ -3,43 +3,51 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Mastership.Domain.Entities;
+using AutoMapper;
+using Mastership.Domain.DTO;
+using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mastership.Infra.Data.Repositories
 {
-    public abstract class BaseRepository<TType> where TType : BaseEntity, new()
+    public abstract class BaseRepository<TDtoType, TEntity> 
+        where TDtoType : BaseDTO, new()
+        where TEntity:BaseEntity, new()
     {
-
-        private DbSet<TType> _dbSet;
+        protected readonly IMapper _mapper;
+        private DbSet<TEntity> _dbSet;
 
         protected IDataContext Context;
 
-        protected BaseRepository(IDataUnitOfWork uow)
-            => Context = uow.Context;
+        protected BaseRepository(IDataUnitOfWork uow, IMapper mapper)
+        {
+            this.Context = uow.Context;
+            this._mapper = mapper;
+        }
+         
 
-        protected DbSet<TType> DbSet
+        protected DbSet<TEntity> DbSet
         {
             get
             {
                 if (_dbSet == null)
-                    _dbSet = Context.Set<TType>();
+                    _dbSet = Context.Set<TEntity>();
 
                 return _dbSet;
             }
         }
 
-        protected virtual IQueryable<TType> Query(bool tracking = false, bool withUserFilter = true)
+        protected virtual IQueryable<TEntity> Query(bool tracking = false, bool withUserFilter = true)
             => (tracking ? DbSet : DbSet.AsNoTracking());
 
-        public IQueryable<TType> List(bool withUserFilter = true)
-            => Query(false, withUserFilter);
+        public IQueryable<TDtoType> List(bool withUserFilter = true)
+            => this._mapper.ProjectTo<TDtoType>(Query(false, withUserFilter));
 
-        public TType Get(Guid id)
-            => Query(false).FirstOrDefault(x => x.Id == id);
+        public TDtoType Get(Guid id)
+            => this._mapper.Map<TDtoType>(Query(false).FirstOrDefault(x => x.Id == id));
 
-        public virtual bool Exists(TType obj)
+        public virtual bool Exists(TDtoType obj)
             => Exists(obj.Id);
 
         public virtual bool Exists(Guid id)
@@ -50,12 +58,12 @@ namespace Mastership.Infra.Data.Repositories
             var entidade = Get(id);
             entidade.Enable = false;
 
-            Save(new TType[] { entidade }, true, true);
+            Save(new TEntity[] { this._mapper.Map<TEntity>(entidade) }, true, true);
         }
 
         public void Delete(Guid id)
         {
-            var toDelete = new TType { Id = id };
+            var toDelete = new TEntity { Id = id };
             DetachLocalObject(toDelete);
             Context.Entry(toDelete).State = EntityState.Deleted;
         }
@@ -68,13 +76,13 @@ namespace Mastership.Infra.Data.Repositories
             Context.SaveChanges();
         }
 
-        public virtual TType Save(TType obj)
-            => Save(new TType[] { obj }, false, true).FirstOrDefault();
+        public virtual TDtoType Save(TDtoType obj)
+            => Save(new TEntity[] { this._mapper.Map<TEntity>(obj) }, false, true).FirstOrDefault();
 
-        public virtual TType[] Save(TType[] obj)
-            => Save(obj, false, true);
+        public virtual TDtoType[] Save(TDtoType[] obj)
+            => Save(this._mapper.Map<TEntity[]>(obj), false, true);
 
-        public TType[] InsertFast(TType[] lista)
+        public TDtoType[] InsertFast(TDtoType[] lista)
         {
 
             var ids = lista.Select(x => x.Id).ToArray();
@@ -82,17 +90,17 @@ namespace Mastership.Infra.Data.Repositories
             foreach (var item in lista)
                 item.CreationDate = DateTime.Now;
 
-            DbSet.AddRange(lista);
+            DbSet.AddRange(this._mapper.Map<TEntity[]>(lista));
 
             Context.SaveChanges();
 
             return lista;
         }
 
-        protected TType Save(TType obj, bool changeState)
-            => Save(new TType[] { obj }, false, changeState).FirstOrDefault();
+        protected TDtoType Save(TDtoType obj, bool changeState)
+            => Save(new TEntity[] { this._mapper.Map<TEntity>(obj) }, false, changeState).FirstOrDefault();
 
-        private TType[] Save(TType[] lista, bool disable, bool changeState)
+        private TDtoType[] Save(TEntity[] lista, bool disable, bool changeState)
         {
 
             foreach (var obj in lista)
@@ -103,7 +111,7 @@ namespace Mastership.Infra.Data.Repositories
 
                 SetVirtualPropertiesUnchanged(obj);
 
-                if (!Exists(obj))
+                if (!Exists(obj.Id))
                 {
                     obj.Id = obj.Id != Guid.Empty ? obj.Id : Guid.NewGuid();
                     obj.CreationDate = DateTime.Now;
@@ -129,7 +137,7 @@ namespace Mastership.Infra.Data.Repositories
 
             Context.SaveChanges();
 
-            return lista;
+            return this._mapper.Map<TDtoType[]>(lista);
         }
 
 
@@ -166,20 +174,20 @@ namespace Mastership.Infra.Data.Repositories
                 Context.Entry(local).State = EntityState.Detached;
         }
 
-        public virtual IEnumerable<TType> UpdateManyReturningObject(List<TType> objs)
+        public virtual IEnumerable<TDtoType> UpdateManyReturningObject(List<TDtoType> objs)
         {
-            var updatedList = new List<TType>();
+            var updatedList = new List<TEntity>();
 
-            foreach (var obj in objs)
+            foreach (var obj in this._mapper.Map<List<TEntity>>(objs))
             {
                 updatedList.Add(obj);
                 Context.Entry(obj);
-                Context.Set<TType>().Attach(obj).State = EntityState.Modified;
+                Context.Set<TEntity>().Attach(obj).State = EntityState.Modified;
             }
 
             Context.SaveChanges();
 
-            return updatedList.Select(x => x);
+            return this._mapper.Map<IEnumerable<TDtoType>>(updatedList.Select(x => x));
         }
     }
 }

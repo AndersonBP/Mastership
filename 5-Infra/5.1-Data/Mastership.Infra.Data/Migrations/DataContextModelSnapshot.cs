@@ -19,7 +19,7 @@ namespace Mastership.Infra.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Mastership.Domain.Entities.BillingCustomerEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.BillingCustomerEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace Mastership.Infra.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.CompanyEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.CompanyEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,7 +142,7 @@ namespace Mastership.Infra.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.EmployeeEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.EmployeeEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -218,7 +218,7 @@ namespace Mastership.Infra.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.PointTimeEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.PointTimeEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,7 +273,7 @@ namespace Mastership.Infra.Data.Migrations
                     b.ToTable("PointTime");
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.SubsidiaryEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.SubsidiaryEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -323,7 +323,7 @@ namespace Mastership.Infra.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.UserEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -381,51 +381,51 @@ namespace Mastership.Infra.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.CompanyEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.CompanyEntity", b =>
                 {
-                    b.HasOne("Mastership.Domain.Entities.BillingCustomerEntity", "BillingCustomer")
+                    b.HasOne("Mastership.Infra.Data.Entities.BillingCustomerEntity", "BillingCustomer")
                         .WithMany("Companies")
                         .HasForeignKey("BillingCustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.EmployeeEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.EmployeeEntity", b =>
                 {
-                    b.HasOne("Mastership.Domain.Entities.SubsidiaryEntity", "Subsidiary")
+                    b.HasOne("Mastership.Infra.Data.Entities.SubsidiaryEntity", "Subsidiary")
                         .WithMany("Employees")
                         .HasForeignKey("SubsidiaryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.PointTimeEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.PointTimeEntity", b =>
                 {
-                    b.HasOne("Mastership.Domain.Entities.EmployeeEntity", "Employee")
+                    b.HasOne("Mastership.Infra.Data.Entities.EmployeeEntity", "Employee")
                         .WithMany("PointsTime")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.SubsidiaryEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.SubsidiaryEntity", b =>
                 {
-                    b.HasOne("Mastership.Domain.Entities.CompanyEntity", "Company")
+                    b.HasOne("Mastership.Infra.Data.Entities.CompanyEntity", "Company")
                         .WithMany("Subsidiaries")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Mastership.Domain.Entities.UserEntity", b =>
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.UserEntity", b =>
                 {
-                    b.HasOne("Mastership.Domain.Entities.BillingCustomerEntity", "BillingCustomer")
+                    b.HasOne("Mastership.Infra.Data.Entities.BillingCustomerEntity", "BillingCustomer")
                         .WithOne("User")
-                        .HasForeignKey("Mastership.Domain.Entities.UserEntity", "BillingCustomerId");
+                        .HasForeignKey("Mastership.Infra.Data.Entities.UserEntity", "BillingCustomerId");
 
-                    b.HasOne("Mastership.Domain.Entities.EmployeeEntity", "Employee")
+                    b.HasOne("Mastership.Infra.Data.Entities.EmployeeEntity", "Employee")
                         .WithOne("User")
-                        .HasForeignKey("Mastership.Domain.Entities.UserEntity", "EmployeeId");
+                        .HasForeignKey("Mastership.Infra.Data.Entities.UserEntity", "EmployeeId");
                 });
 #pragma warning restore 612, 618
         }

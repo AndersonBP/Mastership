@@ -1,4 +1,4 @@
-﻿using Mastership.Domain.Entities;
+﻿using Mastership.Domain.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +6,16 @@ using System.Text;
 
 namespace Mastership.Domain.Interfaces.Repository
 {
-    public interface IRepository<TType> where TType : BaseEntity
+    public interface IRepository<TDtoType> where TDtoType : BaseDTO
     {
 
-        IQueryable<TType> List(bool withUserFilter = true);
+        IQueryable<TDtoType> List(bool withUserFilter = true);
 
-        TType Get(Guid id);
+        TDtoType Get(Guid id);
 
         bool Exists(Guid obj);
 
-        bool Exists(TType obj);
+        bool Exists(TDtoType obj);
 
         void Disable(Guid id);
 
@@ -23,13 +23,13 @@ namespace Mastership.Domain.Interfaces.Repository
 
         void Delete(Guid[] id);
 
-        TType Save(TType obj);
+        TDtoType Save(TDtoType obj);
 
-        TType[] Save(TType[] obj);
+        TDtoType[] Save(TDtoType[] obj);
 
-        TType[] InsertFast(TType[] lista);
+        TDtoType[] InsertFast(TDtoType[] lista);
 
-        IEnumerable<TType> UpdateManyReturningObject(List<TType> lista);
+        IEnumerable<TDtoType> UpdateManyReturningObject(List<TDtoType> lista);
 
     }
 }

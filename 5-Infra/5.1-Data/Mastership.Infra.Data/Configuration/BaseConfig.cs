@@ -1,4 +1,4 @@
-﻿using Mastership.Domain.Entities;
+﻿using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

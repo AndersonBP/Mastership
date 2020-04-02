@@ -1,5 +1,5 @@
 using AutoMapper;
-using Mastership.Domain.Entities;
+using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Domain.ViewModels;
@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Mastership.Application.Services
 {
-    public class PointTimeApplication : BaseApplication<PointTimeViewModel, PointTimeEntity, IPointTimeRepository>, IPointTimeApplication
+    public class PointTimeApplication : BaseApplication<PointTimeViewModel, PointTimeDTO, IPointTimeRepository>, IPointTimeApplication
     {
         public PointTimeApplication(IPointTimeRepository repository, IMapper mapper) : base(repository, mapper) { }
 

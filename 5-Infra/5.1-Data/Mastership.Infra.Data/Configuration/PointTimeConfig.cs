@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mastership.Domain.Entities;
+using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 

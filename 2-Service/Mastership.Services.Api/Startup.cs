@@ -1,5 +1,4 @@
 using AutoMapper;
-using Mastership.Application.AutoMapper;
 using Mastership.Infra.CrossCutting.IoC;
 using Mastership.Services.Api.Configurations;
 using Microsoft.AspNetCore.Builder;

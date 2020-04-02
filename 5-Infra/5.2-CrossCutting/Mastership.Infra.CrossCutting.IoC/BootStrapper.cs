@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Mastership.Application.AutoMapper;
 using Mastership.Application.Services;
 using Mastership.Database.Repositories;
 using Mastership.Domain.Interfaces.Application;

@@ -1,6 +1,6 @@
 using System;
 
-namespace Mastership.Domain.Entities
+namespace Mastership.Infra.Data.Entities
 {
     public class UserEntity : BaseEntity
     {

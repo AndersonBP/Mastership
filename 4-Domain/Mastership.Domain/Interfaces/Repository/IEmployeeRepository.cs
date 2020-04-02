@@ -1,9 +1,9 @@
-using Mastership.Domain.Entities;
+using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces.Repository;
 
 namespace Mastership.Domain.Repository
 {
-    public interface IEmployeeRepository : IRepository<EmployeeEntity> {
-        EmployeeEntity GetByRegistration(string registration);
+    public interface IEmployeeRepository : IRepository<EmployeeDTO> {
+        EmployeeDTO GetByRegistration(string registration);
     }
 }

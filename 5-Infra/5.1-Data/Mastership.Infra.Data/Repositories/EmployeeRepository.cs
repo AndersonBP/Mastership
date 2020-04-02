@@ -1,18 +1,20 @@
-using Mastership.Domain.Entities;
+using AutoMapper;
+using Mastership.Domain.DTO;
 using Mastership.Domain.Repository;
+using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Interfaces;
 using Mastership.Infra.Data.Repositories;
 using System.Linq;
 
 namespace Mastership.Database.Repositories
 {
-    public class EmployeeRepository : BaseRepository<EmployeeEntity>, IEmployeeRepository
+    public class EmployeeRepository : BaseRepository<EmployeeDTO, EmployeeEntity>, IEmployeeRepository
     {
-        public EmployeeRepository(IDataUnitOfWork uow) : base(uow) { }
+        public EmployeeRepository(IDataUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
-        public EmployeeEntity GetByRegistration(string registration)
+        public EmployeeDTO GetByRegistration(string registration)
         {
-            return this.Query().Where(x => x.Registration.Equals(registration)).FirstOrDefault();
+            return  this._mapper.Map<EmployeeDTO>(this.Query().Where(x => x.Registration.Equals(registration)).FirstOrDefault());
         }
     }
 }

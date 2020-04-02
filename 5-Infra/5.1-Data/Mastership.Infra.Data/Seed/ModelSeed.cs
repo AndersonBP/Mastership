@@ -1,4 +1,4 @@
-﻿using Mastership.Domain.Entities;
+﻿using Mastership.Infra.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

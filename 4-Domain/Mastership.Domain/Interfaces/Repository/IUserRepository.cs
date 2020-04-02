@@ -1,7 +1,7 @@
-using Mastership.Domain.Entities;
+using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces.Repository;
 
 namespace Mastership.Domain.Repository
 {
-    public interface IUserRepository : IRepository<UserEntity> { }
+    public interface IUserRepository : IRepository<UserDTO> { }
 }

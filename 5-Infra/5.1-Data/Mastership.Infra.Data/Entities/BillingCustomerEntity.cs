@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Mastership.Domain.Entities
+namespace Mastership.Infra.Data.Entities
 {
     public class BillingCustomerEntity : BaseEntity
     {

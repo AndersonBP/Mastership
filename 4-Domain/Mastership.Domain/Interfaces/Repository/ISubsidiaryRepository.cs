@@ -3,5 +3,7 @@ using Mastership.Domain.Interfaces.Repository;
 
 namespace Mastership.Domain.Repository
 {
-    public interface ISubsidiaryRepository : IRepository<SubsidiaryDTO> { }
+    public interface ISubsidiaryRepository : IRepository<SubsidiaryDTO> {
+        SubsidiaryDTO GetByDomainName(string domainName);
+    }
 }

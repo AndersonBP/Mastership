@@ -23,15 +23,21 @@ namespace Mastership.Infra.CrossCutting.IoC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Application
+            services.AddScoped<IBillingCustomerApplication, BillingCustomerApplication>();
             services.AddScoped<ICompanyApplication, CompanyApplication>();
+            services.AddScoped<ISubsidiaryApplication, SubsidiaryApplication>();
             services.AddScoped<IEmployeeApplication, EmployeeApplication>();
             services.AddScoped<IPointTimeApplication, PointTimeApplication>();
+            services.AddScoped<IUserApplication, UserApplication>();
 
 
             // Infra - Data
+            services.AddScoped<IBillingCustomerRepository, BillingCustomerRepository>();
+            services.AddScoped<ISubsidiaryRepository, SubsidiaryRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IPointTimeRepository, PointTimeRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
 
             services.AddScoped<IDataUnitOfWork, DataUnitOfWork>();

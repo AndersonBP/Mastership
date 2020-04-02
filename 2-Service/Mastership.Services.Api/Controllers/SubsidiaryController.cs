@@ -9,9 +9,11 @@ namespace Mastership.Services.Api.Controllers
 {
     public class SubsidiaryController : ControllerBase
     {
-        public SubsidiaryController(IPointTimeApplication service)
-        {
+        private readonly ISubsidiaryApplication service;
 
+        public SubsidiaryController(ISubsidiaryApplication service)
+        {
+            this.service = service;
         }
 
         [HttpPost]
@@ -20,9 +22,9 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CheckRegistration([FromBody]SubsidiaryViewModel obj)
+        public IActionResult CheckDomainName([FromBody]SubsidiaryViewModel obj)
         {
-            return Ok("");
+            return Ok(this.service.CheckDomainName(obj.DomainName));
         }
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Mastership.Domain;
 using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
@@ -10,5 +11,13 @@ namespace Mastership.Application.Services
     {
         public SubsidiaryApplication(ISubsidiaryRepository repository, IMapper mapper) : base(repository, mapper) { }
 
+        public SubsidiaryViewModel CheckDomainName(string domainName)
+        {
+            var subsidiary = this.MapToViewModel(this.Repository.GetByDomainName(domainName));
+            if (subsidiary == null)
+                throw new NotFoundException("Subsidiary not found!");
+
+            return subsidiary;
+        }
     }
 }

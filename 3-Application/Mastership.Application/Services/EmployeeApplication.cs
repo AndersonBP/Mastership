@@ -17,13 +17,14 @@ namespace Mastership.Application.Services
             this.pointTimeApplication = pointTimeApplication;
         }
 
-        public EmployeeViewModel CheckRegistration(EmployeeViewModel vm, string subName)
+        public CheckRegistrationViewModel CheckRegistration(CheckRegistrationViewModel vm, string subName)
         {
-            var employe = this.MapToViewModel(this.Repository.GetByRegistrationAndDomainName(vm.Registration, subName));
+            var employe = this._mapper.Map<CheckRegistrationViewModel>(this.MapToViewModel(this.Repository.GetByRegistrationAndDomainName(vm.Registration, subName)));
             if (employe == null)
                 throw new NotFoundException("Employee not found!");
 
-            employe.PointsTime = this.pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employe.Id);
+            employe.QuestionType = this.pointTimeApplication.GetQuestionKey();
+            employe.PointsTime =  pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employe.Id);
             return employe;
         }
     }

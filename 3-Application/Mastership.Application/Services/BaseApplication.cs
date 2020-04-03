@@ -17,7 +17,7 @@ namespace Mastership.Application.Services
         where TRepository : IRepository<TType>
     {
         protected readonly TRepository Repository;
-        private readonly IMapper _mapper;
+        protected readonly IMapper _mapper;
 
         public BaseApplication(TRepository repository, IMapper mapper)
         {

@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\4-Domain\Mastership.Domain\Mastership.Domain.csproj" />
+    <ProjectReference Include="..\..\5.2-CrossCutting\Mastership.Infra.CrossCutting.Extensions\Mastership.Infra.CrossCutting.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

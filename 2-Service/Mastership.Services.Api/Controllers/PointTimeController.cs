@@ -1,7 +1,5 @@
 using Mastership.Domain.Interfaces.Application;
-using Mastership.Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace Mastership.Services.Api.Controllers

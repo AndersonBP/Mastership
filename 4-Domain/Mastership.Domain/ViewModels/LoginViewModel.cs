@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mastership.Domain.ViewModels
 {
-    public class LoginViewModel
+    public class    LoginViewModel
     {
         public string user { get; set; }
         public string password { get; set; }

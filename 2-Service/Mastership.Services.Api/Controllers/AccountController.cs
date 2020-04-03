@@ -9,6 +9,10 @@ using System.Linq;
 
 namespace Mastership.Services.Api.Controllers
 {
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("[controller]")]
+    [Produces("application/json")]
     public class AccountController : ControllerBase
     {
         private readonly JwtTokenOptions _jwtTokenOptions;
@@ -18,11 +22,13 @@ namespace Mastership.Services.Api.Controllers
             this._userApplication = userApplication;
         }
 
-        [HttpPost]
         [AllowAnonymous]
-        [Route("auth")]
-        public IActionResult Login([FromBody] LoginViewModel model)
-        {
+        [HttpPost("auth")]
+        public IActionResult Login(
+            [FromBody] LoginViewModel model,
+            [FromServices]SignInConfigurations signInConfigurations,
+            [FromServices]JwtTokenOptions jwtTokenOptions
+        ) {
             var user = this._userApplication.Search(new System.Guid());
 
             if (user != null)
@@ -35,11 +41,10 @@ namespace Mastership.Services.Api.Controllers
                     message = ""
                 });
             }
-            return StatusCode(401,
-                new
-                {
-                    content = "Fail on login.",
-                });
+
+            return StatusCode(401, new ResponseViewModel {
+                ErrorMessage = "Fail on login."
+            });
         }
 
         private object GerarTokenUsuario(UserViewModel user)

@@ -4,8 +4,7 @@ namespace Mastership.Infra.Data.Entities
 {
     public class PointTimeEntity : BaseEntity
     {
-        public DateTime Day { get; set; }
-        public TimeSpan Hour { get; set; }
+        public DateTime DateTime { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public string IP { get; set; }

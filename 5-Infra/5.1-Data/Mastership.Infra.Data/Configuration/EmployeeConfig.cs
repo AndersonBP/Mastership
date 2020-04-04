@@ -11,6 +11,9 @@ namespace Mastership.Database.Configuration
         public override void Configure(EntityTypeBuilder<EmployeeEntity> builder)
         {
             base.Configure(builder);
+            builder.Property(x => x.FullName).IsRequired();
+            builder.Property(x => x.Name).IsRequired();
+
             builder.HasIndex(x => x.CPF).IsUnique();
             builder.Property(x => x.CPF).HasMaxLength(15);
 

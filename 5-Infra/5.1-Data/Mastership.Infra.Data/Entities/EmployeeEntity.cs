@@ -15,7 +15,7 @@ namespace Mastership.Infra.Data.Entities
         
         public string ForeignId { get; set; }
 
-        public Guid UserId { get; set; }
+        public Nullable<Guid> UserId { get; set; }
         public virtual UserEntity User { get; set; }
 
         public Guid SubsidiaryId { get; set; }

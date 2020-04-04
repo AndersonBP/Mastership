@@ -106,7 +106,7 @@ namespace Mastership.Services.Api
             .AddMvc()
             .AddNewtonsoftJson(o => {
                 o.SerializerSettings.ContractResolver = new DefaultContractResolver() {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
+                    NamingStrategy = new CamelCaseNamingStrategy()
                 };
                 o.SerializerSettings.Converters.Add(new StringEnumConverter());
             });

@@ -16,7 +16,7 @@ namespace Mastership.Database.Repositories
 
         public IQueryable<PointTimeDTO> GetByDay(DateTime day, Guid employeId)
         {
-            return this._mapper.ProjectTo<PointTimeDTO>(this.Query().Where(x => x.EmployeeId.Equals(employeId) && x.Day.Equals(day)));
+            return this._mapper.ProjectTo<PointTimeDTO>(this.Query().Where(x => x.EmployeeId.Equals(employeId) && x.DateTime.Date.Equals(day))); ;
         }
     }
 }

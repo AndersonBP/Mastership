@@ -9,6 +9,25 @@ namespace Mastership.Infra.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Enable = table.Column<bool>(nullable: false, defaultValue: true),
+                    Deleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    ChangeDate = table.Column<DateTime>(nullable: false),
+                    Username = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    UserType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BillingCustomer",
                 columns: table => new
                 {
@@ -17,11 +36,18 @@ namespace Mastership.Infra.Data.Migrations
                     Deleted = table.Column<bool>(nullable: false, defaultValue: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BillingCustomer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BillingCustomer_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,6 +98,7 @@ namespace Mastership.Infra.Data.Migrations
                     ZipCode = table.Column<string>(nullable: true),
                     Latitude = table.Column<double>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: true),
                     CompanyId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -81,6 +108,12 @@ namespace Mastership.Infra.Data.Migrations
                         name: "FK_Subsidiary_Company_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Company",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Subsidiary_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -102,6 +135,7 @@ namespace Mastership.Infra.Data.Migrations
                     AdmissionDate = table.Column<DateTime>(nullable: false),
                     Birthday = table.Column<DateTime>(nullable: false),
                     ForeignId = table.Column<string>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: true),
                     SubsidiaryId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -111,6 +145,12 @@ namespace Mastership.Infra.Data.Migrations
                         name: "FK_Employee_Subsidiary_SubsidiaryId",
                         column: x => x.SubsidiaryId,
                         principalTable: "Subsidiary",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employee_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -124,8 +164,7 @@ namespace Mastership.Infra.Data.Migrations
                     Deleted = table.Column<bool>(nullable: false, defaultValue: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
-                    Day = table.Column<DateTime>(type: "date", nullable: false),
-                    Hour = table.Column<TimeSpan>(type: "time", nullable: false),
+                    DateTime = table.Column<DateTime>(nullable: false),
                     Latitude = table.Column<decimal>(nullable: false),
                     Longitude = table.Column<decimal>(nullable: false),
                     IP = table.Column<string>(nullable: true),
@@ -145,41 +184,15 @@ namespace Mastership.Infra.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Enable = table.Column<bool>(nullable: false, defaultValue: true),
-                    Deleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    ChangeDate = table.Column<DateTime>(nullable: false),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    EmployeeId = table.Column<Guid>(nullable: true),
-                    BillingCustomerId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_BillingCustomer_BillingCustomerId",
-                        column: x => x.BillingCustomerId,
-                        principalTable: "BillingCustomer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_User_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.InsertData(
                 table: "BillingCustomer",
-                columns: new[] { "Id", "ChangeDate", "CreationDate", "Name" },
-                values: new object[] { new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "MConsult" });
+                columns: new[] { "Id", "ChangeDate", "CreationDate", "Name", "UserId" },
+                values: new object[] { new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "MConsult", null });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "ChangeDate", "CreationDate", "Email", "Password", "UserType", "Username" },
+                values: new object[] { new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ec629c61176bbe0ebbc27dd636cc6f31", 1, "mconsult" });
 
             migrationBuilder.InsertData(
                 table: "Company",
@@ -187,19 +200,19 @@ namespace Mastership.Infra.Data.Migrations
                 values: new object[] { new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), "V. DOM LUIS, 1200, TORRE 1, 21 ANDAR, SALA 2104 - Meireles, Fortaleza - CE", new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), "14.921.000/0001-39", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, -3.7357805000000002, -38.490112000000003, "Mconsult", "M C Serviços de Tecnologia e Gestão LTDA", "60160-830" });
 
             migrationBuilder.InsertData(
-                table: "User",
-                columns: new[] { "Id", "BillingCustomerId", "ChangeDate", "CreationDate", "EmployeeId", "Password", "Username" },
-                values: new object[] { new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "mc123321", "mconsult" });
-
-            migrationBuilder.InsertData(
                 table: "Subsidiary",
-                columns: new[] { "Id", "Adress", "CNPJ", "ChangeDate", "CompanyId", "CreationDate", "DomainName", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "ZipCode" },
-                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mconsult", null, 0.0, 0.0, "MConsult", null, null });
+                columns: new[] { "Id", "Adress", "CNPJ", "ChangeDate", "CompanyId", "CreationDate", "DomainName", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "UserId", "ZipCode" },
+                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mconsult", null, 0.0, 0.0, "MConsult", null, null, null });
 
             migrationBuilder.InsertData(
                 table: "Employee",
-                columns: new[] { "Id", "AdmissionDate", "Birthday", "CPF", "ChangeDate", "CreationDate", "ForeignId", "FullName", "Name", "PIS", "Registration", "SubsidiaryId" },
-                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 2, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2020, 4, 2, 11, 39, 6, 92, DateTimeKind.Local).AddTicks(9942), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f") });
+                columns: new[] { "Id", "AdmissionDate", "Birthday", "CPF", "ChangeDate", "CreationDate", "ForeignId", "FullName", "Name", "PIS", "Registration", "SubsidiaryId", "UserId" },
+                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 3, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2020, 4, 3, 22, 9, 36, 100, DateTimeKind.Local).AddTicks(373), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BillingCustomer_UserId",
+                table: "BillingCustomer",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Company_BillingCustomerId",
@@ -219,6 +232,11 @@ namespace Mastership.Infra.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employee_UserId",
+                table: "Employee",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employee_SubsidiaryId_Registration",
                 table: "Employee",
                 columns: new[] { "SubsidiaryId", "Registration" },
@@ -235,25 +253,21 @@ namespace Mastership.Infra.Data.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_BillingCustomerId",
-                table: "User",
-                column: "BillingCustomerId",
+                name: "IX_Subsidiary_DomainName",
+                table: "Subsidiary",
+                column: "DomainName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_EmployeeId",
-                table: "User",
-                column: "EmployeeId",
-                unique: true);
+                name: "IX_Subsidiary_UserId",
+                table: "Subsidiary",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "PointTime");
-
-            migrationBuilder.DropTable(
-                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Employee");
@@ -266,6 +280,9 @@ namespace Mastership.Infra.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "BillingCustomer");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

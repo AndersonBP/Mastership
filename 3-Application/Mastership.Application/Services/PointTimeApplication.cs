@@ -22,7 +22,7 @@ namespace Mastership.Application.Services
 
         public void Register()
         {
-            this.Repository.Save(new PointTimeDTO() { Day = DateTime.Now.AbsoluteStart(), Hour = DateTime.Now.TimeOfDay, EmployeeId = Guid.Parse("546d31b0-f719-4789-b5f2-7ff94afa72e8") });
+            this.Repository.Save(new PointTimeDTO() {DateTime = DateTime.Now, EmployeeId = Guid.Parse("546d31b0-f719-4789-b5f2-7ff94afa72e8") });
         }
 
         public KeyQuestionType GetQuestionKey(Nullable<KeyQuestionType> exclude = null)

@@ -14,9 +14,6 @@ namespace Mastership.Database.Configuration
             base.Configure(builder);
 
             builder.Property(x => x.Sequential).ValueGeneratedOnAdd();
-            builder.Property(x => x.Day).HasColumnType("date");
-            builder.Property(x => x.Hour).HasColumnType("time");
-
         }
     }
 }

@@ -44,7 +44,12 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BillingCustomer");
 
@@ -188,10 +193,15 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<Guid>("SubsidiaryId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CPF")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("SubsidiaryId", "Registration")
                         .IsUnique();
@@ -202,8 +212,8 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
-                            AdmissionDate = new DateTime(2020, 4, 2, 0, 0, 0, 0, DateTimeKind.Local),
-                            Birthday = new DateTime(2020, 4, 2, 11, 39, 6, 92, DateTimeKind.Local).AddTicks(9942),
+                            AdmissionDate = new DateTime(2020, 4, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            Birthday = new DateTime(2020, 4, 3, 22, 9, 36, 100, DateTimeKind.Local).AddTicks(373),
                             CPF = "062.898.123-60",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -226,8 +236,8 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -241,9 +251,6 @@ namespace Mastership.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
-
-                    b.Property<TimeSpan>("Hour")
-                        .HasColumnType("time");
 
                     b.Property<string>("IP")
                         .HasColumnType("text");
@@ -318,12 +325,20 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<string>("RazaoSocial")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("ZipCode")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("DomainName")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Subsidiary");
 
@@ -349,9 +364,6 @@ namespace Mastership.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("BillingCustomerId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("ChangeDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -363,8 +375,8 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<Guid?>("EmployeeId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
 
                     b.Property<bool>("Enable")
                         .ValueGeneratedOnAdd()
@@ -374,16 +386,13 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
+                    b.Property<int>("UserType")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Username")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillingCustomerId")
-                        .IsUnique();
-
-                    b.HasIndex("EmployeeId")
-                        .IsUnique();
 
                     b.ToTable("User");
 
@@ -391,14 +400,21 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"),
-                            BillingCustomerId = new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"),
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
                             Enable = false,
-                            Password = "mc123321",
+                            Password = "ec629c61176bbe0ebbc27dd636cc6f31",
+                            UserType = 1,
                             Username = "mconsult"
                         });
+                });
+
+            modelBuilder.Entity("Mastership.Infra.Data.Entities.BillingCustomerEntity", b =>
+                {
+                    b.HasOne("Mastership.Infra.Data.Entities.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Mastership.Infra.Data.Entities.CompanyEntity", b =>
@@ -417,6 +433,10 @@ namespace Mastership.Infra.Data.Migrations
                         .HasForeignKey("SubsidiaryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Mastership.Infra.Data.Entities.UserEntity", "User")
+                        .WithMany("Employees")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Mastership.Infra.Data.Entities.PointTimeEntity", b =>
@@ -435,17 +455,10 @@ namespace Mastership.Infra.Data.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("Mastership.Infra.Data.Entities.UserEntity", b =>
-                {
-                    b.HasOne("Mastership.Infra.Data.Entities.BillingCustomerEntity", "BillingCustomer")
-                        .WithOne("User")
-                        .HasForeignKey("Mastership.Infra.Data.Entities.UserEntity", "BillingCustomerId");
-
-                    b.HasOne("Mastership.Infra.Data.Entities.EmployeeEntity", "Employee")
-                        .WithOne("User")
-                        .HasForeignKey("Mastership.Infra.Data.Entities.UserEntity", "EmployeeId");
+                    b.HasOne("Mastership.Infra.Data.Entities.UserEntity", "User")
+                        .WithMany("Subsidiaries")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

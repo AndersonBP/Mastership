@@ -6,8 +6,7 @@ namespace Mastership.Domain.DTO
 {
     public class PointTimeDTO:BaseDTO
     {
-        public DateTime Day { get; set; }
-        public TimeSpan Hour { get; set; }
+        public DateTime DateTime { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public string IP { get; set; }

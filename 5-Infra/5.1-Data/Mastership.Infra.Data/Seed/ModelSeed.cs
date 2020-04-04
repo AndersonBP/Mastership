@@ -38,8 +38,7 @@ namespace Mastership.Infra.Data
             );
             ;
             builder.Entity<UserEntity>().HasData(
-              new UserEntity() { Id = Guid.Parse("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), Username="mconsult", Password= MD5Extension.GetMd5Hash(MD5.Create(), "mc123321"), UserType = Domain.Enum.UserType.Subsidiary },
-              new UserEntity() { Id = Guid.Parse("fe01e0a6-c73b-41b4-a963-0491bq476cb3"), Username = "employee", Password = MD5Extension.GetMd5Hash(MD5.Create(), "12345"), UserType = Domain.Enum.UserType.Subsidiary }
+              new UserEntity() { Id = Guid.Parse("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), Username="mconsult", Password= MD5Extension.GetMd5Hash(MD5.Create(), "mc123321"), UserType = Domain.Enum.UserType.Subsidiary }
             );
         }
     }

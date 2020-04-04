@@ -13,13 +13,8 @@ namespace Mastership.Database.Configuration
             base.Configure(builder);
 
             builder.HasMany(e => e.Companies)
-           .WithOne(e => e.BillingCustomer)
-           .HasForeignKey(e => e.BillingCustomerId);
-
-            builder.HasOne(a => a.User)
-            .WithOne(b => b.BillingCustomer)
-              .HasForeignKey<UserEntity>(e => e.BillingCustomerId);
-
+               .WithOne(e => e.BillingCustomer)
+               .HasForeignKey(e => e.BillingCustomerId);
         }
     }
 }

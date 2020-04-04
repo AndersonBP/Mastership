@@ -9,7 +9,15 @@ namespace Mastership.Application.Services
 {
     public class SubsidiaryApplication : BaseApplication<SubsidiaryViewModel, SubsidiaryDTO, ISubsidiaryRepository>, ISubsidiaryApplication
     {
-        public SubsidiaryApplication(ISubsidiaryRepository repository, IMapper mapper) : base(repository, mapper) { }
+        public readonly IEmployeeRepository _employeeRepository;
+
+        public SubsidiaryApplication(
+            IMapper mapper,
+            ISubsidiaryRepository repository,
+            IEmployeeRepository employeeRepository
+        ) : base(repository, mapper) {
+            this._employeeRepository = employeeRepository;
+        }
 
         public SubsidiaryViewModel CheckDomainName(string domainName)
         {
@@ -18,6 +26,19 @@ namespace Mastership.Application.Services
                 throw new NotFoundException("Subsidiary not found!");
 
             return subsidiary;
+        }
+
+        public SubsidiaryDTO GetSubsidiaryByUser(UserDTO user) {
+            
+            switch (user.UserType) {
+                case Domain.Enum.UserType.Subsidiary:
+                    return this.Repository.GetByUser(user.Id);
+                case Domain.Enum.UserType.Employee:
+                    var employee = this._employeeRepository.GetByUserId(user.Id);
+                    return employee.Subsidiary;
+                default:
+                    throw new System.Exception("Type of user invalid");
+            }
         }
     }
 }

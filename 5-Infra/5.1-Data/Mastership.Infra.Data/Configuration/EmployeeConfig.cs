@@ -19,10 +19,6 @@ namespace Mastership.Database.Configuration
             builder.HasMany(e => e.PointsTime)
                .WithOne(e => e.Employee)
                .HasForeignKey(e => e.EmployeeId);
-
-            builder.HasOne(a => a.User)
-              .WithOne(b => b.Employee)
-                .HasForeignKey<UserEntity>(e => e.EmployeeId);
         }
     }
 }

@@ -12,6 +12,13 @@ namespace Mastership.Database.Configuration
         {
             base.Configure(builder);
 
+            builder.HasMany(e => e.Employees)
+               .WithOne(e => e.User)
+               .HasForeignKey(e => e.UserId);
+
+            builder.HasMany(e => e.Subsidiaries)
+               .WithOne(e => e.User)
+               .HasForeignKey(e => e.UserId);
         }
     }
 }

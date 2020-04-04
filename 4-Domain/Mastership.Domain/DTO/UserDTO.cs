@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Mastership.Domain.Enum;
 
 namespace Mastership.Domain.DTO
 {
@@ -8,10 +9,10 @@ namespace Mastership.Domain.DTO
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Email { get; set; }
+        public UserType UserType { get; set; }
 
-        public virtual EmployeeDTO Employee { get; set; }
-        public Nullable<Guid> EmployeeId { get; set; }
-        public virtual BillingCustomerDTO BillingCustomer { get; set; }
-        public Nullable<Guid> BillingCustomerId { get; set; }
+        public ICollection<EmployeeDTO> Employees { get; set; }
+        public ICollection<SubsidiaryDTO> Subsidiaries { get; set; }
     }
 }

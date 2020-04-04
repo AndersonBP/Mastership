@@ -16,8 +16,10 @@ namespace Mastership.Domain.DTO
 
         public string ForeignId { get; set; }
 
-        public Guid SubsidiaryId { get; set; }
+        public Guid UserId { get; set; }
         public virtual UserDTO User { get; set; }
+
+        public Guid SubsidiaryId { get; set; }
         public virtual SubsidiaryDTO Subsidiary { get; set; }
 
         public virtual ICollection<PointTimeDTO> PointsTime { get; set; }

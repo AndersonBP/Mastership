@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Mastership.Domain.Enum;
 
 namespace Mastership.Infra.Data.Entities
 {
@@ -6,10 +8,10 @@ namespace Mastership.Infra.Data.Entities
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Email { get; set; }
+        public UserType UserType { get; set; }
 
-        public virtual EmployeeEntity Employee { get; set; }
-        public Nullable<Guid> EmployeeId { get; set; }
-        public virtual BillingCustomerEntity BillingCustomer { get; set; }
-        public Nullable<Guid> BillingCustomerId { get; set; }
+        public virtual ICollection<EmployeeEntity> Employees { get; set; }
+        public virtual ICollection<SubsidiaryEntity> Subsidiaries { get; set; }
     }
 }

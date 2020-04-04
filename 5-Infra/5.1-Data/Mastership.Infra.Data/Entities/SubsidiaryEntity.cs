@@ -18,6 +18,9 @@ namespace Mastership.Infra.Data.Entities
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        public Guid UserId { get; set; }
+        public virtual UserEntity User { get; set; }
+
         public Guid CompanyId { get; set; }
         public virtual CompanyEntity Company { get; set; }
 

@@ -25,5 +25,7 @@ namespace Mastership.Services.Api.Configurations
         public Func<string> JtiGenerator => () => Guid.NewGuid().ToString();
 
         public SigningCredentials SigningCredentials { get; set; }
+
+        public int Seconds { get; internal set; }
     }
 }

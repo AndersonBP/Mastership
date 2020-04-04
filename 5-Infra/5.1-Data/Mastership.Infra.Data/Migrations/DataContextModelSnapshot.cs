@@ -61,7 +61,7 @@ namespace Mastership.Infra.Data.Migrations
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
                             Enable = false,
-                            Name = "MConsult"
+                            Name = "Alldesk"
                         });
                 });
 
@@ -128,18 +128,18 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"),
-                            Adress = "V. DOM LUIS, 1200, TORRE 1, 21 ANDAR, SALA 2104 - Meireles, Fortaleza - CE",
+                            Adress = "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR",
                             BillingCustomerId = new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"),
-                            CNPJ = "14.921.000/0001-39",
+                            CNPJ = "10.347.407/0001-43",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
                             Enable = false,
                             Latitude = -3.7357805000000002,
                             Longitude = -38.490112000000003,
-                            Name = "Mconsult",
-                            RazaoSocial = "M C Serviços de Tecnologia e Gestão LTDA",
-                            ZipCode = "60160-830"
+                            Name = "AllDesk",
+                            RazaoSocial = "MEIRELES, FREITAS E ALMEIDA SERVICOS DE TELEATENDIMENTO LTDA",
+                            ZipCode = "60055-110"
                         });
                 });
 
@@ -153,7 +153,7 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("Birthday")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("date");
 
                     b.Property<string>("CPF")
                         .HasColumnType("character varying(15)")
@@ -179,9 +179,11 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PIS")
@@ -212,13 +214,15 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
-                            AdmissionDate = new DateTime(2020, 4, 3, 0, 0, 0, 0, DateTimeKind.Local),
-                            Birthday = new DateTime(2020, 4, 3, 22, 9, 36, 100, DateTimeKind.Local).AddTicks(373),
+                            AdmissionDate = new DateTime(2020, 4, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            Birthday = new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CPF = "062.898.123-60",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
                             Enable = false,
+                            FullName = "Anderson Benevides Peres",
+                            Name = "Anderson",
                             Registration = "87654321",
                             SubsidiaryId = new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f")
                         });
@@ -237,7 +241,7 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("date with time zone 'EST'");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -350,11 +354,12 @@ namespace Mastership.Infra.Data.Migrations
                             CompanyId = new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
-                            DomainName = "mconsult",
+                            DomainName = "alldesk",
                             Enable = false,
                             Latitude = 0.0,
                             Longitude = 0.0,
-                            Name = "MConsult"
+                            Name = "Alldesk",
+                            UserId = new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3")
                         });
                 });
 
@@ -404,9 +409,9 @@ namespace Mastership.Infra.Data.Migrations
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
                             Enable = false,
-                            Password = "ec629c61176bbe0ebbc27dd636cc6f31",
+                            Password = "5af3d7ad0ff3e10cd38d298e6efec318",
                             UserType = 1,
-                            Username = "mconsult"
+                            Username = "alldesk"
                         });
                 });
 

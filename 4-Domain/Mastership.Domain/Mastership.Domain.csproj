@@ -12,4 +12,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.OData" Version="7.3.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\5-Infra\5.2-CrossCutting\Mastership.Infra.CrossCutting.Extensions\Mastership.Infra.CrossCutting.Extensions.csproj" />
+  </ItemGroup>
 </Project>

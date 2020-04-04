@@ -13,6 +13,9 @@ namespace Mastership.Database.Configuration
         {
             base.Configure(builder);
 
+            builder.Property(e => e.DateTime)
+                .HasColumnType("timestamp with time zone");
+
             builder.Property(x => x.Sequential).ValueGeneratedOnAdd();
         }
     }

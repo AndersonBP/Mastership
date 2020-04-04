@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mastership.Database.Configuration
 {
@@ -16,6 +17,8 @@ namespace Mastership.Database.Configuration
 
             builder.HasIndex(x => x.CPF).IsUnique();
             builder.Property(x => x.CPF).HasMaxLength(15);
+
+            builder.Property(x => x.Birthday).HasColumnType("date");
 
             builder.HasIndex(x => new { x.SubsidiaryId, x.Registration }).IsUnique();
 

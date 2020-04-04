@@ -127,13 +127,13 @@ namespace Mastership.Infra.Data.Migrations
                     Deleted = table.Column<bool>(nullable: false, defaultValue: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    FullName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    FullName = table.Column<string>(nullable: false),
                     CPF = table.Column<string>(maxLength: 15, nullable: true),
                     Registration = table.Column<string>(nullable: true),
                     PIS = table.Column<string>(nullable: true),
                     AdmissionDate = table.Column<DateTime>(nullable: false),
-                    Birthday = table.Column<DateTime>(nullable: false),
+                    Birthday = table.Column<DateTime>(type: "date", nullable: false),
                     ForeignId = table.Column<string>(nullable: true),
                     UserId = table.Column<Guid>(nullable: true),
                     SubsidiaryId = table.Column<Guid>(nullable: false)
@@ -164,7 +164,7 @@ namespace Mastership.Infra.Data.Migrations
                     Deleted = table.Column<bool>(nullable: false, defaultValue: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ChangeDate = table.Column<DateTime>(nullable: false),
-                    DateTime = table.Column<DateTime>(nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Latitude = table.Column<decimal>(nullable: false),
                     Longitude = table.Column<decimal>(nullable: false),
                     IP = table.Column<string>(nullable: true),
@@ -187,27 +187,27 @@ namespace Mastership.Infra.Data.Migrations
             migrationBuilder.InsertData(
                 table: "BillingCustomer",
                 columns: new[] { "Id", "ChangeDate", "CreationDate", "Name", "UserId" },
-                values: new object[] { new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "MConsult", null });
+                values: new object[] { new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Alldesk", null });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "ChangeDate", "CreationDate", "Email", "Password", "UserType", "Username" },
-                values: new object[] { new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ec629c61176bbe0ebbc27dd636cc6f31", 1, "mconsult" });
+                values: new object[] { new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "5af3d7ad0ff3e10cd38d298e6efec318", 1, "alldesk" });
 
             migrationBuilder.InsertData(
                 table: "Company",
                 columns: new[] { "Id", "Adress", "BillingCustomerId", "CNPJ", "ChangeDate", "CreationDate", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "ZipCode" },
-                values: new object[] { new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), "V. DOM LUIS, 1200, TORRE 1, 21 ANDAR, SALA 2104 - Meireles, Fortaleza - CE", new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), "14.921.000/0001-39", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, -3.7357805000000002, -38.490112000000003, "Mconsult", "M C Serviços de Tecnologia e Gestão LTDA", "60160-830" });
+                values: new object[] { new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR", new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), "10.347.407/0001-43", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, -3.7357805000000002, -38.490112000000003, "AllDesk", "MEIRELES, FREITAS E ALMEIDA SERVICOS DE TELEATENDIMENTO LTDA", "60055-110" });
 
             migrationBuilder.InsertData(
                 table: "Subsidiary",
                 columns: new[] { "Id", "Adress", "CNPJ", "ChangeDate", "CompanyId", "CreationDate", "DomainName", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "UserId", "ZipCode" },
-                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mconsult", null, 0.0, 0.0, "MConsult", null, null, null });
+                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "alldesk", null, 0.0, 0.0, "Alldesk", null, new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), null });
 
             migrationBuilder.InsertData(
                 table: "Employee",
                 columns: new[] { "Id", "AdmissionDate", "Birthday", "CPF", "ChangeDate", "CreationDate", "ForeignId", "FullName", "Name", "PIS", "Registration", "SubsidiaryId", "UserId" },
-                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 3, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2020, 4, 3, 22, 9, 36, 100, DateTimeKind.Local).AddTicks(373), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null });
+                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 4, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Anderson Benevides Peres", "Anderson", null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BillingCustomer_UserId",

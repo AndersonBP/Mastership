@@ -26,6 +26,6 @@ namespace Mastership.Services.Api.Configurations
 
         public SigningCredentials SigningCredentials { get; set; }
 
-        public int Seconds { get; internal set; }
+        public int Seconds { get; set; }
     }
 }

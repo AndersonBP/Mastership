@@ -21,13 +21,23 @@ namespace Mastership.Application.Services
 
         public CheckRegistrationViewModel CheckRegistration(CheckRegistrationViewModel vm, string subName)
         {
-            var employe = this._mapper.Map<CheckRegistrationViewModel>(this.MapToViewModel(this.Repository.GetByRegistrationAndDomainName(vm.Registration, subName)));
-            if (employe == null)
+            var employee = this.Repository.GetByRegistrationAndDomainName(vm.Registration, subName);
+            if (employee == null)
                 throw new NotFoundException("Employee not found!");
 
-            employe.QuestionType = this.GetQuestionKey();
-            employe.PointsTime = pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employe.Id);
-            return employe;
+            var registration = new CheckRegistrationViewModel()
+            {
+                FullName = employee.FullName,
+                Name = employee.Name,
+                Registration = employee.Registration,
+                Subsidiary = this._mapper.Map<SubsidiaryViewModel>(employee.Subsidiary),
+                Id = employee.Id
+            };
+            registration.Subsidiary.Employees = null;
+
+            registration.QuestionType = this.GetQuestionKey();
+            registration.PointsTime = pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employee.Id);
+            return registration;
         }
 
         public KeyQuestionType GetQuestionKey(Nullable<KeyQuestionType> exclude = null)

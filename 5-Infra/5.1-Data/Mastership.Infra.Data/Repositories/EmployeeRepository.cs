@@ -4,6 +4,7 @@ using Mastership.Domain.Repository;
 using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Interfaces;
 using Mastership.Infra.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -22,6 +23,10 @@ namespace Mastership.Database.Repositories
 
             var query = this.Query().FirstOrDefault(x => x.UserId == id);
             return this._mapper.Map<EmployeeDTO>(query);
+        }
+        public override IQueryable<EmployeeEntity> Includes(IQueryable<EmployeeEntity> query)
+        {
+            return query.Include(i => i.Subsidiary);
         }
     }
 }

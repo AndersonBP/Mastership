@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mastership.Infra.Data.Repositories
 {
-    public abstract class BaseRepository<TDtoType, TEntity> 
+    public abstract class BaseRepository<TDtoType, TEntity>
         where TDtoType : BaseDTO, new()
-        where TEntity:BaseEntity, new()
+        where TEntity : BaseEntity, new()
     {
         protected readonly IMapper _mapper;
         private DbSet<TEntity> _dbSet;
@@ -25,7 +25,7 @@ namespace Mastership.Infra.Data.Repositories
             this.Context = uow.Context;
             this._mapper = mapper;
         }
-         
+
 
         protected DbSet<TEntity> DbSet
         {
@@ -38,8 +38,13 @@ namespace Mastership.Infra.Data.Repositories
             }
         }
 
+        public virtual IQueryable<TEntity> Includes(IQueryable<TEntity> query)
+        {
+            return query;
+        }
+
         protected virtual IQueryable<TEntity> Query(bool tracking = false, bool withUserFilter = true)
-            => (tracking ? DbSet : DbSet.AsNoTracking());
+            => this.Includes((tracking ? DbSet : DbSet.AsNoTracking()));
 
         public IQueryable<TDtoType> List(bool withUserFilter = true)
             => this._mapper.ProjectTo<TDtoType>(Query(false, withUserFilter));

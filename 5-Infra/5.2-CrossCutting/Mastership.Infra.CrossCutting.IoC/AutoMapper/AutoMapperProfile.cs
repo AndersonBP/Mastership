@@ -9,8 +9,7 @@ namespace Mastership.Infra.CrossCutting.IoC
     {
         public AutoMapperProfile()
         {
-            CreateMap<EmployeeViewModel, CheckRegistrationViewModel>().ForMember(x => x.QuestionType, opt => opt.Ignore()).ReverseMap();
-            
+            //CreateMap<EmployeeViewModel, CheckRegistrationViewModel>().ForMember(x => x.QuestionType, opt => opt.Ignore()).ReverseMap();
 
             CreateMap<BillingCustomerViewModel, BillingCustomerDTO>().ReverseMap();
             CreateMap<CompanyViewModel, CompanyDTO>().ReverseMap();

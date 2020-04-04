@@ -105,6 +105,7 @@ namespace Mastership.Services.Api
             services
             .AddMvc()
             .AddNewtonsoftJson(o => {
+                //o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 o.SerializerSettings.ContractResolver = new DefaultContractResolver() {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 };

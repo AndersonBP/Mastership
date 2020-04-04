@@ -1,5 +1,7 @@
 using Mastership.Domain.Interfaces.Application;
+using Mastership.Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace Mastership.Services.Api.Controllers
@@ -19,10 +21,9 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CheckRegistration()
+        public IActionResult CheckRegistration([FromBody]CheckRegistrationViewModel obj, [FromHeader(Name = "DomainName")][Required] string domainName)
         {
-            this.service.Register();
-            return Ok(true);
+            return Ok(this.service.Register(obj, domainName));
         }
     }
 }

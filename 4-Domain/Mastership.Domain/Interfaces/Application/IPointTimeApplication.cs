@@ -8,7 +8,6 @@ namespace Mastership.Domain.Interfaces.Application
 {
     public interface IPointTimeApplication : IApplication<PointTimeViewModel> {
         ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId);
-        KeyQuestionType GetQuestionKey(Nullable<KeyQuestionType> exclude = null);
-        void Register();
+        CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName);
     }
 }

@@ -13,24 +13,33 @@ namespace Mastership.Application.Services
 {
     public class PointTimeApplication : BaseApplication<PointTimeViewModel, PointTimeDTO, IPointTimeRepository>, IPointTimeApplication
     {
-        public PointTimeApplication(IPointTimeRepository repository, IMapper mapper) : base(repository, mapper) { }
+        private readonly Lazy<IEmployeeApplication> employeeApplication;
+        public PointTimeApplication(Lazy<IEmployeeApplication> employeeApplication, IPointTimeRepository repository, IMapper mapper) : base(repository, mapper)
+        {
+            this.employeeApplication = employeeApplication;
+        }
 
         public ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId)
         {
-            return  this.MapToViewModel(this.Repository.GetByDay(day, employeId).ToList());
+            return this.MapToViewModel(this.Repository.GetByDay(day, employeId).ToList());
         }
 
-        public void Register()
-        {
-            this.Repository.Save(new PointTimeDTO() {DateTime = DateTime.Now, EmployeeId = Guid.Parse("546d31b0-f719-4789-b5f2-7ff94afa72e8") });
-        }
 
-        public KeyQuestionType GetQuestionKey(Nullable<KeyQuestionType> exclude = null)
+
+        public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
         {
-            var values = Enum.GetValues(typeof(KeyQuestionType)).Cast<KeyQuestionType>().Where(x=> !exclude.HasValue || exclude.Value!=x).ToArray();
-            var rand = new Random();
-            var questionKey = values.GetValue(rand.Next(values.Length));
-            return (KeyQuestionType)questionKey;
+            var employee = this.employeeApplication.Value.CheckRegistration(vm, domainName);
+            employee.TrueAnswer = false;
+            if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employee.Id, vm.Answer))
+            {
+                employee.PointsTime.Add(this.MapToViewModel(this.Repository.Save(new PointTimeDTO() { DateTime = DateTime.Now, EmployeeId = employee.Id })));
+                employee.PointsTime.OrderBy(x => x.DateTime);
+                employee.TrueAnswer = true;
+            }
+            else
+                employee.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
+            
+            return employee;
         }
     }
 }

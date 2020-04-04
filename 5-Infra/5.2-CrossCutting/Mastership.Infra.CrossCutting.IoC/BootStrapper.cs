@@ -3,6 +3,7 @@ using Mastership.Application.Services;
 using Mastership.Database.Repositories;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
+using Mastership.Infra.CrossCutting.Extensions;
 using Mastership.Infra.Data.Context;
 using Mastership.Infra.Data.Interfaces;
 using Mastership.Infra.Data.UoW;
@@ -39,6 +40,7 @@ namespace Mastership.Infra.CrossCutting.IoC
             services.AddScoped<IPointTimeRepository, PointTimeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
+            services.AddLazyResolution();
 
             services.AddScoped<IDataUnitOfWork, DataUnitOfWork>();
             services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(opt =>

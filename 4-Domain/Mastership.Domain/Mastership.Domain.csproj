@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Validations\" />
+    <Folder Include="Enum\" />
   </ItemGroup>
 
   <ItemGroup>

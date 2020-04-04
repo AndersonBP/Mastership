@@ -27,11 +27,19 @@ namespace Mastership.Infra.Data
 
 
             builder.Entity<EmployeeEntity>().HasData(
-              new EmployeeEntity() { SubsidiaryId = Guid.Parse("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), Id = Guid.Parse("546d31b0-f719-4789-b5f2-7ff94afa72e8"), Registration="87654321", CPF="062.898.123-60", AdmissionDate=DateTime.Now.Date, Birthday= DateTime.Now }
+              new EmployeeEntity() {
+                  SubsidiaryId = Guid.Parse("a88c24f4-d6c9-4eba-8c86-67d515c3979f"),
+                  Id = Guid.Parse("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
+                  Registration = "87654321",
+                  CPF = "062.898.123-60",
+                  AdmissionDate = DateTime.Now.Date,
+                  Birthday = DateTime.Now
+                }
             );
             ;
             builder.Entity<UserEntity>().HasData(
-              new UserEntity() { BillingCustomerId = Guid.Parse("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), Id = Guid.Parse("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), Username="mconsult", Password= MD5Extension.GetMd5Hash(MD5.Create(), "mc123321") }
+              new UserEntity() { Id = Guid.Parse("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), Username="mconsult", Password= MD5Extension.GetMd5Hash(MD5.Create(), "mc123321"), UserType = Domain.Enum.UserType.Subsidiary },
+              new UserEntity() { Id = Guid.Parse("fe01e0a6-c73b-41b4-a963-0491bq476cb3"), Username = "employee", Password = MD5Extension.GetMd5Hash(MD5.Create(), "12345"), UserType = Domain.Enum.UserType.Subsidiary }
             );
         }
     }

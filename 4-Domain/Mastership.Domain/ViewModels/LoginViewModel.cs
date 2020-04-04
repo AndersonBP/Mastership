@@ -6,8 +6,8 @@ namespace Mastership.Domain.ViewModels
 {
     public class    LoginViewModel
     {
-        public string user { get; set; }
-        public string password { get; set; }
-        public string domain { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
     }
 }

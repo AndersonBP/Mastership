@@ -12,11 +12,12 @@ namespace Mastership.Application.Services
     {
         public UserApplication(IUserRepository repository, IMapper mapper) : base(repository, mapper) { }
 
-        public UserViewModel Authenticate(LoginViewModel login)
+        public UserViewModel Authenticate(string domain, LoginViewModel login)
         {
             MD5 md5Hash = MD5.Create();
-            var senha = MD5Extension.GetMd5Hash(md5Hash, login.password);
-            return this.MapToViewModel(this.Repository.Authenticate(login.user, senha, login.domain));
+            var password = MD5Extension.GetMd5Hash(md5Hash, login.Password);
+            var user = this.Repository.Authenticate(login.Username, login.Email, password, domain);
+            return this.MapToViewModel(user);
         }
     }
 }

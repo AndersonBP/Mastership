@@ -18,5 +18,15 @@ namespace Mastership.Database.Repositories
         {
             return this._mapper.ProjectTo<PointTimeDTO>(this.Query().Where(x => x.EmployeeId.Equals(employeId) && x.DateTime.Date.Equals(day))); ;
         }
+
+        public long GetLastSequentialOf(Guid subsidiaryId) {
+            var query = this.Query()
+                .Where(x => x.Employee.SubsidiaryId == subsidiaryId)
+                .OrderByDescending(x => x.Sequential)
+                .Select(x => x.Sequential)
+                .FirstOrDefault();
+
+            return query;
+        }
     }
 }

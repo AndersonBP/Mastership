@@ -37,26 +37,27 @@ namespace Mastership.Application.Services
 
         public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
         {
-            var employee = this.employeeApplication.Value.CheckRegistration(vm, domainName);
-            employee.TrueAnswer = false;
-            if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employee.Id, vm.Answer))
+            var checkRegistration = this.employeeApplication.Value.CheckRegistration(vm, domainName);
+            checkRegistration.TrueAnswer = false;
+            if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, checkRegistration.Id, vm.Answer))
             {
                 var registration = this.Repository.Save(
                     new PointTimeDTO {
                         DateTime = DateTime.Now,
-                        EmployeeId = employee.Id,
-                        Sequential = this.GetSequential(employee.Subsidiary.Id)
+                        EmployeeId = checkRegistration.Id,
+                        Sequential = this.GetSequential(checkRegistration.Subsidiary.Id)
                     });
 
-                employee.PointsTime.Add(this.MapToViewModel(registration));
-                employee.PointsTime.OrderBy(x => x.DateTime);
-                employee.TrueAnswer = true;
+                checkRegistration.PointsTime.Add(this.MapToViewModel(registration));
+                checkRegistration.PointsTime.OrderBy(x => x.DateTime);
+                checkRegistration.TrueAnswer = true;
+                
                 this._emailApplication.SendEmailAsync(registration);
             } else {
-                employee.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
+                checkRegistration.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
             }
             
-            return employee;
+            return checkRegistration;
         }
 
         private long GetSequential(Guid subsidiaryId) {

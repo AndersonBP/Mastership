@@ -21,10 +21,11 @@ namespace Mastership.Application.Services
 
         public ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId)
         {
-            return this.MapToViewModel(this.Repository.GetByDay(day, employeId).ToList());
+            var registrations = this.Repository.GetByDay(day, employeId)
+                .OrderBy(x => x.DateTime)
+                .ToList();
+            return this.MapToViewModel(registrations);
         }
-
-
 
         public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
         {
@@ -32,14 +33,26 @@ namespace Mastership.Application.Services
             employee.TrueAnswer = false;
             if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employee.Id, vm.Answer))
             {
-                employee.PointsTime.Add(this.MapToViewModel(this.Repository.Save(new PointTimeDTO() { DateTime = DateTime.Now, EmployeeId = employee.Id })));
+                var registration = this.Repository.Save(
+                    new PointTimeDTO {
+                        DateTime = DateTime.Now,
+                        EmployeeId = employee.Id,
+                        Sequential = this.GetSequential(employee.Subsidiary.Id)
+                    });
+
+                employee.PointsTime.Add(this.MapToViewModel(registration));
                 employee.PointsTime.OrderBy(x => x.DateTime);
                 employee.TrueAnswer = true;
-            }
-            else
+            } else {
                 employee.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
+            }
             
             return employee;
+        }
+
+        private long GetSequential(Guid subsidiaryId) {
+            var currentSequential = this.Repository.GetLastSequentialOf(subsidiaryId);
+            return currentSequential + 1;
         }
     }
 }

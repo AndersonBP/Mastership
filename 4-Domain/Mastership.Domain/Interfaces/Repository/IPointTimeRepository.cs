@@ -7,5 +7,6 @@ namespace Mastership.Domain.Repository
 {
     public interface IPointTimeRepository : IRepository<PointTimeDTO> {
         IQueryable<PointTimeDTO> GetByDay(DateTime day, Guid employeId);
+        long GetLastSequentialOf(Guid subsidiaryId);
     }
 }

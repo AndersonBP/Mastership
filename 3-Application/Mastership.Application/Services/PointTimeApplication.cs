@@ -14,8 +14,16 @@ namespace Mastership.Application.Services
     public class PointTimeApplication : BaseApplication<PointTimeViewModel, PointTimeDTO, IPointTimeRepository>, IPointTimeApplication
     {
         private readonly Lazy<IEmployeeApplication> employeeApplication;
-        public PointTimeApplication(Lazy<IEmployeeApplication> employeeApplication, IPointTimeRepository repository, IMapper mapper) : base(repository, mapper)
+        private readonly IEmailApplication _emailApplication;
+
+        public PointTimeApplication(
+            Lazy<IEmployeeApplication> employeeApplication,
+            IPointTimeRepository repository,
+            IMapper mapper,
+            IEmailApplication emailApplication
+        ) : base(repository, mapper)
         {
+            this._emailApplication = emailApplication;
             this.employeeApplication = employeeApplication;
         }
 
@@ -43,6 +51,7 @@ namespace Mastership.Application.Services
                 employee.PointsTime.Add(this.MapToViewModel(registration));
                 employee.PointsTime.OrderBy(x => x.DateTime);
                 employee.TrueAnswer = true;
+                this._emailApplication.SendEmailAsync(registration);
             } else {
                 employee.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
             }

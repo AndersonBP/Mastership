@@ -52,6 +52,7 @@ namespace Mastership.Application.Services
                 employee.PointsTime.Add(this.MapToViewModel(registration));
                 employee.PointsTime.OrderBy(x => x.DateTime);
                 employee.TrueAnswer = true;
+                employee.NSR = registration.Sequential.ToString();
                 if(!string.IsNullOrEmpty(employee.Email))
                     this._emailApplication.SendEmailAsync(registration);
             } else {

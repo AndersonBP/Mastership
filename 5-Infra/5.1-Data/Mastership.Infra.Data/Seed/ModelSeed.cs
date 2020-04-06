@@ -23,7 +23,7 @@ namespace Mastership.Infra.Data
              );
 
             builder.Entity<SubsidiaryEntity>().HasData(
-              new SubsidiaryEntity() { UserId = Guid.Parse("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), CompanyId = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Id = Guid.Parse("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), Name = "Alldesk", DomainName = "alldesk" }
+              new SubsidiaryEntity() { UserId = Guid.Parse("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), CompanyId = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Id = Guid.Parse("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), Name = "Alldesk", DomainName = "alldesk", Adress = "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR", ZipCode = "60055-110", CNPJ = "10.347.407/0001-43", RazaoSocial = "10.347.407/0001-4310.347.407/0001-43", Latitude = -3.7357805, Longitude = -38.490112 }
             );
 
             builder.Entity<UserEntity>().HasData(

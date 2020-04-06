@@ -15,6 +15,8 @@ namespace Mastership.Domain.ViewModels
         public string Name { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
+        public string PIS { get; set; }
+        public string NSR { get; set; }
 
         public Guid Id { get; set; }
 

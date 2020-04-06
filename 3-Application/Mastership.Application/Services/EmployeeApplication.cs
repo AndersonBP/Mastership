@@ -57,6 +57,7 @@ namespace Mastership.Application.Services
                 Name = employee.Name,
                 Registration = employee.Registration,
                 Email = employee.Email,
+                PIS = employee.PIS,
                 Subsidiary = this._mapper.Map<SubsidiaryViewModel>(employee.Subsidiary),
                 PointsTime = this._mapper.Map<ICollection<PointTimeViewModel>>(employee.PointsTime.Where(x => x.DateTime.Date.Equals(DateTime.Now.AbsoluteStart()))),
                 Id = employee.Id

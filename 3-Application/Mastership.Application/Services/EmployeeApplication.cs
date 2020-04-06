@@ -2,6 +2,7 @@ using AutoMapper;
 using Mastership.Domain;
 using Mastership.Domain.DTO;
 using Mastership.Domain.DTO.Enums;
+using Mastership.Domain.Exceptions;
 using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
@@ -19,6 +20,29 @@ namespace Mastership.Application.Services
         public EmployeeApplication(IEmployeeRepository repository, IMapper mapper, IUserDataService userDataService, IPointTimeApplication pointTimeApplication) : base(repository, mapper, userDataService)
         {
             this.pointTimeApplication = pointTimeApplication;
+        }
+
+        public override EmployeeViewModel Search(string id)
+        {
+            var gId = new Guid();
+            if (Guid.TryParse(id, out gId))
+            {
+                return base.Search(gId);
+            }
+            else
+                return this.MapToViewModel(this._repository.GetByForeingId(id));
+        }
+
+        public override EmployeeDTO Validar(EmployeeDTO obj)
+        {
+            var employe = string.IsNullOrEmpty(obj.ForeignId) ? this.Search(obj.Id) : this.Search(obj.ForeignId);
+            if (employe==null || !employe.SubsidiaryId.Equals(this._userDataService.SubsidiaryId))
+                throw new ValidationException("Invalid operation!");
+
+            obj.Id = employe.Id;
+            obj.SubsidiaryId = employe.SubsidiaryId;
+            obj.UserId = employe.UserId;
+            return obj;
         }
 
         public CheckRegistrationViewModel CheckRegistration(CheckRegistrationViewModel vm, string subName)

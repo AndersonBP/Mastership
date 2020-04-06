@@ -34,10 +34,15 @@ namespace Mastership.Services.Api.Middleware
                 var statusCode = HttpStatusCode.InternalServerError;
 
                 //FIXME: Refatorar esses ifs
-                 if (ex is NotFoundException)
+                if (ex is NotFoundException)
                 {
                     message = ex.Message;
                     statusCode = HttpStatusCode.BadRequest;
+                }
+                else if (ex is ValidationException)
+                {
+                    message = ex.Message;
+                    statusCode = HttpStatusCode.Unauthorized;
                 }
 
                 var data = new ExceptionResponseViewModel()

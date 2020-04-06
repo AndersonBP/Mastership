@@ -52,12 +52,12 @@ namespace Mastership.Services.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{id:Guid}")]
+        [Route("{id}")]
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult Buscar(Guid id)
+        public IActionResult Buscar(string id)
         {
             var obj = Service.Search(id);
 
@@ -78,14 +78,14 @@ namespace Mastership.Services.Api.Controllers
         }
 
         [HttpPut]
-        [Route("{id:Guid}")]
+        [Route("")]
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult Editar(Guid id, [FromBody]TVM objVM)
+        public IActionResult Editar([FromBody]TVM objVM)
         {
-            var obj = Service.Update(id, objVM);
+            var obj = Service.Update(objVM);
 
             return Ok(obj);
         }

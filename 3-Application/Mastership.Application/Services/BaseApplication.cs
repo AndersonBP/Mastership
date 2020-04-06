@@ -9,6 +9,8 @@ using Mastership.Domain.Interfaces.Repository;
 using Mastership.Domain.ViewModels;
 using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces;
+using Mastership.Infra.CrossCutting.Extensions;
+using Mastership.Domain;
 
 namespace Mastership.Application.Services
 {
@@ -28,7 +30,7 @@ namespace Mastership.Application.Services
             this._userDataService = userDataService;
         }
 
-        protected virtual void Validar(TType obj) { }
+        public virtual TType Validar(TType obj) { return obj; }
 
         protected virtual void Validar(TType[] objs)
         {
@@ -72,7 +74,7 @@ namespace Mastership.Application.Services
 
         private void SetDefaultValues(TType entity)
         {
-            var typ = this.FindProperty(entity, new string[] { "SubsidiaryId" });
+            var typ = entity.GetType().FindProperty(new string[] { "SubsidiaryId" });
             if (typ != null)
             {
                 entity.GetType().GetProperty(typ.Name).SetValue(entity, this._userDataService.SubsidiaryId);
@@ -111,30 +113,33 @@ namespace Mastership.Application.Services
         public virtual void Update(TVMType[] lista)
         {
             foreach (var obj in lista)
-                Update(obj.Id, obj);
+                Update(obj);
         }
 
-        public virtual TVMType Update(Guid id, TVMType obj)
+        public virtual TVMType Update(TVMType obj)
         {
-            if (id != obj.Id && obj.Id != Guid.Empty)
-                throw new Exception("Id não é do objeto enviado");
-
-            obj.Id = id;
-
             var entity = MapFromDTO(obj);
-
             Validar(entity);
-
             var newEntity = _repository.Save(entity);
-
             return MapToViewModel(newEntity);
         }
 
-        public TVMType Search(Guid id)
+        public  TVMType Search(Guid id)
         {
-            var entity = _repository.Get(id);
+                var entity = _repository.Get(id);
+                return MapToViewModel(entity);
+        }
 
-            return MapToViewModel(entity);
+        public virtual TVMType Search(string id)
+        {
+            var gId = new Guid();
+            if (Guid.TryParse(id, out gId))
+            {
+                var entity = _repository.Get(gId);
+                return MapToViewModel(entity);
+
+            }
+            throw new NotFoundException("Id not found!");
         }
 
         public bool Existe(Guid id)
@@ -172,7 +177,7 @@ namespace Mastership.Application.Services
             if (bdObject == null)
                 return Add(obj);
             else
-                return Update(bdObject.Id, obj);
+                return Update(obj);
         }
 
         public IList<TVMType> Upsert(IList<TVMType> listObj)
@@ -194,10 +199,6 @@ namespace Mastership.Application.Services
             return totalCount.Count();
         }
 
-        private PropertyInfo FindProperty(TType obj, string[] names)
-        {
-            var typ = obj.GetType().GetProperties().Where(res => names.Contains(res.Name)).FirstOrDefault();
-            return typ;
-        }
+
     }
 }

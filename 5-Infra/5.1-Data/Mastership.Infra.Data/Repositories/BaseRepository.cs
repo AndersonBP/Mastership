@@ -43,14 +43,17 @@ namespace Mastership.Infra.Data.Repositories
             return query;
         }
 
-        protected virtual IQueryable<TEntity> Query(bool tracking = false, bool withUserFilter = true)
-            => this.Includes((tracking ? DbSet : DbSet.AsNoTracking()));
+        protected virtual IQueryable<TEntity> Query(bool tracking = false, bool withUserFilter = true, bool includes = true)
+        {
+            var query = tracking ? DbSet: DbSet.AsNoTracking();
+            return includes ? this.Includes(query):query;
+        }
 
         public IQueryable<TDtoType> List(bool withUserFilter = true)
             => this._mapper.ProjectTo<TDtoType>(Query(false, withUserFilter));
 
         public TDtoType Get(Guid id)
-            => this._mapper.Map<TDtoType>(Query(false).FirstOrDefault(x => x.Id == id));
+            => this._mapper.Map<TDtoType>(Query(false, includes:false).FirstOrDefault(x => x.Id == id));
 
         public virtual bool Exists(TDtoType obj)
             => Exists(obj.Id);

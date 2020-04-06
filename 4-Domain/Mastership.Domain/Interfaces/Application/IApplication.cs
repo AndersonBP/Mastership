@@ -20,8 +20,9 @@ namespace Mastership.Domain.Interfaces.Application
 
         void Disable(TVMType[] obj);
 
-        TVMType Update(Guid id, TVMType obj);
+        TVMType Update(TVMType obj);
 
+        TVMType Search(string id);
         TVMType Search(Guid id);
 
         TVMType Upsert(TVMType obj);

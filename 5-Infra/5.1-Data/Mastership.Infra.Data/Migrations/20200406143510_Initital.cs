@@ -94,6 +94,7 @@ namespace Mastership.Infra.Data.Migrations
                     DomainName = table.Column<string>(nullable: true),
                     RazaoSocial = table.Column<string>(nullable: true),
                     CNPJ = table.Column<string>(nullable: true),
+                    CEI = table.Column<string>(nullable: true),
                     Adress = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
                     Latitude = table.Column<double>(nullable: false),
@@ -132,8 +133,10 @@ namespace Mastership.Infra.Data.Migrations
                     CPF = table.Column<string>(maxLength: 15, nullable: true),
                     Registration = table.Column<string>(nullable: true),
                     PIS = table.Column<string>(nullable: true),
-                    AdmissionDate = table.Column<DateTime>(nullable: false),
+                    RG = table.Column<string>(nullable: true),
+                    AdmissionDate = table.Column<DateTime>(type: "date", nullable: false),
                     Birthday = table.Column<DateTime>(type: "date", nullable: false),
+                    Email = table.Column<string>(nullable: true),
                     ForeignId = table.Column<string>(nullable: true),
                     UserId = table.Column<Guid>(nullable: true),
                     SubsidiaryId = table.Column<Guid>(nullable: false)
@@ -201,13 +204,13 @@ namespace Mastership.Infra.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Subsidiary",
-                columns: new[] { "Id", "Adress", "CNPJ", "ChangeDate", "CompanyId", "CreationDate", "DomainName", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "UserId", "ZipCode" },
-                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "alldesk", null, 0.0, 0.0, "Alldesk", null, new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), null });
+                columns: new[] { "Id", "Adress", "CEI", "CNPJ", "ChangeDate", "CompanyId", "CreationDate", "DomainName", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "UserId", "ZipCode" },
+                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "alldesk", null, 0.0, 0.0, "Alldesk", null, new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), null });
 
             migrationBuilder.InsertData(
                 table: "Employee",
-                columns: new[] { "Id", "AdmissionDate", "Birthday", "CPF", "ChangeDate", "CreationDate", "ForeignId", "FullName", "Name", "PIS", "Registration", "SubsidiaryId", "UserId" },
-                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 4, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Anderson Benevides Peres", "Anderson", null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null });
+                columns: new[] { "Id", "AdmissionDate", "Birthday", "CPF", "ChangeDate", "CreationDate", "Email", "ForeignId", "FullName", "Name", "PIS", "RG", "Registration", "SubsidiaryId", "UserId" },
+                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 6, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Anderson Benevides Peres", "Anderson", null, null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BillingCustomer_UserId",
@@ -226,15 +229,15 @@ namespace Mastership.Infra.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_CPF",
-                table: "Employee",
-                column: "CPF",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Employee_UserId",
                 table: "Employee",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_SubsidiaryId_CPF",
+                table: "Employee",
+                columns: new[] { "SubsidiaryId", "CPF" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_SubsidiaryId_Registration",

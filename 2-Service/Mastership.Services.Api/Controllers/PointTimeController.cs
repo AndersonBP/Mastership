@@ -21,7 +21,7 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CheckRegistration([FromBody]CheckRegistrationViewModel obj, [FromHeader(Name = "DomainName")][Required] string domainName)
+        public IActionResult Register([FromBody]CheckRegistrationViewModel obj, [FromHeader(Name = "DomainName")][Required] string domainName)
         {
             return Ok(this.service.Register(obj, domainName));
         }

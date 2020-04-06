@@ -150,7 +150,7 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("AdmissionDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("date");
@@ -169,6 +169,9 @@ namespace Mastership.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
 
                     b.Property<bool>("Enable")
                         .ValueGeneratedOnAdd()
@@ -189,6 +192,9 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<string>("PIS")
                         .HasColumnType("text");
 
+                    b.Property<string>("RG")
+                        .HasColumnType("text");
+
                     b.Property<string>("Registration")
                         .HasColumnType("text");
 
@@ -200,10 +206,10 @@ namespace Mastership.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CPF")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("SubsidiaryId", "CPF")
+                        .IsUnique();
 
                     b.HasIndex("SubsidiaryId", "Registration")
                         .IsUnique();
@@ -214,7 +220,7 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
-                            AdmissionDate = new DateTime(2020, 4, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            AdmissionDate = new DateTime(2020, 4, 6, 0, 0, 0, 0, DateTimeKind.Local),
                             Birthday = new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CPF = "062.898.123-60",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -241,7 +247,7 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DateTime")
-                        .HasColumnType("date with time zone 'EST'");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Deleted")
                         .ValueGeneratedOnAdd()
@@ -287,6 +293,9 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Adress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CEI")
                         .HasColumnType("text");
 
                     b.Property<string>("CNPJ")

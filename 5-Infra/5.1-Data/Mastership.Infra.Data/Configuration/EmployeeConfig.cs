@@ -15,10 +15,11 @@ namespace Mastership.Database.Configuration
             builder.Property(x => x.FullName).IsRequired();
             builder.Property(x => x.Name).IsRequired();
 
-            builder.HasIndex(x => x.CPF).IsUnique();
+            builder.HasIndex(x => new { x.SubsidiaryId, x.CPF } ).IsUnique();
             builder.Property(x => x.CPF).HasMaxLength(15);
 
             builder.Property(x => x.Birthday).HasColumnType("date");
+            builder.Property(x => x.AdmissionDate).HasColumnType("date");
 
             builder.HasIndex(x => new { x.SubsidiaryId, x.Registration }).IsUnique();
 

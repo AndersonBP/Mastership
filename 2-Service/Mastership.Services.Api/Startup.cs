@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Mastership.Services.Api
@@ -48,65 +49,26 @@ namespace Mastership.Services.Api
             services.AddControllers();
 
             services.AddOptions();
-            services.AddMvc(options => {
+            services.AddMvc(options =>
+            {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
                 options.UseCentralRoutePrefix(new RouteAttribute("api/v{version:apiVersion}/"));
             });
-
             services.AddApiVersioning();
-            services.AddSwaggerGen(c =>
-            {
-                c.EnableAnnotations();
-                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
-                c.SwaggerDoc("rhgestao", new OpenApiInfo { Title = "RhGestão", Version = Configuration["Prefs:ApiVersion"] });
-            }); 
 
             // Register all DI
             BootStrapper.RegisterServices(services, Configuration);
 
-
-            // Authentication
-            var signInConfigurations = new SignInConfigurations();
-            services.AddSingleton(signInConfigurations);
-
-            var tokenConfigurations = new JwtTokenOptions();
-            new ConfigureFromConfigurationOptions<JwtTokenOptions>(
-                Configuration.GetSection("JwtTokenOptions"))
-                    .Configure(tokenConfigurations);
-            services.AddSingleton(tokenConfigurations);
-
-            services.AddAuthentication(authOptions => {
-                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(bearerOptions => {
-                var paramsValidation = bearerOptions.TokenValidationParameters;
-                paramsValidation.IssuerSigningKey = signInConfigurations.Key;
-                paramsValidation.ValidAudience = tokenConfigurations.Audience;
-                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
-
-                // Valida a assinatura de um token recebido
-                paramsValidation.ValidateIssuerSigningKey = true;
-
-                // Verifica se um token recebido ainda é válido
-                paramsValidation.ValidateLifetime = true;
-
-                // Tempo de tolerância para a expiração de um token (utilizado
-                // caso haja problemas de sincronismo de horário entre diferentes
-                // computadores envolvidos no processo de comunicação)
-                paramsValidation.ClockSkew = TimeSpan.Zero;
-            });
-
-            services.AddAuthorization(auth => {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser().Build());
-            });
+            this.ConfigureSwagger(services);
+            this.ConfigureAuth(services);
 
             services
             .AddMvc()
-            .AddNewtonsoftJson(o => {
+            .AddNewtonsoftJson(o =>
+            {
                 //o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                o.SerializerSettings.ContractResolver = new DefaultContractResolver() {
+                o.SerializerSettings.ContractResolver = new DefaultContractResolver()
+                {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 };
                 o.SerializerSettings.Converters.Add(new StringEnumConverter());
@@ -114,8 +76,10 @@ namespace Mastership.Services.Api
 
             services.AddApiVersioning();
             services.AddRouting(o => o.LowercaseUrls = true);
-            services.AddCors(o => {
-                o.AddPolicy("CorsPolicy", builder => {
+            services.AddCors(o =>
+            {
+                o.AddPolicy("CorsPolicy", builder =>
+                {
                     builder
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
@@ -140,6 +104,7 @@ namespace Mastership.Services.Api
                 c.AllowAnyOrigin();
             });
             app.UseMiddleware<FriendlyExceptionResponseMiddleware>();
+            app.UseMiddleware<UserDataMiddleware>();
 
             app.UseStaticFiles();
 
@@ -163,6 +128,85 @@ namespace Mastership.Services.Api
             });
         }
 
-      
+        private void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.EnableAnnotations();
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //This line
+                c.SwaggerDoc("rhgestao", new OpenApiInfo { Title = "RhGestão", Version = Configuration["Prefs:ApiVersion"] });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\n Example: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+                            {
+                              new OpenApiSecurityScheme
+                              {
+                                Reference = new OpenApiReference
+                                  {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                  },
+                                  Scheme = "oauth2",
+                                  Name = "Bearer",
+                                  In = ParameterLocation.Header
+                                },
+                                new List<string>()
+                              } });
+            });
+
+
+        }
+        private void ConfigureAuth(IServiceCollection services)
+        {
+            // Authentication
+            var signInConfigurations = new SignInConfigurations();
+            services.AddSingleton(signInConfigurations);
+
+            var tokenConfigurations = new JwtTokenOptions();
+            new ConfigureFromConfigurationOptions<JwtTokenOptions>(
+                Configuration.GetSection("JwtTokenOptions"))
+                    .Configure(tokenConfigurations);
+            services.AddSingleton(tokenConfigurations);
+
+            services.AddAuthentication(authOptions =>
+            {
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                var paramsValidation = bearerOptions.TokenValidationParameters;
+                paramsValidation.IssuerSigningKey = signInConfigurations.Key;
+                paramsValidation.ValidAudience = tokenConfigurations.Audience;
+                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
+
+                // Valida a assinatura de um token recebido
+                paramsValidation.ValidateIssuerSigningKey = true;
+
+                // Verifica se um token recebido ainda é válido
+                paramsValidation.ValidateLifetime = true;
+
+                // Tempo de tolerância para a expiração de um token (utilizado
+                // caso haja problemas de sincronismo de horário entre diferentes
+                // computadores envolvidos no processo de comunicação)
+                paramsValidation.ClockSkew = TimeSpan.Zero;
+            });
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
+            });
+        }
+
+
     }
 }

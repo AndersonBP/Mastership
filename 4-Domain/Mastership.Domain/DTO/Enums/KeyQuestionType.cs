@@ -10,6 +10,8 @@ namespace Mastership.Domain.DTO.Enums
         AnniversaryMonth = 2,
         AnniversaryYear = 3,
         TwoLastCpf = 4,
-        ThreeFirstCpf = 5
+        ThreeFirstCpf = 5,
+        FourFirstRG = 6,
+        AdmissionYear=7
     }
 }

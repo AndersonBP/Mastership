@@ -1,6 +1,7 @@
 using AutoMapper;
 using Mastership.Domain.DTO;
 using Mastership.Domain.DTO.Enums;
+using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Domain.ViewModels;
@@ -19,9 +20,9 @@ namespace Mastership.Application.Services
         public PointTimeApplication(
             Lazy<IEmployeeApplication> employeeApplication,
             IPointTimeRepository repository,
-            IMapper mapper,
+            IMapper mapper, IUserDataService userDataService,
             IEmailApplication emailApplication
-        ) : base(repository, mapper)
+        ) : base(repository, mapper, userDataService)
         {
             this._emailApplication = emailApplication;
             this.employeeApplication = employeeApplication;
@@ -29,7 +30,7 @@ namespace Mastership.Application.Services
 
         public ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId)
         {
-            var registrations = this.Repository.GetByDay(day, employeId)
+            var registrations = this._repository.GetByDay(day, employeId)
                 .OrderBy(x => x.DateTime)
                 .ToList();
             return this.MapToViewModel(registrations);
@@ -37,31 +38,31 @@ namespace Mastership.Application.Services
 
         public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
         {
-            var checkRegistration = this.employeeApplication.Value.CheckRegistration(vm, domainName);
-            checkRegistration.TrueAnswer = false;
-            if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, checkRegistration.Id, vm.Answer))
+            var employee = this.employeeApplication.Value.CheckRegistration(vm, domainName);
+            employee.TrueAnswer = false;
+            if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employee.Id, vm.Answer))
             {
-                var registration = this.Repository.Save(
+                var registration = this._repository.Save(
                     new PointTimeDTO {
                         DateTime = DateTime.Now,
-                        EmployeeId = checkRegistration.Id,
-                        Sequential = this.GetSequential(checkRegistration.Subsidiary.Id)
+                        EmployeeId = employee.Id,
+                        Sequential = this.GetSequential(employee.Subsidiary.Id)
                     });
 
-                checkRegistration.PointsTime.Add(this.MapToViewModel(registration));
-                checkRegistration.PointsTime.OrderBy(x => x.DateTime);
-                checkRegistration.TrueAnswer = true;
-                
-                this._emailApplication.SendEmailAsync(registration);
+                employee.PointsTime.Add(this.MapToViewModel(registration));
+                employee.PointsTime.OrderBy(x => x.DateTime);
+                employee.TrueAnswer = true;
+                if(!string.IsNullOrEmpty(employee.Email))
+                    this._emailApplication.SendEmailAsync(registration);
             } else {
-                checkRegistration.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
+                employee.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
             }
             
-            return checkRegistration;
+            return employee;
         }
 
         private long GetSequential(Guid subsidiaryId) {
-            var currentSequential = this.Repository.GetLastSequentialOf(subsidiaryId);
+            var currentSequential = this._repository.GetLastSequentialOf(subsidiaryId);
             return currentSequential + 1;
         }
     }

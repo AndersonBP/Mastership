@@ -1,5 +1,6 @@
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
@@ -13,6 +14,7 @@ namespace Mastership.Services.Api.Controllers
     {
         public EmployeeController(IEmployeeApplication service) : base(service) { }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("check.registration")]
         [Produces("application/json")]

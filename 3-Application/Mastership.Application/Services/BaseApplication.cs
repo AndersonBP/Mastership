@@ -8,6 +8,7 @@ using Microsoft.AspNet.OData.Query;
 using Mastership.Domain.Interfaces.Repository;
 using Mastership.Domain.ViewModels;
 using Mastership.Domain.DTO;
+using Mastership.Domain.Interfaces;
 
 namespace Mastership.Application.Services
 {
@@ -16,13 +17,15 @@ namespace Mastership.Application.Services
         where TType : BaseDTO
         where TRepository : IRepository<TType>
     {
-        protected readonly TRepository Repository;
+        protected readonly TRepository _repository;
         protected readonly IMapper _mapper;
+        protected readonly IUserDataService _userDataService;
 
-        public BaseApplication(TRepository repository, IMapper mapper)
+        public BaseApplication(TRepository repository, IMapper mapper, IUserDataService userDataService)
         {
-            Repository = repository;
+            this._repository = repository;
             this._mapper = mapper;
+            this._userDataService = userDataService;
         }
 
         protected virtual void Validar(TType obj) { }
@@ -53,7 +56,7 @@ namespace Mastership.Application.Services
         {
             Validar(entity);
 
-            var newEntity = Repository.Save(entity);
+            var newEntity = _repository.Save(entity);
 
             return MapToViewModel(newEntity);
         }
@@ -62,15 +65,24 @@ namespace Mastership.Application.Services
         {
             Validar(entity);
 
-            var newEntity = Repository.Save(entity);
+            var newEntity = _repository.Save(entity);
 
             return newEntity.Select(x => MapToViewModel(x)).ToArray();
+        }
+
+        private void SetDefaultValues(TType entity)
+        {
+            var typ = this.FindProperty(entity, new string[] { "SubsidiaryId" });
+            if (typ != null)
+            {
+                entity.GetType().GetProperty(typ.Name).SetValue(entity, this._userDataService.SubsidiaryId);
+            }
         }
 
         public virtual TVMType Add(TVMType obj)
         {
             var entity = MapFromDTO(obj);
-
+            this.SetDefaultValues(entity);
             return Add(entity);
         }
 
@@ -85,7 +97,7 @@ namespace Mastership.Application.Services
         {
             var entityArray = obj.Select(x => MapFromDTO(x)).ToArray();
 
-            Repository.InsertFast(entityArray);
+            _repository.InsertFast(entityArray);
         }
 
         public void Disable(TVMType[] dtos)
@@ -94,7 +106,7 @@ namespace Mastership.Application.Services
                 Disable(dto.Id);
         }
 
-        public void Disable(Guid id) => Repository.Disable(id);
+        public void Disable(Guid id) => _repository.Disable(id);
 
         public virtual void Update(TVMType[] lista)
         {
@@ -113,28 +125,28 @@ namespace Mastership.Application.Services
 
             Validar(entity);
 
-            var newEntity = Repository.Save(entity);
+            var newEntity = _repository.Save(entity);
 
             return MapToViewModel(newEntity);
         }
 
         public TVMType Search(Guid id)
         {
-            var entity = Repository.Get(id);
+            var entity = _repository.Get(id);
 
             return MapToViewModel(entity);
         }
 
         public bool Existe(Guid id)
-            => Repository.Exists(id);
+            => _repository.Exists(id);
 
         public IQueryable<TVMType> List()
-            => Repository.List().Select(x => MapToViewModel(x));
+            => _repository.List().Select(x => MapToViewModel(x));
 
         protected virtual void PrepararReferencias(TVMType obj) { }
 
         protected virtual TType BuscarEntidade(TVMType obj)
-            => Repository.Get(obj.Id);
+            => _repository.Get(obj.Id);
 
         public IEnumerable<TVMType> UpdateMany(List<TVMType> objs)
         {
@@ -146,7 +158,7 @@ namespace Mastership.Application.Services
                 listEntity.Add(BuscarEntidade(obj));
             }
 
-            var updatedList = Repository.UpdateManyReturningObject(listEntity);
+            var updatedList = _repository.UpdateManyReturningObject(listEntity);
 
             return updatedList.Select(x => MapToViewModel(x));
 
@@ -175,11 +187,17 @@ namespace Mastership.Application.Services
 
         public int Count(ODataQueryOptions<TVMType> opts)
         {
-            var query = Repository.List();
+            var query = _repository.List();
             var ignoreFlags = AllowedQueryOptions.Select | AllowedQueryOptions.Skip | AllowedQueryOptions.Top | AllowedQueryOptions.Expand | AllowedQueryOptions.OrderBy;
             var totalCount = (IQueryable<TVMType>)opts.ApplyTo(query, ignoreFlags);
 
             return totalCount.Count();
+        }
+
+        private PropertyInfo FindProperty(TType obj, string[] names)
+        {
+            var typ = obj.GetType().GetProperties().Where(res => names.Contains(res.Name)).FirstOrDefault();
+            return typ;
         }
     }
 }

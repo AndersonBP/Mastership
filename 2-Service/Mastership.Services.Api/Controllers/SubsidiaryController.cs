@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Mastership.Services.Api.Controllers
 {
+    [Route("subsidiary")]
+    [ApiVersion("1")]
+    [ApiController]
     public class SubsidiaryController : ControllerBase
     {
         private readonly ISubsidiaryApplication service;

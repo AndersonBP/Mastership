@@ -1,5 +1,6 @@
 using AutoMapper;
 using Mastership.Domain.DTO;
+using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Domain.ViewModels;
@@ -10,13 +11,13 @@ namespace Mastership.Application.Services
 {
     public class UserApplication : BaseApplication<UserViewModel, UserDTO, IUserRepository>, IUserApplication
     {
-        public UserApplication(IUserRepository repository, IMapper mapper) : base(repository, mapper) { }
+        public UserApplication(IUserRepository repository, IMapper mapper, IUserDataService userDataService) : base(repository, mapper, userDataService) { }
 
         public UserViewModel Authenticate(string domain, LoginViewModel login)
         {
             MD5 md5Hash = MD5.Create();
             var password = MD5Extension.GetMd5Hash(md5Hash, login.Password);
-            var user = this.Repository.Authenticate(login.Username, login.Email, password, domain);
+            var user = this._repository.Authenticate(login.Username, login.Email, password, domain);
             return this.MapToViewModel(user);
         }
     }

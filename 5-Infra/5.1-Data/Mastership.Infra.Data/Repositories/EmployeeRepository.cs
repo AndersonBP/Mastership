@@ -26,7 +26,7 @@ namespace Mastership.Database.Repositories
         }
         public override IQueryable<EmployeeEntity> Includes(IQueryable<EmployeeEntity> query)
         {
-            return query.Include(i => i.Subsidiary);
+            return query.Include(i => i.Subsidiary).Include(i=>i.PointsTime);
         }
     }
 }

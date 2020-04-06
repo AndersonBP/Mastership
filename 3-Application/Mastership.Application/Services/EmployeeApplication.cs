@@ -2,11 +2,13 @@ using AutoMapper;
 using Mastership.Domain;
 using Mastership.Domain.DTO;
 using Mastership.Domain.DTO.Enums;
+using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Domain.ViewModels;
 using Mastership.Infra.CrossCutting.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Mastership.Application.Services
@@ -14,14 +16,14 @@ namespace Mastership.Application.Services
     public class EmployeeApplication : BaseApplication<EmployeeViewModel, EmployeeDTO, IEmployeeRepository>, IEmployeeApplication
     {
         private readonly IPointTimeApplication pointTimeApplication;
-        public EmployeeApplication(IEmployeeRepository repository, IMapper mapper, IPointTimeApplication pointTimeApplication) : base(repository, mapper)
+        public EmployeeApplication(IEmployeeRepository repository, IMapper mapper, IUserDataService userDataService, IPointTimeApplication pointTimeApplication) : base(repository, mapper, userDataService)
         {
             this.pointTimeApplication = pointTimeApplication;
         }
 
         public CheckRegistrationViewModel CheckRegistration(CheckRegistrationViewModel vm, string subName)
         {
-            var employee = this.Repository.GetByRegistrationAndDomainName(vm.Registration, subName);
+            var employee = this._repository.GetByRegistrationAndDomainName(vm.Registration, subName);
             if (employee == null)
                 throw new NotFoundException("Employee not found!");
 
@@ -30,13 +32,15 @@ namespace Mastership.Application.Services
                 FullName = employee.FullName,
                 Name = employee.Name,
                 Registration = employee.Registration,
+                Email = employee.Email,
                 Subsidiary = this._mapper.Map<SubsidiaryViewModel>(employee.Subsidiary),
+                PointsTime = this._mapper.Map<ICollection<PointTimeViewModel>>(employee.PointsTime.Where(x => x.DateTime.Date.Equals(DateTime.Now.AbsoluteStart()))),
                 Id = employee.Id
             };
             registration.Subsidiary.Employees = null;
 
             registration.QuestionType = this.GetQuestionKey();
-            registration.PointsTime = pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employee.Id);
+            //registration.PointsTime = pointTimeApplication.GetByDay(DateTime.Now.AbsoluteStart(), employee.Id);
             return registration;
         }
 
@@ -54,15 +58,19 @@ namespace Mastership.Application.Services
             switch (questionType)
             {
                 case KeyQuestionType.BirthdayDay:
-                    return employee.Birthday.Day.Equals(answer);
+                    return employee.Birthday.Day.ToString().Equals(answer);
                 case KeyQuestionType.AnniversaryMonth:
-                    return employee.Birthday.Month.Equals(answer);
+                    return employee.Birthday.Month.ToString().Equals(answer);
                 case KeyQuestionType.AnniversaryYear:
-                    return employee.Birthday.Year.Equals(answer);
+                    return employee.Birthday.Year.ToString().Equals(answer);
                 case KeyQuestionType.TwoLastCpf:
                     return employee.CPFNumbers.Substring(employee.CPFNumbers.Length - 2, 2).Equals(answer);
                 case KeyQuestionType.ThreeFirstCpf:
-                    return employee.CPFNumbers.Substring(0, 2).Equals(answer);
+                    return employee.CPFNumbers.Substring(0, 3).Equals(answer);
+                case KeyQuestionType.FourFirstRG:
+                    return employee.CPFNumbers.Substring(0, 4).Equals(answer);
+                case KeyQuestionType.AdmissionYear:
+                    return employee.AdmissionDate.Year.ToString().Equals(answer);
                 default:
                     return false;
             }

@@ -5,9 +5,7 @@ namespace Mastership.Domain.Interfaces
 {
     public interface IUserDataService
     {
-        string RawUserName { get; }
-        string UserName { get; }
-        string FullName { get; }
+        Guid SubsidiaryId { get; }
 
         Guid RequestIdentity { get; }
 

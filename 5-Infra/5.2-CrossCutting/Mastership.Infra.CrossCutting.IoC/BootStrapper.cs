@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Mastership.Application.Services;
 using Mastership.Database.Repositories;
+using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Infra.CrossCutting.Extensions;
@@ -22,6 +23,7 @@ namespace Mastership.Infra.CrossCutting.IoC
 
             // ASPNET
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUserDataService, UserDataService>();
 
             // Application
             services.AddScoped<IBillingCustomerApplication, BillingCustomerApplication>();

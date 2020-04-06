@@ -1,6 +1,7 @@
 using AutoMapper;
 using Mastership.Domain;
 using Mastership.Domain.DTO;
+using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Domain.ViewModels;
@@ -13,26 +14,29 @@ namespace Mastership.Application.Services
 
         public SubsidiaryApplication(
             IMapper mapper,
-            ISubsidiaryRepository repository,
+            ISubsidiaryRepository repository, IUserDataService userDataService,
             IEmployeeRepository employeeRepository
-        ) : base(repository, mapper) {
+        ) : base(repository, mapper, userDataService)
+        {
             this._employeeRepository = employeeRepository;
         }
 
         public SubsidiaryViewModel CheckDomainName(string domainName)
         {
-            var subsidiary = this.MapToViewModel(this.Repository.GetByDomainName(domainName));
+            var subsidiary = this.MapToViewModel(this._repository.GetByDomainName(domainName));
             if (subsidiary == null)
                 throw new NotFoundException("Subsidiary not found!");
 
             return subsidiary;
         }
 
-        public SubsidiaryDTO GetSubsidiaryByUser(UserDTO user) {
-            
-            switch (user.UserType) {
+        public SubsidiaryDTO GetSubsidiaryByUser(UserDTO user)
+        {
+
+            switch (user.UserType)
+            {
                 case Domain.Enum.UserType.Subsidiary:
-                    return this.Repository.GetByUser(user.Id);
+                    return this._repository.GetByUser(user.Id);
                 case Domain.Enum.UserType.Employee:
                     var employee = this._employeeRepository.GetByUserId(user.Id);
                     return employee.Subsidiary;

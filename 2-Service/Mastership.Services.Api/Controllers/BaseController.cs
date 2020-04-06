@@ -2,6 +2,7 @@
 using Mastership.Domain.ViewModels;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Net;
 
 namespace Mastership.Services.Api.Controllers
 {
-
+    [Authorize("Bearer")]
     [ApiExplorerSettings(GroupName = "rhgestao")]
     public abstract class BaseController<TVM, TService> : ControllerBase where TVM : BaseViewModel, new() where TService : IApplication<TVM>
     {

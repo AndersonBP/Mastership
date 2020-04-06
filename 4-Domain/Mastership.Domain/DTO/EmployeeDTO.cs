@@ -13,7 +13,7 @@ namespace Mastership.Domain.DTO
         public string PIS { get; set; }
         public DateTime AdmissionDate { get; set; }
         public DateTime Birthday { get; set; }
-
+        public string Email { get; set; }
         public string ForeignId { get; set; }
 
         public Guid UserId { get; set; }

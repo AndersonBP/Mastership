@@ -30,7 +30,7 @@ namespace Mastership.Infra.CrossCutting.IoC
             services.AddScoped<IEmployeeApplication, EmployeeApplication>();
             services.AddScoped<IPointTimeApplication, PointTimeApplication>();
             services.AddScoped<IUserApplication, UserApplication>();
-
+            services.AddTransient<IEmailApplication, EmailApplication>();
 
             // Infra - Data
             services.AddScoped<IBillingCustomerRepository, BillingCustomerRepository>();

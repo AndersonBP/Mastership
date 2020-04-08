@@ -1,12 +1,14 @@
 ﻿using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.ViewModels;
 using Mastership.Domain.ViewModels.RequestResponseViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 
 namespace Mastership.Services.Api.Controllers
 {
+    [Authorize("Bearer")]
     [Route("subsidiary")]
     [ApiVersion("1")]
     [ApiController]

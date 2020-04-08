@@ -1,5 +1,7 @@
 using System;
 using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Mastership.Infra.CrossCutting.Extensions
 {
@@ -14,6 +16,12 @@ namespace Mastership.Infra.CrossCutting.Extensions
 
         public static string ToNullOrTrim(this string value)
             => string.IsNullOrEmpty(value) ? null : value.Trim();
+
+        public static string RemoveSpecialCharacters(this string str)
+        {
+            //return Regex.Replace(str, @"[^\w\.@-]/g", "", RegexOptions.None);
+            return Regex.Replace(str, @"[^0-9a-zA-Z]+", "");
+        }
 
     }
 }

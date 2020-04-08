@@ -7,7 +7,6 @@ using System.Net;
 
 namespace Mastership.Services.Api.Controllers
 {
-    [Authorize("Bearer")]
     [Route("employee")]
     [ApiVersion("1")]
     [ApiController]

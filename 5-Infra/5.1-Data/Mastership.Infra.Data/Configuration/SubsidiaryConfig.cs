@@ -12,6 +12,9 @@ namespace Mastership.Database.Configuration
         {
             base.Configure(builder);
 
+            builder.HasIndex(x => x.REP).IsUnique();
+            builder.Property(x => x.REP).HasMaxLength(17);
+
             builder.HasMany(e => e.Employees)
                .WithOne(e => e.Subsidiary)
                .HasForeignKey(e => e.SubsidiaryId);

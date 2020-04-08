@@ -56,12 +56,12 @@ namespace Mastership.Application.Services
                         Sequential = this.GetSequential(employeeClock.Subsidiary.Id)
                     });
 
-                employee.PointsTime.Add(this.MapToViewModel(registration));
-                employee.PointsTime.OrderBy(x => x.DateTime);
-                employee.TrueAnswer = true;
-                employee.NSR = registration.Sequential.ToString();
-                if(!string.IsNullOrEmpty(employee.Email))
-                    this._emailApplication.SendEmailAsync(registration, employee);
+                employeeClock.PointsTime.Add(this.MapToViewModel(registration));
+                employeeClock.PointsTime.OrderBy(x => x.DateTime);
+                employeeClock.TrueAnswer = true;
+                employeeClock.NSR = registration.Sequential.ToString();
+                if(!string.IsNullOrEmpty(employeeClock.Email))
+                    this._emailApplication.SendEmailAsync(registration, employeeClock);
             } else {
                 employeeClock.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
             }

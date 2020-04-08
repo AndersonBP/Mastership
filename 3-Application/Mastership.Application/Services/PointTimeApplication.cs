@@ -54,7 +54,7 @@ namespace Mastership.Application.Services
                 employee.TrueAnswer = true;
                 employee.NSR = registration.Sequential.ToString();
                 if(!string.IsNullOrEmpty(employee.Email))
-                    this._emailApplication.SendEmailAsync(registration);
+                    this._emailApplication.SendEmailAsync(registration, employee);
             } else {
                 employee.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
             }

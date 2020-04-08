@@ -3,8 +3,61 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-</head>
-<body>
+    <style>
+        body {
+            justify-content: center !important;
+        }
 
+        .container {
+            font-family: Verdana, sans-serif, 'Open Sans';
+            text-transform: uppercase;
+            width: 475px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .bg {
+            background-color: rgb(255, 255, 228);
+            padding: 0px 24px;
+            padding-bottom: 24px;
+        }
+    </style>
+</head>
+<body class="row">
+    <div class="container">
+        <h1 class="text-center">Comprovante</h1>
+        <div class="bg">
+            <div class="row text-center">
+                <p style="width: 100%;">Comprovante de registro de ponto</p>
+            </div>
+            <div class="row">
+                <span>{{RAZAO_SOCIAL}}</span>
+            </div>
+            <div class="row">
+                <span>{{LOCAL_TRABALHO}}</span>
+            </div>
+            <div class="row">
+                <span>CNPJ: {{CNPJ}}</span>
+                <span>CEI: {{CEI}}</span>
+            </div>
+            <div class="row">
+                <span>{{DATA_HORA}}</span>
+            </div>
+            <div class="row">
+                <span>{{NOME_EMPREGADO}}</span>
+            </div>
+            <div class="row">
+                <span>PIS: {{PIS}}</span>
+                <span>NSR: {{NSR}}</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

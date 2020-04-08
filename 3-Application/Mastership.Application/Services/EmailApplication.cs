@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Mastership.Domain.DTO;
 using Mastership.Domain.Enum;
 using Mastership.Domain.Interfaces.Application;
+using Mastership.Domain.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 
@@ -22,9 +23,9 @@ namespace Mastership.Application.Services {
             this._hostingEnvironment = hostingEnvironment;
         }
 
-        public Task SendEmailAsync(PointTimeDTO pointTimeDTO) {
+        public Task SendEmailAsync(PointTimeDTO pointTimeDTO, CheckRegistrationViewModel checkRegistration) {
             try {
-                var mail = this.WriteEmailToClocking(pointTimeDTO);
+                var mail = this.WriteEmailToClocking(pointTimeDTO, checkRegistration);
                 this.SendEmail(new List<MailMessage>() { mail });
                 return Task.FromResult(0);
             } catch (Exception) {
@@ -32,11 +33,18 @@ namespace Mastership.Application.Services {
             }
         }
 
-        private MailMessage WriteEmailToClocking(PointTimeDTO pointTimeDTO) {
+        private MailMessage WriteEmailToClocking(PointTimeDTO pointTimeDTO, CheckRegistrationViewModel checkRegistration) {
             var mail = this.NewMail("Registro de ponto");
             var template = this.GetTemplate(EmailType.Clocking);
-            mail.Body = template;
-            // TODO: Alterar template
+            mail.Body = template
+                .Replace("{{RAZAO_SOCIAL}}", checkRegistration.Subsidiary.RazaoSocial)
+                .Replace("{{LOCAL_TRABALHO}}", checkRegistration.Subsidiary.Adress)
+                .Replace("{{CNPJ}}", checkRegistration.Subsidiary.CNPJ)
+                .Replace("{{CEI}}", checkRegistration.Subsidiary.CEI)
+                .Replace("{{DATA_HORA}}", pointTimeDTO.DateTime.ToString(@"dd/MM/yyyy HH:mm"))
+                .Replace("{{NOME_EMPREGADO}}", checkRegistration.FullName)
+                .Replace("{{PIS}}", checkRegistration.PIS)
+                .Replace("{{NSR}}", checkRegistration.NSR);
             
             mail.To.Add(new MailAddress(pointTimeDTO.Employee.Email));
             return mail;

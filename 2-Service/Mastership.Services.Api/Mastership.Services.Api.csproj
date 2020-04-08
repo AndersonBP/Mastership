@@ -46,4 +46,11 @@
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\EmailTemplates\" />
   </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="wwwroot\EmailTemplates\cloking_template.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

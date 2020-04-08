@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mastership.Domain.DTO;
 using AutoMapper;
+using Mastership.Infra.CrossCutting.Extensions;
 
 namespace Mastership.Database.Repositories
 {
@@ -19,7 +20,14 @@ namespace Mastership.Database.Repositories
             return this._mapper.ProjectTo<PointTimeDTO>(this.Query().Where(x => x.EmployeeId.Equals(employeId) && x.DateTime.Date.Equals(day))); ;
         }
 
-        public long GetLastSequentialOf(Guid subsidiaryId) {
+        public IEnumerable<PointTimeDTO> GetByRange(DateTime start, DateTime end, Guid subsidiary)
+        {
+            var query = this.Query(includes:false).Where(x =>x.DateTime >= start && x.Employee.SubsidiaryId.Equals(subsidiary));
+            return this._mapper.Map<IEnumerable<PointTimeDTO>>(query.ToList());
+        }
+
+        public long GetLastSequentialOf(Guid subsidiaryId)
+        {
             var query = this.Query()
                 .Where(x => x.Employee.SubsidiaryId == subsidiaryId)
                 .OrderByDescending(x => x.Sequential)

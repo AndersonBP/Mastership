@@ -12,6 +12,7 @@ namespace Mastership.Domain.Interfaces.Repository
         IQueryable<TDtoType> List(bool withUserFilter = true);
 
         TDtoType Get(Guid id);
+        IEnumerable<TDtoType> Get(Guid[] id);
 
         bool Exists(Guid obj);
 

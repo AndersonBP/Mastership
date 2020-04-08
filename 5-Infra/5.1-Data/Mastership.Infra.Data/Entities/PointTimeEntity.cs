@@ -12,6 +12,6 @@ namespace Mastership.Infra.Data.Entities
         public Guid EmployeeId { get; set; }
         public Int64 Sequential { get; set; }
 
-        public EmployeeEntity Employee { get; set; }
+        public virtual EmployeeEntity Employee { get; set; }
     }
 }

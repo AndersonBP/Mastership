@@ -1,3 +1,4 @@
+using Mastership.Domain.DTO;
 using Mastership.Domain.DTO.Enums;
 using Mastership.Domain.ViewModels;
 using System;
@@ -8,6 +9,7 @@ namespace Mastership.Domain.Interfaces.Application
 {
     public interface IPointTimeApplication : IApplication<PointTimeViewModel> {
         ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId);
+        IEnumerable<PointTimeDTO> GetByRange(DateTime start, DateTime end, Guid subsidiary);
         CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName);
     }
 }

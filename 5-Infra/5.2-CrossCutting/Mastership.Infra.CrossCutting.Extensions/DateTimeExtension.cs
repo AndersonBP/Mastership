@@ -109,5 +109,12 @@ namespace Mastership.Infra.CrossCutting.Extensions
                 default: return "Inv.";
             }
         }
+
+        public static string ToStringNumbers(this DateTime data)
+        {
+
+            return data.ToString("ddMMyyyyHHmm");
+        }
+
     }
 }

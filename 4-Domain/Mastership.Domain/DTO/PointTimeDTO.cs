@@ -14,6 +14,6 @@ namespace Mastership.Domain.DTO
         public Guid EmployeeId { get; set; }
         public Int64 Sequential { get; set; }
 
-        public EmployeeDTO Employee { get; set; }
+        public virtual EmployeeDTO Employee { get; set; }
     }
 }

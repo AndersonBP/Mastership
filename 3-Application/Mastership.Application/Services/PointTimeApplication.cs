@@ -40,6 +40,11 @@ namespace Mastership.Application.Services
             return this.MapToViewModel(registrations);
         }
 
+        public IEnumerable<PointTimeDTO> GetByRange(DateTime start, DateTime end, Guid subsidiary)
+        {
+            return this._repository.GetByRange(start, end, subsidiary);
+        }
+
         public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
         {
             var employeeClock = this.employeeApplication.Value.CheckRegistration(vm, domainName);
@@ -47,10 +52,11 @@ namespace Mastership.Application.Services
             if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employeeClock.Id, vm.Answer))
             {
                 var registration = this._repository.Save(
-                    new PointTimeDTO {
+                    new PointTimeDTO
+                    {
                         DateTime = DateTime.Now,
                         EmployeeId = employeeClock.Id,
-                        Latitude= vm.Latitude,
+                        Latitude = vm.Latitude,
                         Longitude = vm.Longitude,
                         IP = this._httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(),
                         Sequential = this.GetSequential(employeeClock.Subsidiary.Id)
@@ -59,17 +65,20 @@ namespace Mastership.Application.Services
                 employeeClock.PointsTime.Add(this.MapToViewModel(registration));
                 employeeClock.PointsTime.OrderBy(x => x.DateTime);
                 employeeClock.TrueAnswer = true;
-                employeeClock.NSR = registration.Sequential.ToString();
-                if(!string.IsNullOrEmpty(employeeClock.Email))
+                employeeClock.NSR = registration.Sequential.ToString().PadLeft(9, '0');
+                if (!string.IsNullOrEmpty(employeeClock.Email))
                     this._emailApplication.SendEmailAsync(registration, employeeClock);
-            } else {
+            }
+            else
+            {
                 employeeClock.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
             }
-            
+
             return employeeClock;
         }
 
-        private long GetSequential(Guid subsidiaryId) {
+        private long GetSequential(Guid subsidiaryId)
+        {
             var currentSequential = this._repository.GetLastSequentialOf(subsidiaryId);
             return currentSequential + 1;
         }

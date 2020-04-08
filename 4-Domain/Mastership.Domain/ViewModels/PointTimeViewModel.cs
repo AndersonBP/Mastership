@@ -13,5 +13,12 @@ namespace Mastership.Domain.ViewModels
         public string UserHostName { get; set; }
         public Guid EmployeeId { get; set; }
         public Int64 Sequential { get; set; }
+        public string NSR
+        {
+            get
+            {
+                return this.Sequential.ToString().PadLeft(9, '0');
+            }
+        }
     }
 }

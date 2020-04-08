@@ -55,6 +55,9 @@ namespace Mastership.Infra.Data.Repositories
         public TDtoType Get(Guid id)
             => this._mapper.Map<TDtoType>(Query(false, includes:false).FirstOrDefault(x => x.Id == id));
 
+        public IEnumerable<TDtoType> Get(Guid[] ids)
+           => this._mapper.Map<IEnumerable<TDtoType>>(Query(false, includes: false).Where(x => ids.Contains(x.Id)));
+
         public virtual bool Exists(TDtoType obj)
             => Exists(obj.Id);
 

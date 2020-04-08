@@ -28,8 +28,8 @@ namespace Mastership.Application.Services {
                 var mail = this.WriteEmailToClocking(pointTimeDTO, checkRegistration);
                 this.SendEmail(new List<MailMessage>() { mail });
                 return Task.FromResult(0);
-            } catch (Exception) {
-                throw;
+            } catch (Exception ex) {
+                return null;
             }
         }
 

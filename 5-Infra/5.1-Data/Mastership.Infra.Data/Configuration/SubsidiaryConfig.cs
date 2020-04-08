@@ -12,8 +12,6 @@ namespace Mastership.Database.Configuration
         {
             base.Configure(builder);
 
-            builder.HasIndex(x => x.DomainName).IsUnique();
-
             builder.HasMany(e => e.Employees)
                .WithOne(e => e.Subsidiary)
                .HasForeignKey(e => e.SubsidiaryId);

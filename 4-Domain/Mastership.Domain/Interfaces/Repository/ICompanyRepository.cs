@@ -3,5 +3,7 @@ using Mastership.Domain.Interfaces.Repository;
 
 namespace Mastership.Domain.Repository
 {
-    public interface ICompanyRepository : IRepository<CompanyDTO> { }
+    public interface ICompanyRepository : IRepository<CompanyDTO> {
+        CompanyDTO GetByDomainName(string domainName);
+    }
 }

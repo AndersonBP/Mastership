@@ -5,7 +5,6 @@ namespace Mastership.Domain.Interfaces.Application
 {
     public interface ISubsidiaryApplication : IApplication<SubsidiaryViewModel>
     {
-        SubsidiaryViewModel CheckDomainName(string domainName);
         SubsidiaryDTO GetSubsidiaryByUser(UserDTO user);
     }
 }

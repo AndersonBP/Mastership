@@ -7,14 +7,14 @@ using System.Net;
 
 namespace Mastership.Services.Api.Controllers
 {
-    [Route("subsidiary")]
+    [Route("company")]
     [ApiVersion("1")]
     [ApiController]
-    public class SubsidiaryController : ControllerBase
+    public class CompanyController : ControllerBase
     {
-        private readonly ISubsidiaryApplication service;
+        private readonly ICompanyApplication service;
 
-        public SubsidiaryController(ISubsidiaryApplication service)
+        public CompanyController(ICompanyApplication service)
         {
             this.service = service;
         }
@@ -25,7 +25,7 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CheckDomainName([FromBody]SubsidiaryViewModel obj)
+        public IActionResult CheckDomainName([FromBody]CompanyViewModel obj)
         {
             return Ok(this.service.CheckDomainName(obj.DomainName));
         }

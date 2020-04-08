@@ -13,10 +13,7 @@ namespace Mastership.Database.Repositories
     {
         public SubsidiaryRepository(IDataUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
-        public SubsidiaryDTO GetByDomainName(string domainName)
-        {
-            return this._mapper.Map<SubsidiaryDTO>(this.Query().Where(x => x.DomainName.Equals(domainName)).FirstOrDefault());
-        }
+       
 
         public SubsidiaryDTO GetByUser(Guid id) {
             var query = this.Query().FirstOrDefault(x => x.UserId == id);

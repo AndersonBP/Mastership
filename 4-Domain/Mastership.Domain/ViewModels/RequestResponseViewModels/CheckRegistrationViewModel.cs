@@ -18,6 +18,9 @@ namespace Mastership.Domain.ViewModels
         public string PIS { get; set; }
         public string NSR { get; set; }
 
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+
         public Guid Id { get; set; }
 
         public virtual ICollection<PointTimeViewModel> PointsTime { get; set; }

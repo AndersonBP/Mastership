@@ -9,7 +9,6 @@ namespace Mastership.Domain.DTO
         public string Name { get; set; }
 
         public string ForeignId { get; set; }
-        public string DomainName { get; set; }
         public string RazaoSocial { get; set; }
 
         public string CNPJ { get; set; }

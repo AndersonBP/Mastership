@@ -36,12 +36,15 @@ namespace Mastership.Application.Services
         public override EmployeeDTO Validar(EmployeeDTO obj)
         {
             var employe = string.IsNullOrEmpty(obj.ForeignId) ? this.Search(obj.Id) : this.Search(obj.ForeignId);
-            if (employe==null || !employe.SubsidiaryId.Equals(this._userDataService.SubsidiaryId))
+            if (employe!=null && !employe.SubsidiaryId.Equals(this._userDataService.SubsidiaryId))
                 throw new ValidationException("Invalid operation!");
 
-            obj.Id = employe.Id;
-            obj.SubsidiaryId = employe.SubsidiaryId;
-            obj.UserId = employe.UserId;
+            obj.SubsidiaryId = this._userDataService.SubsidiaryId;
+            if (employe != null)
+            {
+                obj.Id = employe.Id;
+                obj.UserId = employe.UserId;
+            }
             return obj;
         }
 
@@ -59,7 +62,7 @@ namespace Mastership.Application.Services
                 Email = employee.Email,
                 PIS = employee.PIS,
                 Subsidiary = this._mapper.Map<SubsidiaryViewModel>(employee.Subsidiary),
-                PointsTime = this._mapper.Map<ICollection<PointTimeViewModel>>(employee.PointsTime.Where(x => x.DateTime.Date.Equals(DateTime.Now.AbsoluteStart()))),
+                PointsTime = this._mapper.Map<ICollection<PointTimeViewModel>>(employee.PointsTime.Where(x => x.DateTime.Date.Equals(DateTime.Now.AbsoluteStart())).OrderBy(x => x.DateTime)),
                 Id = employee.Id
             };
             registration.Subsidiary.Employees = null;
@@ -93,7 +96,7 @@ namespace Mastership.Application.Services
                 case KeyQuestionType.ThreeFirstCpf:
                     return employee.CPFNumbers.Substring(0, 3).Equals(answer);
                 case KeyQuestionType.FourFirstRG:
-                    return employee.CPFNumbers.Substring(0, 4).Equals(answer);
+                    return employee.RG.Substring(0, 4).Equals(answer);
                 case KeyQuestionType.AdmissionYear:
                     return employee.AdmissionDate.Year.ToString().Equals(answer);
                 default:

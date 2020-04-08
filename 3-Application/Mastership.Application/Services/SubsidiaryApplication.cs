@@ -21,14 +21,7 @@ namespace Mastership.Application.Services
             this._employeeRepository = employeeRepository;
         }
 
-        public SubsidiaryViewModel CheckDomainName(string domainName)
-        {
-            var subsidiary = this.MapToViewModel(this._repository.GetByDomainName(domainName));
-            if (subsidiary == null)
-                throw new NotFoundException("Subsidiary not found!");
-
-            return subsidiary;
-        }
+      
 
         public SubsidiaryDTO GetSubsidiaryByUser(UserDTO user)
         {

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mastership.Infra.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200406143510_Initital")]
+    [Migration("20200407130551_Initital")]
     partial class Initital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,9 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("DomainName")
+                        .HasColumnType("text");
+
                     b.Property<bool>("Enable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -124,6 +127,9 @@ namespace Mastership.Infra.Data.Migrations
                     b.HasIndex("CNPJ")
                         .IsUnique();
 
+                    b.HasIndex("DomainName")
+                        .IsUnique();
+
                     b.ToTable("Company");
 
                     b.HasData(
@@ -136,6 +142,7 @@ namespace Mastership.Infra.Data.Migrations
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
+                            DomainName = "alldesk",
                             Enable = false,
                             Latitude = -3.7357805000000002,
                             Longitude = -38.490112000000003,
@@ -222,7 +229,7 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
-                            AdmissionDate = new DateTime(2020, 4, 6, 0, 0, 0, 0, DateTimeKind.Local),
+                            AdmissionDate = new DateTime(2020, 4, 7, 0, 0, 0, 0, DateTimeKind.Local),
                             Birthday = new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CPF = "062.898.123-60",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -317,9 +324,6 @@ namespace Mastership.Infra.Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("DomainName")
-                        .HasColumnType("text");
-
                     b.Property<bool>("Enable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -350,9 +354,6 @@ namespace Mastership.Infra.Data.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("DomainName")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Subsidiary");
@@ -361,16 +362,19 @@ namespace Mastership.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"),
+                            Adress = "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR",
+                            CNPJ = "10.347.407/0001-43",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CompanyId = new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
-                            DomainName = "alldesk",
                             Enable = false,
-                            Latitude = 0.0,
-                            Longitude = 0.0,
+                            Latitude = -3.7357805000000002,
+                            Longitude = -38.490112000000003,
                             Name = "Alldesk",
-                            UserId = new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3")
+                            RazaoSocial = "10.347.407/0001-4310.347.407/0001-43",
+                            UserId = new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"),
+                            ZipCode = "60055-110"
                         });
                 });
 

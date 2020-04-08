@@ -61,6 +61,7 @@ namespace Mastership.Infra.Data.Migrations
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     RazaoSocial = table.Column<string>(nullable: true),
+                    DomainName = table.Column<string>(nullable: true),
                     CNPJ = table.Column<string>(maxLength: 18, nullable: true),
                     Adress = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
@@ -91,7 +92,6 @@ namespace Mastership.Infra.Data.Migrations
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     ForeignId = table.Column<string>(nullable: true),
-                    DomainName = table.Column<string>(nullable: true),
                     RazaoSocial = table.Column<string>(nullable: true),
                     CNPJ = table.Column<string>(nullable: true),
                     CEI = table.Column<string>(nullable: true),
@@ -199,18 +199,18 @@ namespace Mastership.Infra.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Company",
-                columns: new[] { "Id", "Adress", "BillingCustomerId", "CNPJ", "ChangeDate", "CreationDate", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "ZipCode" },
-                values: new object[] { new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR", new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), "10.347.407/0001-43", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, -3.7357805000000002, -38.490112000000003, "AllDesk", "MEIRELES, FREITAS E ALMEIDA SERVICOS DE TELEATENDIMENTO LTDA", "60055-110" });
+                columns: new[] { "Id", "Adress", "BillingCustomerId", "CNPJ", "ChangeDate", "CreationDate", "DomainName", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "ZipCode" },
+                values: new object[] { new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR", new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), "10.347.407/0001-43", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "alldesk", null, -3.7357805000000002, -38.490112000000003, "AllDesk", "MEIRELES, FREITAS E ALMEIDA SERVICOS DE TELEATENDIMENTO LTDA", "60055-110" });
 
             migrationBuilder.InsertData(
                 table: "Subsidiary",
-                columns: new[] { "Id", "Adress", "CEI", "CNPJ", "ChangeDate", "CompanyId", "CreationDate", "DomainName", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "UserId", "ZipCode" },
-                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "alldesk", null, 0.0, 0.0, "Alldesk", null, new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), null });
+                columns: new[] { "Id", "Adress", "CEI", "CNPJ", "ChangeDate", "CompanyId", "CreationDate", "ForeignId", "Latitude", "Longitude", "Name", "RazaoSocial", "UserId", "ZipCode" },
+                values: new object[] { new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR", null, "10.347.407/0001-43", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("90286f77-5cc9-4140-8cc5-e4e24510879e"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, -3.7357805000000002, -38.490112000000003, "Alldesk", "10.347.407/0001-4310.347.407/0001-43", new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"), "60055-110" });
 
             migrationBuilder.InsertData(
                 table: "Employee",
                 columns: new[] { "Id", "AdmissionDate", "Birthday", "CPF", "ChangeDate", "CreationDate", "Email", "ForeignId", "FullName", "Name", "PIS", "RG", "Registration", "SubsidiaryId", "UserId" },
-                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 6, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Anderson Benevides Peres", "Anderson", null, null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null });
+                values: new object[] { new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"), new DateTime(2020, 4, 7, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "062.898.123-60", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Anderson Benevides Peres", "Anderson", null, null, "87654321", new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f"), null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BillingCustomer_UserId",
@@ -226,6 +226,12 @@ namespace Mastership.Infra.Data.Migrations
                 name: "IX_Company_CNPJ",
                 table: "Company",
                 column: "CNPJ",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Company_DomainName",
+                table: "Company",
+                column: "DomainName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -254,12 +260,6 @@ namespace Mastership.Infra.Data.Migrations
                 name: "IX_Subsidiary_CompanyId",
                 table: "Subsidiary",
                 column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subsidiary_DomainName",
-                table: "Subsidiary",
-                column: "DomainName",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subsidiary_UserId",

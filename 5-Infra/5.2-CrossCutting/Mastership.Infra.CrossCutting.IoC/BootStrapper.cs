@@ -19,6 +19,14 @@ namespace Mastership.Infra.CrossCutting.IoC
     {
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
+            RegisterServices(services);
+            services.AddScoped<IDataUnitOfWork, DataUnitOfWork>();
+            services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(opt =>
+                  opt.UseNpgsql(configuration.GetSection("ConnectionStrings:DefaultConnection").Value));
+        }
+
+        public static void RegisterServices(IServiceCollection services)
+        {
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
             // ASPNET
@@ -44,9 +52,6 @@ namespace Mastership.Infra.CrossCutting.IoC
 
             services.AddLazyResolution();
 
-            services.AddScoped<IDataUnitOfWork, DataUnitOfWork>();
-            services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(opt =>
-                  opt.UseNpgsql(configuration.GetSection("ConnectionStrings:DefaultConnection").Value));
         }
     }
 }

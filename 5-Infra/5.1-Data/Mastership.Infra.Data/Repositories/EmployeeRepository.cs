@@ -21,7 +21,7 @@ namespace Mastership.Database.Repositories
 
         public EmployeeDTO GetByRegistrationAndDomainName(string registration, string domainName)
         {
-            return this._mapper.Map<EmployeeDTO>(this.Query().Where(x => x.Registration.Equals(registration) && x.Subsidiary.DomainName.Equals(domainName) && !x.Deleted && x.Enable).FirstOrDefault());
+            return this._mapper.Map<EmployeeDTO>(this.Query().Where(x => x.Registration.Equals(registration) && x.Subsidiary.Company.DomainName.Equals(domainName) && !x.Deleted && x.Enable).FirstOrDefault());
         }
         public EmployeeDTO GetByUserId(Guid id)
         {

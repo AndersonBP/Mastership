@@ -46,7 +46,7 @@ namespace Mastership.Application.Services {
                 .Replace("{{PIS}}", checkRegistration.PIS)
                 .Replace("{{NSR}}", checkRegistration.NSR);
             
-            mail.To.Add(new MailAddress(pointTimeDTO.Employee.Email));
+            mail.To.Add(new MailAddress(checkRegistration.Email));
             return mail;
         }
 

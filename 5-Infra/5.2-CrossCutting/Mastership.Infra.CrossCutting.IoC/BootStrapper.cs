@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Mastership.Application.Services;
 using Mastership.Database.Repositories;
+using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
@@ -23,6 +24,7 @@ namespace Mastership.Infra.CrossCutting.IoC
             services.AddScoped<IDataUnitOfWork, DataUnitOfWork>();
             services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(opt =>
                   opt.UseNpgsql(configuration.GetSection("ConnectionStrings:DefaultConnection").Value));
+            services.Configure<EmailSettingsDTO>(x => configuration.GetSection("EmailSettings").Bind(x));
         }
 
         public static void RegisterServices(IServiceCollection services)

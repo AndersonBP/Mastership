@@ -180,8 +180,8 @@ namespace Mastership.Services.Api
             {
                 authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(bearerOptions =>
-            {
+            }).AddJwtBearer(bearerOptions => {
+                bearerOptions.SaveToken = true;
                 var paramsValidation = bearerOptions.TokenValidationParameters;
                 paramsValidation.IssuerSigningKey = signInConfigurations.Key;
                 paramsValidation.ValidAudience = tokenConfigurations.Audience;

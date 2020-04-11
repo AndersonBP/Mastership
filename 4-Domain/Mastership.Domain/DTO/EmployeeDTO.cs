@@ -15,6 +15,7 @@ namespace Mastership.Domain.DTO
         public DateTime AdmissionDate { get; set; }
         public DateTime Birthday { get; set; }
         public string Email { get; set; }
+        public Nullable<DateTime> DisabledDate { get; set; }
         public string ForeignId { get; set; }
 
         public Nullable<Guid> UserId { get; set; } = null;

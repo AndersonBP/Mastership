@@ -30,15 +30,16 @@ namespace Mastership.Services.Api.Controllers
             return Ok(this.service.Register(obj, domainName));
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("receipt/{id}")]
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult Register(Guid id)
+        public IActionResult Register(Guid id, [FromHeader(Name = "DomainName")][Required] string domainName)
         {
-            return Ok();
+            return Ok(this.service.ReceiptPDF(id, domainName));
         }
     }
 }

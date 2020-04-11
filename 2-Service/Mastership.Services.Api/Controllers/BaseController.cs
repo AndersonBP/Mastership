@@ -64,18 +64,18 @@ namespace Mastership.Services.Api.Controllers
             return Ok(obj);
         }
 
-        [HttpDelete]
-        [Route("{id:Guid}")]
-        [Produces("application/json")]
-        [Consumes("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult Remover(Guid id)
-        {
-            Service.Disable(id);
+        //[HttpDelete]
+        //[Route("{id:Guid}")]
+        //[Produces("application/json")]
+        //[Consumes("application/json")]
+        //[ProducesResponseType((int)HttpStatusCode.OK)]
+        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //public IActionResult Remover(Guid id)
+        //{
+        //    Service.Disable(id);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         [HttpPut]
         [Route("")]
@@ -83,11 +83,23 @@ namespace Mastership.Services.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult Editar([FromBody]TVM objVM)
+        public IActionResult Edit([FromBody]TVM objVM)
         {
             var obj = Service.Update(objVM);
 
             return Ok(obj);
+        }
+
+        [HttpPut]
+        [Route("disable")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public IActionResult Disable([FromBody]TVM objVM)
+        {
+            Service.Disable(objVM.Id);
+            return Ok();
         }
     }
 }

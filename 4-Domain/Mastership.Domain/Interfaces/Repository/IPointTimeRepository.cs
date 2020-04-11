@@ -10,5 +10,6 @@ namespace Mastership.Domain.Repository
         IQueryable<PointTimeDTO> GetByDay(DateTime day, Guid employeId);
         IEnumerable<PointTimeDTO> GetByRange(DateTime start, DateTime end, Guid subsidiary);
         long GetLastSequentialOf(Guid subsidiaryId);
+        PointTimeDTO Search(Guid id, string domainName);
     }
 }

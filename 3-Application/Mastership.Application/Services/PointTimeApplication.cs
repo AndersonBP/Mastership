@@ -1,15 +1,20 @@
 using AutoMapper;
+using Mastership.Domain;
 using Mastership.Domain.DTO;
 using Mastership.Domain.DTO.Enums;
+using Mastership.Domain.Enum;
 using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Domain.ViewModels;
 using Mastership.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using OpenHtmlToPdf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 
 namespace Mastership.Application.Services
 {
@@ -17,6 +22,7 @@ namespace Mastership.Application.Services
     {
         private readonly Lazy<IEmployeeApplication> employeeApplication;
         private readonly IEmailApplication _emailApplication;
+        private readonly ITemplateService _templateService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public PointTimeApplication(
@@ -24,12 +30,14 @@ namespace Mastership.Application.Services
             IPointTimeRepository repository,
             IMapper mapper, IUserDataService userDataService,
             IEmailApplication emailApplication,
-            IHttpContextAccessor httpContextAccessor
+            IHttpContextAccessor httpContextAccessor,
+            ITemplateService templateService
         ) : base(repository, mapper, userDataService)
         {
             this._emailApplication = emailApplication;
             this.employeeApplication = employeeApplication;
             this._httpContextAccessor = httpContextAccessor;
+            this._templateService = templateService;
         }
 
         public ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId)
@@ -43,6 +51,25 @@ namespace Mastership.Application.Services
         public IEnumerable<PointTimeDTO> GetByRange(DateTime start, DateTime end, Guid subsidiary)
         {
             return this._repository.GetByRange(start, end, subsidiary);
+        }
+
+        public FileResult ReceiptPDF(Guid id, string domainName)
+        {
+            var clock = this._repository.Search(id, domainName);
+            if (clock == null)
+                throw new NotFoundException("Clock not found!");
+
+            var employe = this.employeeApplication.Value.Search(clock.EmployeeId);
+            var check = this.employeeApplication.Value.CheckRegistration(new CheckRegistrationViewModel() { Registration= employe.Registration}, domainName);
+            var pdf = Pdf.From( this.WriteEmailToClocking(clock, check))
+              .WithGlobalSetting("orientation", "Portrait")
+              .WithObjectSetting("web.defaultEncoding", "utf-8")
+              .OfSize(PaperSize.A4)
+              .Content();
+
+            FileResult fileResult = new FileContentResult(pdf, "application/pdf");
+            fileResult.FileDownloadName = $"Comprovante";
+            return fileResult;
         }
 
         public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
@@ -67,7 +94,7 @@ namespace Mastership.Application.Services
                 employeeClock.TrueAnswer = true;
                 employeeClock.NSR = registration.Sequential.ToString().PadLeft(9, '0');
                 if (!string.IsNullOrEmpty(employeeClock.Email))
-                    this._emailApplication.SendEmailAsync(registration, employeeClock);
+                    this._emailApplication.SendEmailAsync("Registro de ponto", this.WriteEmailToClocking(registration, employeeClock), employeeClock.Email);
             }
             else
             {
@@ -75,6 +102,21 @@ namespace Mastership.Application.Services
             }
 
             return employeeClock;
+        }
+
+        private string WriteEmailToClocking(PointTimeDTO pointTimeDTO, CheckRegistrationViewModel checkRegistration)
+        {
+            var dictionary = new Dictionary<string, string> {
+                { "{{RAZAO_SOCIAL}}", checkRegistration.Subsidiary.RazaoSocial },
+                {"{{LOCAL_TRABALHO}}", checkRegistration.Subsidiary.Adress },
+                {"{{CNPJ}}", checkRegistration.Subsidiary.CNPJ },
+                {"{{CEI}}", checkRegistration.Subsidiary.CEI},
+                { "{{DATA_HORA}}", pointTimeDTO.DateTime.ToString(@"dd / MM / yyyy HH: mm")},
+                { "{{NOME_EMPREGADO}}", checkRegistration.FullName},
+                { "{{PIS}}", checkRegistration.PIS},
+                { "{{NSR}}", checkRegistration.NSR}
+            };
+            return this._templateService.GetReady(TemplateType.ClockingReceipt, dictionary);
         }
 
         private long GetSequential(Guid subsidiaryId)

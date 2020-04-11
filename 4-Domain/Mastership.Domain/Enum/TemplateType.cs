@@ -1,6 +1,6 @@
 ﻿using System;
 namespace Mastership.Domain.Enum {
-    public enum EmailType {
-        Clocking = 1
+    public enum TemplateType {
+        ClockingReceipt = 1
     }
 }

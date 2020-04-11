@@ -15,6 +15,7 @@ namespace Mastership.Infra.Data.Entities
         public DateTime Birthday { get; set; }
         public string Email { get; set; }
         public string ForeignId { get; set; }
+        public Nullable<DateTime> DisabledDate { get; set; }
 
         public Nullable<Guid> UserId { get; set; }
         public virtual UserEntity User { get; set; }

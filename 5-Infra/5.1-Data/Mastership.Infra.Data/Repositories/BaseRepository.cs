@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Mastership.Domain.DTO;
+using Mastership.Infra.CrossCutting.Extensions;
 using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -66,10 +67,16 @@ namespace Mastership.Infra.Data.Repositories
 
         public void Disable(Guid id)
         {
-            var entidade = Get(id);
-            entidade.Enable = false;
+            var entity = Get(id);
+            entity.Enable = false;
 
-            Save(new TEntity[] { this._mapper.Map<TEntity>(entidade) }, true, true);
+            var typ = entity.FindProperty( new string[] { "DisabledDate" });
+            if (typ != null)
+            {
+                entity.GetType().GetProperty(typ.Name).SetValue(entity, DateTime.Now);
+            }
+
+            Save(new TEntity[] { this._mapper.Map<TEntity>(entity) }, true, true);
         }
 
         public void Delete(Guid id)

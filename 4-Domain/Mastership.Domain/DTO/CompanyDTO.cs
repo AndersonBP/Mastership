@@ -13,6 +13,7 @@ namespace Mastership.Domain.DTO
         public string CNPJ { get; set; }
 
         public string Adress { get; set; }
+        public string Image { get; set; }
         public string ZipCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

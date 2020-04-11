@@ -103,6 +103,9 @@ namespace Mastership.Infra.Data.Migrations
                     b.Property<string>("ForeignId")
                         .HasColumnType("text");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("double precision");
 
@@ -138,10 +141,11 @@ namespace Mastership.Infra.Data.Migrations
                             BillingCustomerId = new Guid("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"),
                             CNPJ = "10.347.407/0001-43",
                             ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreationDate = new DateTime(2020, 4, 11, 17, 33, 31, 922, DateTimeKind.Local).AddTicks(9731),
                             Deleted = false,
                             DomainName = "alldesk",
-                            Enable = false,
+                            Enable = true,
+                            Image = "11042020173331923logo-alldesk.png",
                             Latitude = -3.7357805000000002,
                             Longitude = -38.490112000000003,
                             Name = "AllDesk",
@@ -225,23 +229,6 @@ namespace Mastership.Infra.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Employee");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("546d31b0-f719-4789-b5f2-7ff94afa72e8"),
-                            AdmissionDate = new DateTime(2020, 4, 10, 0, 0, 0, 0, DateTimeKind.Local),
-                            Birthday = new DateTime(1995, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CPF = "062.898.123-60",
-                            ChangeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
-                            Enable = false,
-                            FullName = "Anderson Benevides Peres",
-                            Name = "Anderson",
-                            Registration = "87654321",
-                            SubsidiaryId = new Guid("a88c24f4-d6c9-4eba-8c86-67d515c3979f")
-                        });
                 });
 
             modelBuilder.Entity("Mastership.Infra.Data.Entities.PointTimeEntity", b =>
@@ -380,6 +367,7 @@ namespace Mastership.Infra.Data.Migrations
                             Latitude = -3.7357805000000002,
                             Longitude = -38.490112000000003,
                             Name = "Alldesk",
+                            REP = "00000000000000000",
                             RazaoSocial = "MEIRELES, FREITAS E ALMEIDA SERVICOS DE TELEATENDIMENTO LTDA",
                             UserId = new Guid("fe01e0a6-c73b-41b4-a963-0481b2476cb3"),
                             ZipCode = "60055-110"
@@ -432,7 +420,7 @@ namespace Mastership.Infra.Data.Migrations
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Deleted = false,
                             Enable = false,
-                            Password = "5af3d7ad0ff3e10cd38d298e6efec318",
+                            Password = "621ae3d14b1c50f8227c7901ade7982a",
                             UserType = 1,
                             Username = "alldesk"
                         });

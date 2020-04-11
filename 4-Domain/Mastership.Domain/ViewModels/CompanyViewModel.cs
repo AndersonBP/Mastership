@@ -11,6 +11,7 @@ namespace Mastership.Domain.ViewModels
         public string CNPJ { get; set; }
 
         public string Adress { get; set; }
+        public string Image { get; set; }
         public string ZipCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

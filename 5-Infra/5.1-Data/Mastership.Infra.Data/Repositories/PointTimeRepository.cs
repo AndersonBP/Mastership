@@ -22,7 +22,7 @@ namespace Mastership.Database.Repositories
 
         public IEnumerable<PointTimeDTO> GetByRange(DateTime start, DateTime end, Guid subsidiary)
         {
-            var query = this.Query(includes: false).Where(x => x.DateTime >= start && x.Employee.SubsidiaryId.Equals(subsidiary));
+            var query = this.Query(includes: false).Where(x => x.DateTime >= start && x.Employee.SubsidiaryId.Equals(subsidiary)).OrderBy(x=>x.Sequential);
             return this._mapper.Map<IEnumerable<PointTimeDTO>>(query.ToList());
         }
 

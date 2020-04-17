@@ -56,7 +56,7 @@ namespace Mastership.Application.Services
 
             var header = $"00000000011{subsidiary.CNPJ.RemoveSpecialCharacters()}{(string.IsNullOrEmpty(subsidiary.CEI)?"":subsidiary.CEI).PadLeft(12, '0')}{(subsidiary.RazaoSocial.Length>150?subsidiary.RazaoSocial.Substring(0,149):subsidiary.RazaoSocial).RemoveSpecialCharacters().PadRight(150,' ')}{subsidiary.REP}{afdParams.Start.ToString("ddMMyyyy")}{afdParams.End.ToString("ddMMyyyy")}{DateTime.Now.ToString("ddMMyyyy")}{DateTime.Now.ToString("HHmm")}";
            
-            var body = clocks.Select(x => $"{x.Sequential.ToString().PadLeft(9, '0')}3{x.DateTime.ToStringNumbers()}{employes.FirstOrDefault(e=>e.Id.Equals(x.EmployeeId)).PIS.Trim()}");
+            var body = clocks.Select(x => $"{x.Sequential.ToString().PadLeft(9, '0')}3{x.DateTime.ToStringNumbers()}{employes.FirstOrDefault(e=>e.Id.Equals(x.EmployeeId)).PIS.Trim().PadLeft(12, '0')}");
            
             var footer = $"{"".PadLeft(9,'9')}{"".PadLeft(9, '0')}{body.Count().ToString().PadLeft(9,'0')}{"".PadLeft(9, '0')}{"".PadLeft(9, '0')}9";
 

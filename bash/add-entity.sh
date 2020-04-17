@@ -7,14 +7,14 @@ entityPlural=$2
 ## Mastership.Domain.Entities
 
 
-file=$path"4-Domain/Mastership.Domain/Entities/"$entity"Entity.cs"
+file=$path"5-Infra/5.1-Data/Mastership.Infra.Data/Entities/"$entity"Entity.cs"
 
 echo $file
 
 tee $file > /dev/null << EOF
 using System;
 
-namespace Mastership.Domain.Entities
+namespace Mastership.Infra.Data.Entities
 {
     public class ${entity}Entity : BaseEntity
     {
@@ -32,8 +32,8 @@ echo $file
 
 tee $file > /dev/null << EOF
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mastership.Domain.Entities;
 using Mastership.Infra.Data.Configuration;
+using Mastership.Infra.Data.Entities;
 
 namespace Mastership.Database.Configuration
 {
@@ -57,19 +57,19 @@ file=$path"/5-Infra/5.1-Data/Mastership.Infra.Data/Repositories/"$entity"Reposit
 echo $file
 
 tee $file > /dev/null << EOF
-using Mastership.Domain.Entities;
+using Mastership.Infra.Data.Entities;
 using Mastership.Domain.Repository;
 using Mastership.Infra.Data.Interfaces;
 using Mastership.Infra.Data.Repositories;
-using System;
-using System.Collections.Generic;
+using Mastership.Domain.DTO;
+using AutoMapper;
 using System.Linq;
 
 namespace Mastership.Database.Repositories
 {
-    public class ${entity}Repository : BaseRepository<${entity}Entity>, I${entity}Repository
+    public class ${entity}Repository : BaseRepository<${entity}DTO, ${entity}Entity>, I${entity}Repository
     {
-        public ${entity}Repository(IDataUnitOfWork uow) : base(uow) { }
+        public ${entity}Repository(IDataUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
     }
 }
@@ -94,6 +94,26 @@ namespace Mastership.Domain.ViewModels
 }
 EOF
 
+# Rv.Domain => DTO
+
+file=$path"/4-Domain/Mastership.Domain/DTO/"$entity"DTO.cs"
+
+echo $file
+
+tee $file > /dev/null << EOF
+using System;
+using System.Collections.Generic;
+
+namespace Mastership.Domain.DTO
+{
+    public class ${entity}DTO : BaseDTO
+    {
+
+    }
+}
+EOF
+
+
 # Mastership.Domain => Repository
 
 file=$path"/4-Domain/Mastership.Domain/Interfaces/Repository/I"$entity"Repository.cs"
@@ -101,7 +121,7 @@ file=$path"/4-Domain/Mastership.Domain/Interfaces/Repository/I"$entity"Repositor
 echo $file
 
 tee $file > /dev/null << EOF
-using Mastership.Domain.Entities;
+using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces.Repository;
 using System;
 using System.Linq;
@@ -109,7 +129,7 @@ using System.Linq;
 
 namespace Mastership.Domain.Repository
 {
-    public interface I${entity}Repository : IRepository<${entity}Entity> { }
+    public interface I${entity}Repository : IRepository<${entity}DTO> { }
 }
 EOF
 
@@ -137,16 +157,17 @@ echo $file
 
 tee $file > /dev/null << EOF
 using AutoMapper;
-using Mastership.Domain.Entities;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
 using Mastership.Domain.ViewModels;
+using Mastership.Domain.Interfaces;
+using Mastership.Domain.DTO;
 
 namespace Mastership.Application.Services
 {
-    public class ${entity}Application : BaseApplication<${entity}ViewModel, ${entity}Entity, I${entity}Repository>, I${entity}Application
+    public class ${entity}Application : BaseApplication<${entity}ViewModel, ${entity}DTO, I${entity}Repository>, I${entity}Application
     {
-        public ${entity}Application(I${entity}Repository repository, IMapper mapper) : base(repository, mapper) { }
+        public ${entity}Application(I${entity}Repository repository, IMapper mapper, IUserDataService userDataService) : base(repository, mapper, userDataService) { }
 
     }
 }
@@ -169,7 +190,11 @@ echo $file
 tee $file > /dev/null << EOF
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace Mastership.Services.Api.Controllers
 {

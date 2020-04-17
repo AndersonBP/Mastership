@@ -17,10 +17,13 @@ namespace Mastership.Domain.ViewModels
         public double Longitude { get; set; }
 
         public string ForeignId { get; set; }
+        public bool UseIpFilter { get; set; }
 
         public Guid BillingCustomerId { get; set; }
         public virtual BillingCustomerViewModel BillingCustomer { get; set; }
 
         public ICollection<SubsidiaryViewModel> Subsidiaries { get; set; }
+        public ICollection<CompanyIpRangesViewModel> IpRanges { get; set; }
+
     }
 }

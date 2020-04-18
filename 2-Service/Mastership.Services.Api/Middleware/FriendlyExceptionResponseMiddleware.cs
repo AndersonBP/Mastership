@@ -43,6 +43,10 @@ namespace Mastership.Services.Api.Middleware
                 {
                     message = ex.Message;
                     statusCode = HttpStatusCode.Unauthorized;
+                }else if (ex is NetworkException)
+                {
+                    message = ex.Message;
+                    statusCode = HttpStatusCode.NetworkAuthenticationRequired;
                 }
 
                 var data = new ExceptionResponseViewModel()

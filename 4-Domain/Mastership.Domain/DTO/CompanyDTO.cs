@@ -19,13 +19,13 @@ namespace Mastership.Domain.DTO
         public double Longitude { get; set; }
 
         public string ForeignId { get; set; }
-        public bool UseIpFilter { get; set; }
 
         public Guid BillingCustomerId { get; set; }
         public virtual BillingCustomerDTO BillingCustomer { get; set; }
 
         public ICollection<SubsidiaryDTO> Subsidiaries { get; set; }
         public ICollection<CompanyIpRangesDTO> IpRanges { get; set; }
+        public virtual CompanySettingsDTO Settings { get; set; }
 
     }
 }

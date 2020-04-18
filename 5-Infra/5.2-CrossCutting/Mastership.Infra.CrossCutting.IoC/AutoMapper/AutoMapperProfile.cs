@@ -13,14 +13,19 @@ namespace Mastership.Infra.CrossCutting.IoC
 
             CreateMap<BillingCustomerViewModel, BillingCustomerDTO>().ReverseMap();
             CreateMap<CompanyViewModel, CompanyDTO>().ReverseMap();
+            CreateMap<CompanyIpRangesViewModel, CompanyIpRangesDTO>().ReverseMap();
+            CreateMap<CompanySettingsViewModel, CompanySettingsDTO>().ReverseMap();
+            CreateMap<CompanyViewModel, CompanyDTO>().ReverseMap();
             CreateMap<SubsidiaryViewModel, SubsidiaryDTO>().ReverseMap();
             CreateMap<EmployeeViewModel, EmployeeDTO>().ReverseMap();
             CreateMap<UserViewModel, UserDTO>().ReverseMap();
-            CreateMap<PointTimeViewModel, PointTimeDTO>().ForMember(x=>x.Employee, opt=> opt.Ignore()).ReverseMap();
+            CreateMap<PointTimeViewModel, PointTimeDTO>().ForMember(x => x.Employee, opt => opt.Ignore()).ReverseMap();
 
-            
+
             CreateMap<BillingCustomerDTO, BillingCustomerEntity>().ReverseMap();
             CreateMap<CompanyDTO, CompanyEntity>().ReverseMap();
+            CreateMap<CompanyIpRangesDTO, CompanyIpRangesEntity>().ReverseMap();
+            CreateMap<CompanySettingsDTO, CompanySettingsEntity>().ReverseMap();
             CreateMap<SubsidiaryDTO, SubsidiaryEntity>().ReverseMap();
             CreateMap<EmployeeDTO, EmployeeEntity>().ReverseMap();
             CreateMap<UserDTO, UserEntity>().ReverseMap();

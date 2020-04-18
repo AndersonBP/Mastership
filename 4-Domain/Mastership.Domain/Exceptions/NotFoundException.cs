@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mastership.Domain
+namespace Mastership.Domain.Exceptions
 {
     public class NotFoundException : Exception
     {

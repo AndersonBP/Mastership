@@ -24,6 +24,10 @@ namespace Mastership.Database.Configuration
             builder.HasMany(e => e.IpRanges)
             .WithOne(e => e.Company)
             .HasForeignKey(e => e.CompanyId);
+
+            builder.HasOne(a => a.Settings)
+           .WithOne(b => b.Company)
+             .HasForeignKey<CompanySettingsEntity>(e => e.CompanyId);
         }
     }
 }

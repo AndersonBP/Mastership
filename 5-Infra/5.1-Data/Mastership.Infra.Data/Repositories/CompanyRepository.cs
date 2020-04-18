@@ -4,6 +4,7 @@ using Mastership.Domain.Repository;
 using Mastership.Infra.Data.Entities;
 using Mastership.Infra.Data.Interfaces;
 using Mastership.Infra.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Mastership.Database.Repositories
@@ -16,7 +17,7 @@ namespace Mastership.Database.Repositories
 
         public CompanyDTO GetByDomainName(string domainName)
         {
-            return this._mapper.Map<CompanyDTO>(this.Query().Where(x => x.DomainName.Equals(domainName)).FirstOrDefault());
+            return this._mapper.Map<CompanyDTO>(this.Query(includes: false).Include(x => x.Settings).Where(x => x.DomainName.Equals(domainName)).FirstOrDefault());
         }
 
     }

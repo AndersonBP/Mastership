@@ -11,6 +11,7 @@ using Mastership.Domain.DTO;
 using Mastership.Domain.Interfaces;
 using Mastership.Infra.CrossCutting.Extensions;
 using Mastership.Domain;
+using Mastership.Domain.Exceptions;
 
 namespace Mastership.Application.Services
 {

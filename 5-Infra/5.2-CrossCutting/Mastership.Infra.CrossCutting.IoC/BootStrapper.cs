@@ -38,6 +38,8 @@ namespace Mastership.Infra.CrossCutting.IoC
             // Application
             services.AddScoped<IBillingCustomerApplication, BillingCustomerApplication>();
             services.AddScoped<ICompanyApplication, CompanyApplication>();
+            services.AddScoped<ICompanyIpRangesApplication, CompanyIpRangesApplication>();
+            services.AddScoped<ICompanySettingsApplication, CompanySettingsApplication>();
             services.AddScoped<ISubsidiaryApplication, SubsidiaryApplication>();
             services.AddScoped<IEmployeeApplication, EmployeeApplication>();
             services.AddScoped<IPointTimeApplication, PointTimeApplication>();
@@ -51,6 +53,8 @@ namespace Mastership.Infra.CrossCutting.IoC
             services.AddScoped<IBillingCustomerRepository, BillingCustomerRepository>();
             services.AddScoped<ISubsidiaryRepository, SubsidiaryRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ICompanyIpRangesRepository, CompanyIpRangesRepository>();
+            services.AddScoped<ICompanySettingsRepository, CompanySettingsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IPointTimeRepository, PointTimeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

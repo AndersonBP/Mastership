@@ -18,12 +18,13 @@ namespace Mastership.Infra.Data.Entities
         public double Longitude { get; set; }
 
         public string ForeignId { get; set; }
-        public bool UseIpFilter { get; set; }
 
         public Guid BillingCustomerId { get; set; }
         public virtual BillingCustomerEntity BillingCustomer { get; set; }
 
-        public ICollection<SubsidiaryEntity> Subsidiaries { get; set; }
-        public ICollection<CompanyIpRangesEntity> IpRanges { get; set; }
+        public virtual ICollection<SubsidiaryEntity> Subsidiaries { get; set; }
+        public virtual ICollection<CompanyIpRangesEntity> IpRanges { get; set; }
+
+        public virtual CompanySettingsEntity Settings { get; set; }
     }
 }

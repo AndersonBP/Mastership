@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Mastership.Domain.Interfaces.Application
 {
     public interface ICompanyApplication : IApplication<CompanyViewModel> {
-        CompanyViewModel CheckDomainName(string domainName);
+        CheckDomainNameViewModel CheckDomainName(string domainName);
 
     }
 }

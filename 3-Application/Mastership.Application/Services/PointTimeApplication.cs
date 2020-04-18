@@ -3,6 +3,7 @@ using Mastership.Domain;
 using Mastership.Domain.DTO;
 using Mastership.Domain.DTO.Enums;
 using Mastership.Domain.Enum;
+using Mastership.Domain.Exceptions;
 using Mastership.Domain.Interfaces;
 using Mastership.Domain.Interfaces.Application;
 using Mastership.Domain.Repository;
@@ -24,6 +25,7 @@ namespace Mastership.Application.Services
         private readonly IEmailApplication _emailApplication;
         private readonly ITemplateService _templateService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICompanyApplication _companyApplication;
 
         public PointTimeApplication(
             Lazy<IEmployeeApplication> employeeApplication,
@@ -31,13 +33,15 @@ namespace Mastership.Application.Services
             IMapper mapper, IUserDataService userDataService,
             IEmailApplication emailApplication,
             IHttpContextAccessor httpContextAccessor,
-            ITemplateService templateService
+            ITemplateService templateService,
+            ICompanyApplication _companyApplication
         ) : base(repository, mapper, userDataService)
         {
             this._emailApplication = emailApplication;
             this.employeeApplication = employeeApplication;
             this._httpContextAccessor = httpContextAccessor;
             this._templateService = templateService;
+            this._companyApplication = _companyApplication;
         }
 
         public ICollection<PointTimeViewModel> GetByDay(DateTime day, Guid employeId)
@@ -74,14 +78,16 @@ namespace Mastership.Application.Services
 
         public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
         {
+            var now = DateTime.Now;
             var employeeClock = this.employeeApplication.Value.CheckRegistration(vm, domainName);
             employeeClock.TrueAnswer = false;
             if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employeeClock.Id, vm.Answer))
             {
+                this._companyApplication.CheckDomainName(domainName);
                 var registration = this._repository.Save(
                     new PointTimeDTO
                     {
-                        DateTime = DateTime.Now,
+                        DateTime = now,
                         EmployeeId = employeeClock.Id,
                         Latitude = vm.Latitude,
                         Longitude = vm.Longitude,

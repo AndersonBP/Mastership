@@ -19,7 +19,7 @@ namespace Mastership.Infra.Data
             );
 
             builder.Entity<CompanyEntity>().HasData(
-            new CompanyEntity { BillingCustomerId = Guid.Parse("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), DomainName = "alldesk", Id = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Adress = "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR", ZipCode = "60055-110", CNPJ = "10.347.407/0001-43", Name = "AllDesk", RazaoSocial = "MEIRELES, FREITAS E ALMEIDA SERVICOS DE TELEATENDIMENTO LTDA", Latitude = -3.7357805, Longitude = -38.490112, Enable=true, CreationDate=DateTime.Now, Image=$"{DateTime.Now.ToStringNumbers(true)}logo-alldesk.png" }
+            new CompanyEntity { BillingCustomerId = Guid.Parse("8bd7a794-7dc8-41a2-be9a-e09ce16f7181"), DomainName = "alldesk", Id = Guid.Parse("90286f77-5cc9-4140-8cc5-e4e24510879e"), Adress = "RUA PEDRO BORGES , 30, SALAS 101 A 110 1 ANDAR", ZipCode = "60055-110", CNPJ = "10.347.407/0001-43", Name = "AllDesk", RazaoSocial = "MEIRELES, FREITAS E ALMEIDA SERVICOS DE TELEATENDIMENTO LTDA", Latitude = -3.7357805, Longitude = -38.490112, Enable=true, CreationDate= new DateTime(2020, 4, 11, 17, 33, 31, 922, DateTimeKind.Local).AddTicks(9731), Image=$"11042020173331923logo-alldesk.png" }
              );
 
             builder.Entity<SubsidiaryEntity>().HasData(

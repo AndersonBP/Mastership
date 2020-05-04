@@ -32,5 +32,16 @@ namespace Mastership.Application.Services
             }
         }
 
+        //private Guid _subsidiaryId = Guid.Empty;
+        //public Guid SubsidiaryId
+        //{
+        //    get
+        //    {
+        //        var sub = _lookup?["subsidiary"].FirstOrDefault();
+        //        return sub != null ? Guid.Parse(sub) : _subsidiaryId;
+        //    }
+        //    set { _subsidiaryId = value; }
+        //}
+
     }
 }

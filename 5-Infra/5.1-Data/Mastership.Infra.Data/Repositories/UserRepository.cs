@@ -22,7 +22,7 @@ namespace Mastership.Database.Repositories
                     (x.Username.ToLower().Equals(username.ToLower()) || x.Email.ToLower().Equals(email.ToLower()))
                     && x.Password.Equals(password));
 
-            return this._mapper.Map<UserDTO>(query.FirstOrDefault());
+            return this.MapToDTO(query.FirstOrDefault());
         }
     }
 }

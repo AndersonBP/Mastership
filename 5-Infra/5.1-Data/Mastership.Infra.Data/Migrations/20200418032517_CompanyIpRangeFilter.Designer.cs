@@ -4,15 +4,17 @@ using System.Net;
 using Mastership.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Mastership.Infra.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200418032517_CompanyIpRangeFilter")]
+    partial class CompanyIpRangeFilter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,9 +203,6 @@ namespace Mastership.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("AFDScheduled")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("AllowMobile")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -227,18 +226,6 @@ namespace Mastership.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
-
-                    b.Property<string>("FTPHost")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FTPPass")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FTPPath")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FTPUser")
-                        .HasColumnType("text");
 
                     b.Property<bool>("UseIpFilter")
                         .ValueGeneratedOnAdd()
@@ -553,7 +540,7 @@ namespace Mastership.Infra.Data.Migrations
             modelBuilder.Entity("Mastership.Infra.Data.Entities.CompanySettingsEntity", b =>
                 {
                     b.HasOne("Mastership.Infra.Data.Entities.CompanyEntity", "Company")
-                        .WithOne("Settings")
+                        .WithOne("CompanySettings")
                         .HasForeignKey("Mastership.Infra.Data.Entities.CompanySettingsEntity", "CompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

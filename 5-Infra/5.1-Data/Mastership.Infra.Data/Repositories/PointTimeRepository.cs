@@ -22,8 +22,8 @@ namespace Mastership.Database.Repositories
 
         public IEnumerable<PointTimeDTO> GetByRange(DateTime start, DateTime end, Guid subsidiary)
         {
-            var query = this.Query(includes: false).Where(x => x.DateTime >= start && x.Employee.SubsidiaryId.Equals(subsidiary)).OrderBy(x=>x.Sequential);
-            return this._mapper.Map<IEnumerable<PointTimeDTO>>(query.ToList());
+            var query = this.Query(includeDefault: false).Where(x => x.DateTime >= start && x.DateTime<=end && x.Employee.SubsidiaryId.Equals(subsidiary)).OrderBy(x=>x.Sequential);
+            return this.MapToDTO(query);
         }
 
         public long GetLastSequentialOf(Guid subsidiaryId)
@@ -39,7 +39,7 @@ namespace Mastership.Database.Repositories
 
         public PointTimeDTO Search(Guid id, string domainName)
         {
-            return this._mapper.Map<PointTimeDTO>(this.Query(includes:true).FirstOrDefault(x => x.Id.Equals(id) && x.Employee.Subsidiary.Company.DomainName.Equals(domainName)));
+            return this.MapToDTO(this.Query(includeDefault:true).FirstOrDefault(x => x.Id.Equals(id) && x.Employee.Subsidiary.Company.DomainName.Equals(domainName)));
         }
     }
 }

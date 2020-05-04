@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Mastership.Application.Services;
 using Mastership.Database.Repositories;
 using Mastership.Domain.DTO;
@@ -13,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Mastership.Infra.CrossCutting.IoC
 {
@@ -22,9 +25,13 @@ namespace Mastership.Infra.CrossCutting.IoC
         {
             RegisterServices(services);
             services.AddScoped<IDataUnitOfWork, DataUnitOfWork>();
+
             services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(opt =>
                   opt.UseNpgsql(configuration.GetSection("ConnectionStrings:DefaultConnection").Value));
             services.Configure<EmailSettingsDTO>(x => configuration.GetSection("EmailSettings").Bind(x));
+
+            services.AddHangfire(x =>
+            x.UsePostgreSqlStorage(configuration.GetSection("ConnectionStrings:DefaultConnection").Value));
         }
 
         public static void RegisterServices(IServiceCollection services)

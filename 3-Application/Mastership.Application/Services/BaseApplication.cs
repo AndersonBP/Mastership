@@ -51,9 +51,6 @@ namespace Mastership.Application.Services
         protected IList<TVMType> MapToViewModel(IList<TType> list)
             => list.Select(x => _mapper.Map<TVMType>(x)).ToList();
 
-        protected IList<TVMType> MapToDTO(IQueryable<TType> list)
-                       => list.Select(x => _mapper.Map<TVMType>(x)).ToList();
-
 
         public virtual TVMType Add(TType entity)
         {

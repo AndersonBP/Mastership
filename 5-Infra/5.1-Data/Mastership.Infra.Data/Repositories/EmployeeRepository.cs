@@ -16,17 +16,17 @@ namespace Mastership.Database.Repositories
 
         public EmployeeDTO GetByForeingId(string id)
         {
-            return this._mapper.Map<EmployeeDTO>(this.Query(includes: false).FirstOrDefault(x => x.ForeignId.Equals(id)));
+            return this.MapToDTO(this.Query(includeDefault: false).FirstOrDefault(x => x.ForeignId.Equals(id)));
         }
 
         public EmployeeDTO GetByRegistrationAndDomainName(string registration, string domainName)
         {
-            return this._mapper.Map<EmployeeDTO>(this.Query().Where(x => x.Registration.Equals(registration) && x.Subsidiary.Company.DomainName.Equals(domainName) && !x.Deleted && x.Enable).FirstOrDefault());
+            return this.MapToDTO(this.Query().Where(x => x.Registration.Equals(registration) && x.Subsidiary.Company.DomainName.Equals(domainName) && !x.Deleted && x.Enable).FirstOrDefault());
         }
         public EmployeeDTO GetByUserId(Guid id)
         {
             var query = this.Query().FirstOrDefault(x => x.UserId == id);
-            return this._mapper.Map<EmployeeDTO>(query);
+            return this.MapToDTO(query);
         }
         public override IQueryable<EmployeeEntity> Includes(IQueryable<EmployeeEntity> query)
         {

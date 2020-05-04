@@ -44,20 +44,20 @@ namespace Mastership.Infra.Data.Repositories
             return query;
         }
 
-        protected virtual IQueryable<TEntity> Query(bool tracking = false, bool withUserFilter = true, bool includes = true)
+        protected virtual IQueryable<TEntity> Query(bool tracking = false, bool withUserFilter = true, bool includeDefault = true)
         {
             var query = tracking ? DbSet: DbSet.AsNoTracking();
-            return includes ? this.Includes(query):query;
+            return includeDefault ? this.Includes(query):query;
         }
 
         public IQueryable<TDtoType> List(bool withUserFilter = true)
             => this._mapper.ProjectTo<TDtoType>(Query(false, withUserFilter));
 
         public TDtoType Get(Guid id)
-            => this._mapper.Map<TDtoType>(Query(false, includes:false).FirstOrDefault(x => x.Id == id));
+            => this._mapper.Map<TDtoType>(Query(false, includeDefault:false).FirstOrDefault(x => x.Id == id));
 
         public IEnumerable<TDtoType> Get(Guid[] ids)
-           => this._mapper.Map<IEnumerable<TDtoType>>(Query(false, includes: false).Where(x => ids.Contains(x.Id)));
+           => this._mapper.Map<IEnumerable<TDtoType>>(Query(false, includeDefault: false).Where(x => ids.Contains(x.Id)));
 
         public virtual bool Exists(TDtoType obj)
             => Exists(obj.Id);
@@ -207,5 +207,12 @@ namespace Mastership.Infra.Data.Repositories
 
             return this._mapper.Map<IEnumerable<TDtoType>>(updatedList.Select(x => x));
         }
+
+
+        protected IEnumerable<TDtoType> MapToDTO(IQueryable<TEntity> list)
+                       => list.Select(x => _mapper.Map<TDtoType>(x));
+
+        protected TDtoType MapToDTO(TEntity obj)
+          => _mapper.Map<TDtoType>(obj);
     }
 }

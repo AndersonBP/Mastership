@@ -1,5 +1,7 @@
-using AutoMapper;
+using Hangfire;
+using Hangfire.Dashboard;
 using Mastership.Infra.CrossCutting.IoC;
+using Mastership.Services.Api.Auth;
 using Mastership.Services.Api.Configurations;
 using Mastership.Services.Api.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,14 +9,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -26,7 +26,8 @@ namespace Mastership.Services.Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
+        private  SignInConfigurations signInConfigurations;
+        private  JwtTokenOptions jwtTokenOptions;
         public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -39,14 +40,15 @@ namespace Mastership.Services.Api
             {
                 builder.AddUserSecrets<Startup>();
             }
-
             Configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            // Register all DI
+            BootStrapper.RegisterServices(services, Configuration); services.AddControllers();
+            this.RegisterSingletons(services);
 
             services.AddOptions();
             services.AddMvc(options =>
@@ -55,9 +57,6 @@ namespace Mastership.Services.Api
                 options.UseCentralRoutePrefix(new RouteAttribute("api/v{version:apiVersion}/"));
             });
             services.AddApiVersioning();
-
-            // Register all DI
-            BootStrapper.RegisterServices(services, Configuration);
 
             this.ConfigureSwagger(services);
             this.ConfigureAuth(services);
@@ -112,8 +111,6 @@ namespace Mastership.Services.Api
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/rhgestao/swagger.json", "RhGestão API V1");
@@ -126,6 +123,17 @@ namespace Mastership.Services.Api
             {
                 endpoints.MapControllers();
             });
+
+            //Will be available under http://localhost:5000/hangfire"
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new IDashboardAuthorizationFilter[]
+                {
+                    new HangfireDashboardJwtAuthorizationFilter(this.signInConfigurations, this.jwtTokenOptions, "Admin")
+                }
+            });
+            app.UseHangfireServer();
+            HangFireSchedule.ScheduleTasks(app.ApplicationServices);
         }
 
         private void ConfigureSwagger(IServiceCollection services)
@@ -164,40 +172,42 @@ namespace Mastership.Services.Api
 
 
         }
-        private void ConfigureAuth(IServiceCollection services)
-        {
-            // Authentication
-            var signInConfigurations = new SignInConfigurations();
-            services.AddSingleton(signInConfigurations);
 
-            var tokenConfigurations = new JwtTokenOptions();
+        private void RegisterSingletons(IServiceCollection services)
+        {  // Authentication
+            this.signInConfigurations = new SignInConfigurations();
+            services.AddSingleton(this.signInConfigurations);
+
+            this.jwtTokenOptions = new JwtTokenOptions();
             new ConfigureFromConfigurationOptions<JwtTokenOptions>(
                 Configuration.GetSection("JwtTokenOptions"))
-                    .Configure(tokenConfigurations);
-            services.AddSingleton(tokenConfigurations);
+                    .Configure(this.jwtTokenOptions);
+            services.AddSingleton(this.jwtTokenOptions);
 
+        }
+        private void ConfigureAuth(IServiceCollection services)
+        {
+        
             services.AddAuthentication(authOptions =>
             {
                 authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(bearerOptions => {
+            }).AddJwtBearer(bearerOptions =>
+            {
                 bearerOptions.SaveToken = true;
-                var paramsValidation = bearerOptions.TokenValidationParameters;
-                paramsValidation.IssuerSigningKey = signInConfigurations.Key;
-                paramsValidation.ValidAudience = tokenConfigurations.Audience;
-                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
-
+                bearerOptions.TokenValidationParameters.IssuerSigningKey = this.signInConfigurations.Key;
+                bearerOptions.TokenValidationParameters.ValidAudience = this.jwtTokenOptions.Audience;
+                bearerOptions.TokenValidationParameters.ValidIssuer = this.jwtTokenOptions.Issuer;
                 // Valida a assinatura de um token recebido
-                paramsValidation.ValidateIssuerSigningKey = true;
-
+                bearerOptions.TokenValidationParameters. ValidateIssuerSigningKey = true;
                 // Verifica se um token recebido ainda é válido
-                paramsValidation.ValidateLifetime = true;
-
+                bearerOptions.TokenValidationParameters.ValidateLifetime = true;
                 // Tempo de tolerância para a expiração de um token (utilizado
                 // caso haja problemas de sincronismo de horário entre diferentes
                 // computadores envolvidos no processo de comunicação)
-                paramsValidation.ClockSkew = TimeSpan.Zero;
+                bearerOptions.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
             });
+
 
             services.AddAuthorization(auth =>
             {

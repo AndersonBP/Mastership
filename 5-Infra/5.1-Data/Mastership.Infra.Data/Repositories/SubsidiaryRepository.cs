@@ -17,7 +17,7 @@ namespace Mastership.Database.Repositories
 
         public SubsidiaryDTO GetByUser(Guid id) {
             var query = this.Query().FirstOrDefault(x => x.UserId == id);
-            return this._mapper.Map<SubsidiaryDTO>(query);
+            return this.MapToDTO(query);
         }
     }
 }

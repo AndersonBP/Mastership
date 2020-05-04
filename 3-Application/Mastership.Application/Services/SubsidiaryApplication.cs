@@ -50,8 +50,9 @@ namespace Mastership.Application.Services
         }
         public FileResult CreateAFD(AFDViewModel afdParams)
         {
-            IEnumerable<PointTimeDTO> clocks = this._pointTimeRepository.GetByRange(afdParams.Start.AbsoluteStart(), afdParams.End.AbsoluteEnd(), this._userDataService.SubsidiaryId).ToList();
-            var employes = this._employeeRepository.Get(clocks.Select(x => x.EmployeeId).ToArray()).ToList();
+            var SubsidiaryId = afdParams.Subsidiary.IsNullOrEmpty() ? this._userDataService.SubsidiaryId : afdParams.Subsidiary;
+            IEnumerable <PointTimeDTO> clocks = this._pointTimeRepository.GetByRange(afdParams.Start.AbsoluteStart(), afdParams.End.AbsoluteEnd(), SubsidiaryId).ToList();
+            var employes = this._employeeRepository.Get(clocks.Select(x => x.EmployeeId).Distinct().ToArray()).ToList();
             var subsidiary = this._subsidiaryRepository.Get(employes.FirstOrDefault().SubsidiaryId);
 
             var header = $"00000000011{subsidiary.CNPJ.RemoveSpecialCharacters()}{(string.IsNullOrEmpty(subsidiary.CEI)?"":subsidiary.CEI).PadLeft(12, '0')}{(subsidiary.RazaoSocial.Length>150?subsidiary.RazaoSocial.Substring(0,149):subsidiary.RazaoSocial).RemoveSpecialCharacters().PadRight(150,' ')}{subsidiary.REP}{afdParams.Start.ToString("ddMMyyyy")}{afdParams.End.ToString("ddMMyyyy")}{DateTime.Now.ToString("ddMMyyyy")}{DateTime.Now.ToString("HHmm")}";
@@ -65,7 +66,7 @@ namespace Mastership.Application.Services
             content.Add(footer);
 
             FileResult fileResult = new FileContentResult(Encoding.ASCII.GetBytes(string.Join("\n", content)), "application/txt");
-            fileResult.FileDownloadName = $"AFD-{afdParams.Start.ToStringNumbers()} a {afdParams.Start.ToStringNumbers()}";
+            fileResult.FileDownloadName = $"AFD-{subsidiary.Name.RemoveSpecialCharacters()}-{afdParams.Start.ToStringNumbers()} a {afdParams.End.ToStringNumbers()}";
             return fileResult;
         }
     }

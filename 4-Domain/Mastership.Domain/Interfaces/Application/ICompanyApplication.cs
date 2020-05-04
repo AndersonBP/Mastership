@@ -6,6 +6,6 @@ namespace Mastership.Domain.Interfaces.Application
 {
     public interface ICompanyApplication : IApplication<CompanyViewModel> {
         CheckDomainNameViewModel CheckDomainName(string domainName);
-
+        void AFDScheduled();
     }
 }

@@ -6,12 +6,12 @@ using System.Text;
 namespace Mastership.Infra.CrossCutting.IoC
 {
 
-    public class NativeInjectorServiceFactory
+    public class ServiceFactory
 
     {
-        private static readonly NativeInjectorServiceFactory instance = new NativeInjectorServiceFactory();
+        private static readonly ServiceFactory instance = new ServiceFactory();
         private static IServiceCollection _serviceCollection;
-        public static NativeInjectorServiceFactory Instance
+        public static ServiceFactory Instance
         {
             get
             {
@@ -20,14 +20,19 @@ namespace Mastership.Infra.CrossCutting.IoC
                     _serviceCollection = new ServiceCollection();
                     BootStrapper.RegisterServices(_serviceCollection);
                 }
+                if (_serviceProvider == null)
+                {
+                    _serviceProvider = _serviceCollection.BuildServiceProvider();
+                }
                 return instance;
             }
         }
 
+        private static IServiceProvider _serviceProvider;
+
         public IServiceProvider GetServiceProvider()
         {
-            var provider = _serviceCollection.BuildServiceProvider();
-            return provider;
+            return _serviceProvider;
         }
 
         public IServiceCollection GetCollection()
@@ -37,7 +42,7 @@ namespace Mastership.Infra.CrossCutting.IoC
 
         public T GetService<T>()
         {
-            return _serviceCollection.BuildServiceProvider().GetService<T>();
+            return _serviceProvider.GetService<T>();
         }
     }
 }

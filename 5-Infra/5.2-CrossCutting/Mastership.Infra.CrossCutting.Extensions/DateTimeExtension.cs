@@ -122,5 +122,11 @@ namespace Mastership.Infra.CrossCutting.Extensions
             return data.ToString("ddMMyyyyHHmmssfff");
         }
 
+        public static string ToTimeStringNumbers(this DateTime data)
+        {
+
+            return data.ToString("HHmmssfff");
+        }
+
     }
 }

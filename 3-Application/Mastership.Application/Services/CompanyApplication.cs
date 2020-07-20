@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentFTP;
 using Mastership.Domain;
 using Mastership.Domain.DTO;
 using Mastership.Domain.Exceptions;
@@ -9,7 +10,7 @@ using Mastership.Domain.ViewModels;
 using Mastership.Domain.ViewModels.RequestResponseViewModels;
 using Mastership.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.IO;
 using System.Linq;
@@ -40,31 +41,62 @@ namespace Mastership.Application.Services
                 {
                     try
                     {
+                        var ftpServerUrl = "";
                         afdparams.Subsidiary = subsidiary.Id;
                         var afd = this._subsidiaryApplication.CreateAFD(afdparams);
-                        byte[] bytes = afd.StreamBytes();
-
-                        var ftpServerUrl = $"ftp://{company.Settings.FTPHost}/{company.Settings.FTPPath}/{afd.FileDownloadName}.txt";
-                        var request = (FtpWebRequest)WebRequest.Create(ftpServerUrl);
-                        request.Method = WebRequestMethods.Ftp.UploadFile;
-                        request.UsePassive = false;
-                        request.Credentials = new NetworkCredential(company.Settings.FTPUser, company.Settings.FTPPass);
-                        request.UseBinary = false;
-                        request.ContentLength = bytes.Length;
-                        using (Stream requestStream = request.GetRequestStream())
+                        var sucess = false;
+                        var limit = 3500;
+                        while (!sucess || limit <= 0)
                         {
-                            requestStream.Write(bytes, 0, bytes.Length);
+                            try
+                            {
+                                byte[] bytes = afd.Buffer();
+                                ftpServerUrl = $"ftp://{company.Settings.FTPHost}:21//{company.Settings.FTPPath}/{afd.FileDownloadName}{DateTime.Now.ToTimeStringNumbers()}.txt".Replace(" ", "");
+                                var request = (FtpWebRequest)WebRequest.Create(ftpServerUrl);
+                                request.Method = WebRequestMethods.Ftp.UploadFile;
+                                request.Timeout = 90000;
+                                request.ReadWriteTimeout = 90000;
+                                request.KeepAlive = false;
+                                request.UseBinary = true;
+                                request.Credentials = new NetworkCredential(company.Settings.FTPUser, company.Settings.FTPPass);
+                                request.ContentLength = bytes.Length;
+                                var requestStream = request.GetRequestStream();
+                                requestStream.Write(bytes, 0, bytes.Length);
+                                requestStream.Flush();
+                                requestStream.Close();
+                                sucess = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                limit--;
+                                if (limit <= 0)
+                                    throw ex;
+
+                                continue;
+                            }
                         }
-                    }
-                    catch (WebException ex)
-                    {
-                        throw ex;
                     }
                     catch (Exception ex)
                     {
+                        throw ex;
                     }
                 }
             }
+        }
+
+        public void SendFileFtp(Stream buffer, string host, string user, string pass, string path)
+        {
+            FtpClient client = new FtpClient(host, new NetworkCredential(user, pass));
+            client.ActivePorts = new int[] { 60500, 60000 }.ToList();
+            client.DataConnectionType = FtpDataConnectionType.PASV;
+            client.Connect();
+
+
+            // upload a file and retry 3 times before giving up
+            client.RetryAttempts = 3;
+            client.Upload(buffer, path, existsMode: FtpRemoteExists.Overwrite, createRemoteDir: true);
+
+            client.Disconnect();
         }
 
         public CheckDomainNameViewModel CheckDomainName(string domainName)

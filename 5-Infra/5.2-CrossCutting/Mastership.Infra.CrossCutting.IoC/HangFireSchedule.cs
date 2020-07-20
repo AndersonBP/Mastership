@@ -14,7 +14,7 @@ namespace Mastership.Infra.CrossCutting.IoC
             using (var scope = serviceProvider.CreateScope())
             {
                 var companyApp = scope.ServiceProvider.GetRequiredService<ICompanyApplication>();
-                RecurringJob.AddOrUpdate(() => companyApp.AFDScheduled(), "0 1 * * *");
+                //RecurringJob.AddOrUpdate(() => companyApp.AFDScheduled(), "0 1 * * *", TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
             }
         }
     }

@@ -86,9 +86,9 @@ namespace Mastership.Application.Services
             switch (questionType)
             {
                 case KeyQuestionType.BirthdayDay:
-                    return employee.Birthday.Day.ToString().Equals(answer);
+                    return employee.Birthday.Day.ToString().Equals(int.Parse(answer));
                 case KeyQuestionType.AnniversaryMonth:
-                    return employee.Birthday.Month.ToString().Equals(answer);
+                    return employee.Birthday.Month.ToString().Equals(int.Parse(answer));
                 case KeyQuestionType.AnniversaryYear:
                     return employee.Birthday.Year.ToString().Equals(answer);
                 case KeyQuestionType.TwoLastCpf:

@@ -8,7 +8,7 @@ namespace Mastership.Infra.CrossCutting.Extensions
 {
     public static class FileResultExtensions
     {
-        public static byte[]  StreamBytes(this FileResult fileResult)
+        public static byte[] Buffer(this FileResult fileResult)
         {
 
             if (fileResult is FileContentResult)
@@ -24,6 +24,11 @@ namespace Mastership.Infra.CrossCutting.Extensions
                 return fileStream;
             }
             return new byte[] { };
+        }
+
+        public static Stream Stream(this FileResult fileResult)
+        {
+            return new MemoryStream(fileResult.Buffer());
         }
 
         public static byte[] ConverteStreamToByteArray(Stream stream)

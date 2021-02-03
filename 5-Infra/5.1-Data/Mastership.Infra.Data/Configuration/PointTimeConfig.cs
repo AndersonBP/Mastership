@@ -16,6 +16,11 @@ namespace Mastership.Database.Configuration
             builder.Property(e => e.DateTime)
                 .HasColumnType("timestamp with time zone");
 
+            builder.HasIndex(x => new { x.Sequential, x.SubsidiaryId }).IsUnique()
+                .HasName("UN_Senquential")
+                //Filtro de indici criado para corrigir bug de duplicidade NSR
+                .HasFilter(@"((""SubsidiaryId"" <> 'a88c24f4-d6c9-4eba-8c86-67d515c3979f'::uuid) or ""Sequential""> 118802)");
+
             builder.Property(x => x.Sequential).ValueGeneratedOnAdd();
         }
     }

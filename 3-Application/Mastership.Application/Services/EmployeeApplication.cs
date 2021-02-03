@@ -36,7 +36,7 @@ namespace Mastership.Application.Services
         public override EmployeeDTO Validar(EmployeeDTO obj)
         {
             var employe = string.IsNullOrEmpty(obj.ForeignId) ? this.Search(obj.Id) : this.Search(obj.ForeignId);
-            if (employe!=null && !employe.SubsidiaryId.Equals(this._userDataService.SubsidiaryId))
+            if (employe != null && !employe.SubsidiaryId.Equals(this._userDataService.SubsidiaryId))
                 throw new ValidationException("Invalid operation!");
 
             obj.SubsidiaryId = this._userDataService.SubsidiaryId;
@@ -83,24 +83,31 @@ namespace Mastership.Application.Services
         public bool CheckAnswerQuestion(KeyQuestionType questionType, Guid employeeId, string answer)
         {
             var employee = this.Search(employeeId);
-            switch (questionType)
+            try
             {
-                case KeyQuestionType.BirthdayDay:
-                    return employee.Birthday.Day.ToString().Equals(int.Parse(answer));
-                case KeyQuestionType.AnniversaryMonth:
-                    return employee.Birthday.Month.ToString().Equals(int.Parse(answer));
-                case KeyQuestionType.AnniversaryYear:
-                    return employee.Birthday.Year.ToString().Equals(answer);
-                case KeyQuestionType.TwoLastCpf:
-                    return employee.CPFNumbers.Substring(employee.CPFNumbers.Length - 2, 2).Equals(answer);
-                case KeyQuestionType.ThreeFirstCpf:
-                    return employee.CPFNumbers.Substring(0, 3).Equals(answer);
-                case KeyQuestionType.FourFirstRG:
-                    return employee.RG.Substring(0, 4).Equals(answer);
-                case KeyQuestionType.AdmissionYear:
-                    return employee.AdmissionDate.Year.ToString().Equals(answer);
-                default:
-                    return false;
+                switch (questionType)
+                {
+                    case KeyQuestionType.BirthdayDay:
+                        return employee.Birthday.Day.ToString().Equals(int.Parse(answer).ToString());
+                    case KeyQuestionType.AnniversaryMonth:
+                        return employee.Birthday.Month.ToString().Equals(int.Parse(answer).ToString());
+                    case KeyQuestionType.AnniversaryYear:
+                        return employee.Birthday.Year.ToString().Equals(answer);
+                    case KeyQuestionType.TwoLastCpf:
+                        return employee.CPFNumbers.Substring(employee.CPFNumbers.Length - 2, 2).Equals(answer);
+                    case KeyQuestionType.ThreeFirstCpf:
+                        return employee.CPFNumbers.Substring(0, 3).Equals(answer);
+                    case KeyQuestionType.FourFirstRG:
+                        return employee.RG.Substring(0, 4).Equals(answer);
+                    case KeyQuestionType.AdmissionYear:
+                        return employee.AdmissionDate.Year.ToString().Equals(answer);
+                    default:
+                        return false;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
     }

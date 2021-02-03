@@ -10,6 +10,7 @@ namespace Mastership.Infra.Data.Entities
         public string IP { get; set; }
         public string UserHostName { get; set; }
         public Guid EmployeeId { get; set; }
+        public Guid SubsidiaryId { get; set; }
         public Int64 Sequential { get; set; }
 
         public virtual EmployeeEntity Employee { get; set; }

@@ -135,15 +135,15 @@ namespace Mastership.Services.Api
             });
 
             //Will be available under http://localhost:5000/hangfire"
-            app.UseHangfireDashboard("/hangfire", new DashboardOptions
-            {
-                Authorization = new IDashboardAuthorizationFilter[]
-                {
-                    new HangfireDashboardJwtAuthorizationFilter(this.signInConfigurations, this.jwtTokenOptions, "Admin")
-                }
-            });
-            app.UseHangfireServer();
-            HangFireSchedule.ScheduleTasks(app.ApplicationServices);
+            //app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            //{
+            //    Authorization = new IDashboardAuthorizationFilter[]
+            //    {
+            //        new HangfireDashboardJwtAuthorizationFilter(this.signInConfigurations, this.jwtTokenOptions, "Admin")
+            //    }
+            //});
+            //app.UseHangfireServer();
+            //HangFireSchedule.ScheduleTasks(app.ApplicationServices);
         }
 
         private void ConfigureSwagger(IServiceCollection services)

@@ -4,15 +4,17 @@ using System.Net;
 using Mastership.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Mastership.Infra.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200725193837_UniqueSequential")]
+    partial class UniqueSequential
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -385,7 +387,7 @@ namespace Mastership.Infra.Data.Migrations
                     b.HasIndex("Sequential", "SubsidiaryId")
                         .IsUnique()
                         .HasName("UN_Senquential")
-                        .HasFilter("((\"SubsidiaryId\" <> 'a88c24f4-d6c9-4eba-8c86-67d515c3979f'::uuid) or \"Sequential\">118802)");
+                        .HasFilter("((\"SubsidiaryId\" <> 'a88c24f4-d6c9-4eba-8c86-67d515c3979f'::uuid) or \"Sequential\">109318)");
 
                     b.ToTable("PointTime");
                 });

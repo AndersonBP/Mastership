@@ -1,11 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using Mastership.Domain;
-using Mastership.Domain.Exceptions;
-using Mastership.Domain.Interfaces;
+﻿using Mastership.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Mastership.Services.Api.Middleware
 {

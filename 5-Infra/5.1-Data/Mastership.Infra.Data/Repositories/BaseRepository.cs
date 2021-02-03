@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Transactions;
 using AutoMapper;
 using Mastership.Domain.DTO;
 using Mastership.Infra.CrossCutting.Extensions;
@@ -46,15 +47,15 @@ namespace Mastership.Infra.Data.Repositories
 
         protected virtual IQueryable<TEntity> Query(bool tracking = false, bool withUserFilter = true, bool includeDefault = true)
         {
-            var query = tracking ? DbSet: DbSet.AsNoTracking();
-            return includeDefault ? this.Includes(query):query;
+            var query = tracking ? DbSet : DbSet.AsNoTracking();
+            return includeDefault ? this.Includes(query) : query;
         }
 
         public IQueryable<TDtoType> List(bool withUserFilter = true)
             => this._mapper.ProjectTo<TDtoType>(Query(false, withUserFilter));
 
         public TDtoType Get(Guid id)
-            => this._mapper.Map<TDtoType>(Query(false, includeDefault:false).FirstOrDefault(x => x.Id == id));
+            => this._mapper.Map<TDtoType>(Query(false, includeDefault: false).FirstOrDefault(x => x.Id == id));
 
         public IEnumerable<TDtoType> Get(Guid[] ids)
            => this._mapper.Map<IEnumerable<TDtoType>>(Query(false, includeDefault: false).Where(x => ids.Contains(x.Id)));
@@ -70,7 +71,7 @@ namespace Mastership.Infra.Data.Repositories
             var entity = Get(id);
             entity.Enable = false;
 
-            var typ = entity.FindProperty( new string[] { "DisabledDate" });
+            var typ = entity.FindProperty(new string[] { "DisabledDate" });
             if (typ != null)
             {
                 entity.GetType().GetProperty(typ.Name).SetValue(entity, DateTime.Now);
@@ -120,7 +121,6 @@ namespace Mastership.Infra.Data.Repositories
 
         private TDtoType[] Save(TEntity[] lista, bool disable, bool changeState)
         {
-
             foreach (var obj in lista)
             {
 
@@ -131,9 +131,18 @@ namespace Mastership.Infra.Data.Repositories
 
                 if (!Exists(obj.Id))
                 {
-                    obj.Id = obj.Id != Guid.Empty ? obj.Id : Guid.NewGuid();
-                    obj.CreationDate = DateTime.Now;
-                    DbSet.Add(obj);
+                    try
+                    {
+                        obj.Id = obj.Id != Guid.Empty ? obj.Id : Guid.NewGuid();
+                        obj.CreationDate = DateTime.Now;
+                        DbSet.Add(obj);
+                        Context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        DbSet.Remove(obj);
+                        throw ex;
+                    }
                 }
                 else
                 {
@@ -150,10 +159,9 @@ namespace Mastership.Infra.Data.Repositories
                     {
                         Context.Entry(obj).Property(x => x.Enable).IsModified = false;
                     }
+                    Context.SaveChanges();
                 }
             }
-
-            Context.SaveChanges();
 
             return this._mapper.Map<TDtoType[]>(lista);
         }

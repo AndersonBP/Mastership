@@ -1,4 +1,3 @@
-using Mastership.Infra.CrossCutting.Extensions.Utils;
 using System;
 
 namespace Mastership.Domain.ViewModels
@@ -12,6 +11,7 @@ namespace Mastership.Domain.ViewModels
         public string IP { get; set; }
         public string UserHostName { get; set; }
         public Guid EmployeeId { get; set; }
+        public Guid SubsidiaryId { get; set; }
         public Int64 Sequential { get; set; }
         public string NSR
         {

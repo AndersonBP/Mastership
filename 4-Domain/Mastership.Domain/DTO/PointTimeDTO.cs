@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mastership.Domain.DTO
 {
@@ -12,6 +10,7 @@ namespace Mastership.Domain.DTO
         public string IP { get; set; }
         public string UserHostName { get; set; }
         public Guid EmployeeId { get; set; }
+        public Guid SubsidiaryId { get; set; }
         public Int64 Sequential { get; set; }
 
         public virtual EmployeeDTO Employee { get; set; }

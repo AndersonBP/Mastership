@@ -11,7 +11,8 @@ using Mastership.Domain.ViewModels;
 using Mastership.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OpenHtmlToPdf;
+using Microsoft.EntityFrameworkCore;
+//using OpenHtmlToPdf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,50 +65,61 @@ namespace Mastership.Application.Services
                 throw new NotFoundException("Clock not found!");
 
             var employe = this.employeeApplication.Value.Search(clock.EmployeeId);
-            var check = this.employeeApplication.Value.CheckRegistration(new CheckRegistrationViewModel() { Registration= employe.Registration}, domainName);
-            var pdf = Pdf.From( this.WriteEmailToClocking(clock, check))
-              .WithGlobalSetting("orientation", "Portrait")
-              .WithObjectSetting("web.defaultEncoding", "utf-8")
-              .OfSize(PaperSize.A4)
-              .Content();
+            var check = this.employeeApplication.Value.CheckRegistration(new CheckRegistrationViewModel() { Registration = employe.Registration }, domainName);
+            //var pdf = Pdf.From(this.WriteEmailToClocking(clock, check))
+            //  .WithGlobalSetting("orientation", "Portrait")
+            //  .WithObjectSetting("web.defaultEncoding", "utf-8")
+            //  .OfSize(PaperSize.A4)
+            //  .Content();
 
-            FileResult fileResult = new FileContentResult(pdf, "application/pdf");
+            FileResult fileResult = new FileContentResult(null, "application/pdf");
             fileResult.FileDownloadName = $"Comprovante";
             return fileResult;
         }
 
         public CheckRegistrationViewModel Register(CheckRegistrationViewModel vm, string domainName)
         {
-            var now = DateTime.Now;
-            var employeeClock = this.employeeApplication.Value.CheckRegistration(vm, domainName);
-            employeeClock.TrueAnswer = false;
-            if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employeeClock.Id, vm.Answer))
+            try
             {
-                this._companyApplication.CheckDomainName(domainName);
-                var registration = this._repository.Save(
-                    new PointTimeDTO
-                    {
-                        DateTime = now,
-                        EmployeeId = employeeClock.Id,
-                        Latitude = vm.Latitude,
-                        Longitude = vm.Longitude,
-                        IP = this._httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(),
-                        Sequential = this.GetSequential(employeeClock.Subsidiary.Id)
-                    });
+                var now = DateTime.Now;
+                var employeeClock = this.employeeApplication.Value.CheckRegistration(vm, domainName);
+                employeeClock.TrueAnswer = false;
+                if (this.employeeApplication.Value.CheckAnswerQuestion(vm.QuestionType, employeeClock.Id, vm.Answer))
+                {
+                    this._companyApplication.CheckDomainName(domainName);
+                    var registration = this._repository.Save(
+                        new PointTimeDTO
+                        {
+                            DateTime = now,
+                            EmployeeId = employeeClock.Id,
+                            Latitude = vm.Latitude,
+                            Longitude = vm.Longitude,
+                            IP = this._httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                            Sequential = this.GetSequential(employeeClock.Subsidiary.Id),
+                            SubsidiaryId = employeeClock.Subsidiary.Id
+                        });
 
-                employeeClock.PointsTime.Add(this.MapToViewModel(registration));
-                employeeClock.PointsTime.OrderBy(x => x.DateTime);
-                employeeClock.TrueAnswer = true;
-                employeeClock.NSR = registration.Sequential.ToString().PadLeft(9, '0');
-                if (!string.IsNullOrEmpty(employeeClock.Email))
-                    this._emailApplication.SendEmailAsync("Registro de ponto", this.WriteEmailToClocking(registration, employeeClock), employeeClock.Email);
+                    employeeClock.PointsTime.Add(this.MapToViewModel(registration));
+                    employeeClock.PointsTime.OrderBy(x => x.DateTime);
+                    employeeClock.TrueAnswer = true;
+                    employeeClock.NSR = registration.Sequential.ToString().PadLeft(9, '0');
+                    if (!string.IsNullOrEmpty(employeeClock.Email))
+                        this._emailApplication.SendEmailAsync("Registro de ponto", this.WriteEmailToClocking(registration, employeeClock), employeeClock.Email);
+                }
+                else
+                {
+                    employeeClock.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
+                }
+
+                return employeeClock;
             }
-            else
+            catch (DbUpdateException ex)
             {
-                employeeClock.QuestionType = this.employeeApplication.Value.GetQuestionKey(vm.QuestionType);
-            }
+                if (ex.InnerException.Message.Contains("UN_Senquential"))
+                    return this.Register(vm, domainName);
 
-            return employeeClock;
+                throw ex;
+            }
         }
 
         private string WriteEmailToClocking(PointTimeDTO pointTimeDTO, CheckRegistrationViewModel checkRegistration)
